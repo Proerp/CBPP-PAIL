@@ -102,655 +102,8 @@ namespace TotalDAL.Repositories
                 this.totalSmartCodingEntities.ColumnAdd("Configs", "StoredID", "int", "0", true);
             }
 
-            #region FINAL 29OCT2018
-            this.totalSmartCodingEntities.ColumnAdd("Configs", "LegalNotice", "nvarchar(3999)", "", false);
-            #endregion FINAL 29OCT2018
-
-            #region FINAL 19OCT2018
-            if (this.totalSmartCodingEntities.ColumnExists("CommodityTypes", "Description"))
-            {
-                this.totalSmartCodingEntities.ColumnAdd("Batches", "AutoCarton", "bit", "0", true);
-
-                this.totalSmartCodingEntities.ColumnAdd("Customers", "IsReceiver", "bit", "0", true);
-                this.ExecuteStoreCommand("UPDATE Customers SET IsCustomer = 1, IsSupplier = 1", new ObjectParameter[] { });
-                this.totalSmartCodingEntities.ColumnAdd("Customers", "Email", "nvarchar(100)", "", false);
-
-
-                #region ADD NEW MODULE              
-                this.ExecuteStoreCommand("UPDATE ModuleDetails SET FullName = '' WHERE FullName = '#' ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand("UPDATE ModuleDetails SET SerialID = 6 WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Employees, new ObjectParameter[] { });
-                var myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Teams + ";", new object[] { });
-                int myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.Teams + ", 1, 'Sales Teams', 'Sales Teams', '', '#', 'CUSTOMER MANAGEMENT', 1, 8, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.Teams + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Teams + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.Teams + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Teams + ") = 0", new ObjectParameter[] { });
-                }
-
-
-                this.ExecuteStoreCommand("DELETE FROM AccessControls WHERE NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.Territories, new ObjectParameter[] { });
-                this.ExecuteStoreCommand("DELETE FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories, new ObjectParameter[] { });
-                this.ExecuteStoreCommand("DELETE FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories, new ObjectParameter[] { });
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.Territories + ", 1, 'Territories', 'Territories', '', '#', 'CUSTOMER MANAGEMENT', 1, 27, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.Territories + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Territories + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.Territories + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ", 1, 'Customer Types', 'Customer Types', '', '#', 'CUSTOMER MANAGEMENT', 1, 30, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ", 1, 'Customer Categories', 'Customer Categories', '', '#', 'CUSTOMER MANAGEMENT', 1, 36, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ", 1, 'Item Types', 'Item Types', '', '#', 'WAREHOUSE RESOURCES', 1, 27, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ", 1, 'Item Categories', 'Item Categories', '', '#', 'WAREHOUSE RESOURCES', 1, 36, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ") = 0", new ObjectParameter[] { });
-                }
-
-                this.ExecuteStoreCommand("DELETE FROM AccessControls WHERE NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.Warehouses, new ObjectParameter[] { });
-                this.ExecuteStoreCommand("DELETE FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses, new ObjectParameter[] { });
-                this.ExecuteStoreCommand("DELETE FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses, new ObjectParameter[] { });
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.Warehouses + ", 1, 'Warehouses', 'Warehouses', '', '#', 'WAREHOUSE RESOURCES', 1, 38, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.Warehouses + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Warehouses + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.Warehouses + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses + ") = 0", new ObjectParameter[] { });
-                }
-
-                #endregion ADD NEW MODULE
-
-
-
-                #region ADD PRODUCTION MODULE
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ", 108, 'Print & Scannings', 'Print & Scannings', '0,8 & 1 LITTRE', '#', '#', 1, 21, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ", 108, 'Print & Scannings', 'Print & Scannings', 'PAIL 18-25L', '#', '#', 1, 22, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ", 108, 'Print & Scannings', 'Print & Scannings', 'DRUM', '#', '#', 1, 23, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ", 108, 'Print & Scannings', 'Print & Scannings', '4 LITTRES', '#', '#', 1, 24, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ") = 0", new ObjectParameter[] { });
-                }
-
-                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ";", new object[] { });
-                myExists = myQuery.Cast<int>().Single();
-                if (myExists == 0)
-                {
-                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ", 108, 'Print & Scannings', 'Print & Scannings', 'IMPORT', '#', '#', 1, 25, 1, 0, 0) ", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ") = 0", new ObjectParameter[] { });
-                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ") = 0", new ObjectParameter[] { });
-                }
-                
-                #endregion ADD PRODUCTION MODULE
-
-                #region CommodityTypes
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[CommodityTypes_ABC](
-	                                                    [CommodityTypeID] [int] NOT NULL,
-	                                                    [Name] [nvarchar](100) NOT NULL,
-	                                                    [AncestorID] [int] NULL,
-	                                                    [Remarks] [nvarchar](100) NULL,
-                                                     CONSTRAINT [PK_CommodityTypes_ABC] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [CommodityTypeID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]
-                                                ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand(@"INSERT INTO CommodityTypes_ABC (CommodityTypeID, Name, AncestorID, Remarks) SELECT CommodityTypeID, Name, AncestorID, Remarks FROM CommodityTypes
-                                                ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand(@"ALTER TABLE Commodities DROP CONSTRAINT FK_Commodities_CommodityTypes
-                                                ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand(@"DROP TABLE CommodityTypes
-                                                ", new ObjectParameter[] { });
-
-
-
-                this.ExecuteStoreCommand(@"ALTER TABLE CustomerCategories ALTER COLUMN Remarks nvarchar(100)
-                                                ", new ObjectParameter[] { });
-                this.ExecuteStoreCommand(@"ALTER TABLE CustomerTypes ALTER COLUMN Remarks nvarchar(100)
-                                                ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[CommodityTypes](
-	                                                [CommodityTypeID] [int] IDENTITY(1,1) NOT NULL,
-	                                                [Name] [nvarchar](100) NOT NULL,
-	                                                [AncestorID] [int] NULL,
-	                                                [Remarks] [nvarchar](100) NULL,
-                                                 CONSTRAINT [PK_CommodityTypes] PRIMARY KEY CLUSTERED 
-                                                (
-	                                                [CommodityTypeID] ASC
-                                                )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                ) ON [PRIMARY]
-                                                
-                                                ALTER TABLE [dbo].[CommodityTypes]  WITH CHECK ADD  CONSTRAINT [FK_CommodityTypes_CommodityTypes] FOREIGN KEY([AncestorID])
-                                                REFERENCES [dbo].[CommodityTypes] ([CommodityTypeID])                                                
-
-                                                ALTER TABLE [dbo].[CommodityTypes] CHECK CONSTRAINT [FK_CommodityTypes_CommodityTypes]
-                                                ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand("SET IDENTITY_INSERT CommodityTypes ON     INSERT INTO CommodityTypes (CommodityTypeID, Name, AncestorID, Remarks) SELECT CommodityTypeID, Name, AncestorID, Remarks FROM CommodityTypes_ABC      SET IDENTITY_INSERT CommodityTypes OFF ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand(@"ALTER TABLE [dbo].[Commodities]  WITH CHECK ADD  CONSTRAINT [FK_Commodities_CommodityTypes] FOREIGN KEY([CommodityTypeID])
-                                                REFERENCES [dbo].[CommodityTypes] ([CommodityTypeID])                                                
-                                                ", new ObjectParameter[] { });
-                this.ExecuteStoreCommand(@"ALTER TABLE [dbo].[Commodities] CHECK CONSTRAINT [FK_Commodities_CommodityTypes]
-                                                ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand(@"DROP TABLE CommodityTypes_ABC
-                                                ", new ObjectParameter[] { });
-
-                #endregion CommodityTypes
-
-                this.ExecuteStoreCommand("DELETE FROM Territories WHERE TerritoryID NOT IN (SELECT TerritoryID FROM EntireTerritories)", new ObjectParameter[] { });
-                this.ExecuteStoreCommand("UPDATE Territories SET Name = '##' WHERE TerritoryID = 7", new ObjectParameter[] { });
-                this.ExecuteStoreCommand("UPDATE EntireTerritories SET Name = '##', EntireName = '##', Name1 = '##', Name2 = '##', Name3 = '##' WHERE TerritoryID = 7", new ObjectParameter[] { });
-            }
-            #endregion FINAL 19OCT2018
-
-
-
-
-            #region NEW PERMISSION
-
-
-            #region DATALOGS
-            if (!this.totalSmartCodingEntities.ColumnExists("Locations", "OnDataLogs"))
-            {
-                this.totalSmartCodingEntities.ColumnAdd("Locations", "OnDataLogs", "int", "0", true);
-                this.totalSmartCodingEntities.ColumnAdd("Locations", "OnEventLogs", "int", "0", true);
-            }
-
-
-            if (!this.totalSmartCodingEntities.TableExists("DataLogs"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[DataLogs](
-	                                                    [DataLogID] [bigint] IDENTITY(1,1) NOT NULL,
-	                                                    [LocationID] [int] NULL,
-	                                                    [EntryID] [int] NULL,
-	                                                    [EntryDetailID] [int] NULL,
-	                                                    [EntryDate] [datetime] NULL,
-	                                                    [ModuleName] [nvarchar](80) NULL,
-	                                                    [UserName] [nvarchar](80) NULL,
-	                                                    [IPAddress] [nvarchar](60) NULL,
-	                                                    [ActionType] [nvarchar](60) NULL,
-	                                                    [EntityName] [nvarchar](60) NULL,
-	                                                    [PropertyName] [nvarchar](60) NULL,
-	                                                    [PropertyValue] [nvarchar](500) NULL,
-                                                     CONSTRAINT [PK_DataLogs] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [DataLogID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-            }
-            if (!this.totalSmartCodingEntities.TableExists("EventLogs"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[EventLogs](
-	                                                    [EventLogID] [bigint] IDENTITY(1,1) NOT NULL,
-	                                                    [LocationID] [int] NULL,
-	                                                    [EntryDate] [datetime] NULL,
-	                                                    [UserName] [nvarchar](80) NULL,
-	                                                    [IPAddress] [nvarchar](60) NULL,
-	                                                    [ModuleName] [nvarchar](80) NULL,
-	                                                    [ActionType] [nvarchar](60) NULL,
-	                                                    [EntryID] [int] NULL,
-	                                                    [Remarks] [nvarchar](200) NULL,
-                                                     CONSTRAINT [PK_EventLogs] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [EventLogID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-            }
-            if (!this.totalSmartCodingEntities.TableExists("LastEventLogs"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[LastEventLogs](
-	                                                    [LastEventLogID] [int] IDENTITY(1,1) NOT NULL,
-	                                                    [EventLogID] [bigint] NOT NULL,
-	                                                    [UserName] [nvarchar](80) NOT NULL,
-                                                     CONSTRAINT [PK_LastEventLogs] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [LastEventLogID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-            }
-
-            #endregion
-
-            #region ConfigLogs
-
-            if (false && !this.totalSmartCodingEntities.TableExists("ConfigLogs"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[ConfigLogs](
-	                                                    [ConfigLogID] [int] IDENTITY(1,1) NOT NULL,
-	                                                    [EntryDate] [datetime] NOT NULL,
-	                                                    [ProcedureName] [nvarchar](100) NOT NULL,
-	                                                    [Remarks] [nvarchar](100) NOT NULL,
-                                                     CONSTRAINT [PK_ConfigLogs] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [ConfigLogID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-            }
-            #endregion
-
-            #region ADD NEW MODULE: NmvnTaskID.MonthEnd
-            var query = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.MonthEnd + ";", new object[] { });
-            int exists = query.Cast<int>().Single();
-            if (exists == 0)
-            {
-                this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.MonthEnd + ", 1, 'Month-end Closing', 'Month-end Closing', '#', '#', 'CUSTOMER MANAGEMENT', 1, 68, 1, 0, 0) ", new ObjectParameter[] { });
-                this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.MonthEnd + " AS NMVNTaskID, OrganizationalUnitID, 1 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls WHERE (NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls WHERE NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.MonthEnd + ") = 0", new ObjectParameter[] { });
-            }
-            #endregion ADD NEW MODULE: NmvnTaskID.MonthEnd
-
-            //MUST CALL this.UpdateUserControls() BEFORE CALL this.RestoreProcedures(): BECAUSE: WE ADD SOME CODE TO REGISTER REPORT CONTROL IN UserRegister 
-            //VERY IMPORTANT: WE CALL OLD VERSION OF UserRegister IN this.UpdateUserControls() [UserRegister WITHOUT REPORT CONTROL]
-            if (!this.totalSmartCodingEntities.TableExists("UserGroupReports"))
-            {
-                #region
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[UserGroupReports](
-	                                                        [UserGroupReportID] [int] IDENTITY(1,1) NOT NULL,
-	                                                        [UserGroupID] [int] NOT NULL,
-	                                                        [ReportID] [int] NOT NULL,
-	                                                        [Enabled] [bit] NOT NULL,
-                                                         CONSTRAINT [PK_UserGroupReports] PRIMARY KEY CLUSTERED 
-                                                        (
-	                                                        [UserGroupReportID] ASC
-                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                        ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-
-
-                #endregion
-
-                this.UpdateUserControls();
-            }
-
-            if (!this.totalSmartCodingEntities.TableExists("UserSalespersons"))
-            {
-                if (true)
-                {
-                    this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[UserSalespersons](
-	                                                        [UserSalespersonID] [int] IDENTITY(1,1) NOT NULL,	
-	                                                        [SecurityIdentifier] [nvarchar](256) NOT NULL,
-	                                                        [EmployeeID] [int] NOT NULL,
-	                                                        [EntryDate] [datetime] NOT NULL,
-                                                         CONSTRAINT [PK_UserSalespersons] PRIMARY KEY CLUSTERED 
-                                                        (
-	                                                        [UserSalespersonID] ASC
-                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
-                                                         CONSTRAINT [IX_UserSalespersons] UNIQUE NONCLUSTERED 
-                                                        (
-	                                                        [SecurityIdentifier] ASC,
-	                                                        [EmployeeID] ASC
-                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                        ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-                }
-            }
-            #endregion
-
-
-            #region Reports
-
-            if (restoreProcedures)
-            {                
-                //this.ExecuteStoreCommand("DELETE FROM Reports WHERE ReportID IN (" + (int)GlobalEnums.ReportID.DataLogJournals + "," + (int)GlobalEnums.ReportID.EventLogJournals + "," + (int)GlobalEnums.ReportID.LastEventLogJournals + ")", new ObjectParameter[] { });
-                //string reportTabPageIDs = ((int)GlobalEnums.ReportTabPageID.TabPageWarehouses).ToString() + "," + ((int)GlobalEnums.ReportTabPageID.TabPageCommodities).ToString();
-                //string optionBoxIDs = GlobalEnums.OBx(GlobalEnums.OptionBoxID.FromDate) + GlobalEnums.OBx(GlobalEnums.OptionBoxID.ToDate);
-                //this.ExecuteStoreCommand("SET IDENTITY_INSERT Reports ON  INSERT INTO Reports (ReportID, ReportUniqueID, ReportGroupID, ReportGroupName, ReportName, ReportURL, ReportTabPageIDs, OptionBoxIDs, ReportTypeID, SerialID, Remarks) VALUES (" + (int)GlobalEnums.ReportID.DataLogJournals + ", " + (int)GlobalEnums.ReportID.DataLogJournals + ", 20, 'X.LOGS', N'Data Logs', N'DataLogJournals', N'" + reportTabPageIDs + "', N'" + optionBoxIDs + GlobalEnums.OBx(GlobalEnums.OptionBoxID.UserName) + "', " + (int)GlobalEnums.ReportTypeID.Logs + ", 11, N'')      SET IDENTITY_INSERT Reports OFF ", new ObjectParameter[] { });
-                //this.ExecuteStoreCommand("SET IDENTITY_INSERT Reports ON  INSERT INTO Reports (ReportID, ReportUniqueID, ReportGroupID, ReportGroupName, ReportName, ReportURL, ReportTabPageIDs, OptionBoxIDs, ReportTypeID, SerialID, Remarks) VALUES (" + (int)GlobalEnums.ReportID.EventLogJournals + ", " + (int)GlobalEnums.ReportID.EventLogJournals + ", 20, 'X.LOGS', N'Event Logs', N'EventLogJournals', N'" + reportTabPageIDs + "', N'" + optionBoxIDs + GlobalEnums.OBx(GlobalEnums.OptionBoxID.UserName) + "', " + (int)GlobalEnums.ReportTypeID.Logs + ", 16, N'')      SET IDENTITY_INSERT Reports OFF ", new ObjectParameter[] { });
-                //this.ExecuteStoreCommand("SET IDENTITY_INSERT Reports ON  INSERT INTO Reports (ReportID, ReportUniqueID, ReportGroupID, ReportGroupName, ReportName, ReportURL, ReportTabPageIDs, OptionBoxIDs, ReportTypeID, SerialID, Remarks) VALUES (" + (int)GlobalEnums.ReportID.LastEventLogJournals + ", " + (int)GlobalEnums.ReportID.LastEventLogJournals + ", 20, 'X.LOGS', N'Latest Event Logs', N'EventLogJournals', N'" + reportTabPageIDs + "', N'" + optionBoxIDs + "', " + (int)GlobalEnums.ReportTypeID.Logs + ", 18, N'')      SET IDENTITY_INSERT Reports OFF ", new ObjectParameter[] { });
-            }
-            #endregion Reports
-
-            #region 4L
-            var query4L = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(FillingLineID) AS Expr1 FROM FillingLines WHERE FillingLineID = " + (int)GlobalVariables.FillingLine.Medium4L + ";", new object[] { });
-            int exist4Ls = query4L.Cast<int>().Single();
-            if (exist4Ls == 0)
-            {
-                this.ExecuteStoreCommand("INSERT INTO Configs (ConfigID, VersionID, VersionDate, Remarks, StoredID) VALUES(" + (int)GlobalVariables.FillingLine.Medium4L + ", " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Medium4L) + ", GetDate(), NULL, " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Medium4L) + ") ", new ObjectParameter[] { });
-                this.ExecuteStoreCommand("INSERT INTO Configs (ConfigID, VersionID, VersionDate, Remarks, StoredID) VALUES(" + (int)GlobalVariables.FillingLine.Import + ", " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Import) + ", GetDate(), NULL, " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Import) + ") ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand("INSERT INTO FillingLines (FillingLineID, Code, Name, NickName, HasPack, HasCarton, HasPallet, LocationID, LastLogonFillingLineID, PortName, ServerID, ServerName, DatabaseName, Remarks, PalletChanged, InActive) VALUES(" + (int)GlobalVariables.FillingLine.Medium4L + ", N'S2', N'4 LITTRES', N'S2', 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0) ", new ObjectParameter[] { });
-                this.ExecuteStoreCommand("INSERT INTO FillingLines (FillingLineID, Code, Name, NickName, HasPack, HasCarton, HasPallet, LocationID, LastLogonFillingLineID, PortName, ServerID, ServerName, DatabaseName, Remarks, PalletChanged, InActive) VALUES(" + (int)GlobalVariables.FillingLine.Import + ", N'IP', N'IMPORT', N'IP', 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0) ", new ObjectParameter[] { });
-                #region INIT IP ADDRESS
-                foreach (GlobalVariables.FillingLine fillingLine in Enum.GetValues(typeof(GlobalVariables.FillingLine)))
-                {
-                    if (fillingLine == GlobalVariables.FillingLine.Medium4L || fillingLine == GlobalVariables.FillingLine.Import)
-                    {
-                        foreach (GlobalVariables.PrinterName printerName in Enum.GetValues(typeof(GlobalVariables.PrinterName)))
-                        {
-                            string ipAddress = GlobalVariables.IpAddress(fillingLine, printerName);
-                            if (ipAddress != "" & ipAddress != "127.0.0.1")
-                                this.ExecuteStoreCommand("INSERT INTO FillingLineDetails (FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (" + (int)fillingLine + ", " + (int)printerName + ", " + ipAddress.Substring(0, ipAddress.IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".") + 1) + ")", new ObjectParameter[] { });
-                        }
-
-                        foreach (GlobalVariables.ScannerName scannerName in Enum.GetValues(typeof(GlobalVariables.ScannerName)))
-                        {
-                            string ipAddress = GlobalVariables.IpAddress(fillingLine, scannerName);
-                            if (ipAddress != "" & ipAddress != "127.0.0.1")
-                                this.ExecuteStoreCommand("INSERT INTO FillingLineDetails (FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (" + (int)fillingLine + ", " + ((int)GlobalVariables.ScannerName.Base + (int)scannerName) + ", " + ipAddress.Substring(0, ipAddress.IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".") + 1) + ")", new ObjectParameter[] { });
-                        }
-                    }
-                }
-                #endregion INIT IP ADDRESS
-
-
-                Helpers.SqlProgrammability.Inventories.GoodsReceipt goodsReceipt = new Helpers.SqlProgrammability.Inventories.GoodsReceipt(totalSmartCodingEntities);
-                goodsReceipt.RestoreProcedure19JUL2018();
-
-            }
-
-            #endregion 4L
-
-
-
-
-
-
-            #region ApplicationRoles
-            if (!this.totalSmartCodingEntities.TableExists("ApplicationRoles"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[ApplicationRoles](
-	                                                    [ApplicationRoleID] [int] NOT NULL,
-	                                                    [Name] [nvarchar](100) NOT NULL,
-	                                                    [Password] [nvarchar](100) NOT NULL,
-	                                                    [EditedDate] [datetime] NOT NULL,
-                                                     CONSTRAINT [PK_ApplicationRoles] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [ApplicationRoleID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]
-                                                ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand(@" UPDATE Locations SET LockedDate = CONVERT(DATETIME, '2017-10-31 23:59:59', 102), EditedDate = GETDATE() ", new ObjectParameter[] { });
-            }
-            #endregion ApplicationRoles
-
-
-
-
-
-
-            #region UserGroups
-            if (!this.totalSmartCodingEntities.TableExists("UserGroups"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[UserGroups](
-	                                                    [UserGroupID] [int] IDENTITY(1,1) NOT NULL,
-	                                                    [Code] [nvarchar](50) NOT NULL,
-	                                                    [Name] [nvarchar](100) NOT NULL,
-	                                                    [Description] [nvarchar](100) NULL,
-	                                                    [Remarks] [nvarchar](100) NULL,
-                                                     CONSTRAINT [PK_ControlGroups] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [UserGroupID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand(@"	CREATE TABLE [dbo].[UserGroupDetails](
-	                                                        [UserGroupDetailID] [int] IDENTITY(1,1) NOT NULL,
-	                                                        [UserGroupID] [int] NOT NULL,
-	                                                        [SecurityIdentifier] [nvarchar](256) NOT NULL,
-	                                                        [EntryDate] [datetime] NOT NULL,
-                                                         CONSTRAINT [PK_UserGroupDetails] PRIMARY KEY CLUSTERED 
-                                                        (
-	                                                        [UserGroupDetailID] ASC
-                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
-                                                         CONSTRAINT [IX_UserGroupDetails] UNIQUE NONCLUSTERED 
-                                                        (
-	                                                        [UserGroupID] ASC,
-	                                                        [SecurityIdentifier] ASC
-                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                        ) ON [PRIMARY]                                                
-                                                ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand(@"	 CREATE TABLE [dbo].[UserGroupControls](
-	                                                        [UserGroupControlID] [int] IDENTITY(1,1) NOT NULL,
-	                                                        [UserGroupID] [int] NOT NULL,
-	                                                        [ModuleDetailID] [int] NOT NULL,
-	                                                        [LocationID] [int] NOT NULL,
-	                                                        [AccessLevel] [int] NOT NULL,
-	                                                        [ApprovalPermitted] [bit] NOT NULL,
-	                                                        [UnApprovalPermitted] [bit] NOT NULL,
-	                                                        [VoidablePermitted] [bit] NOT NULL,
-	                                                        [UnVoidablePermitted] [bit] NOT NULL,
-	                                                        [ShowDiscount] [bit] NOT NULL,
-	                                                        [AccessLevelBACKUP] [int] NULL,
-	                                                        [ApprovalPermittedBACKUP] [bit] NULL,
-	                                                        [UnApprovalPermittedBACKUP] [bit] NULL,
-	                                                        [InActive] [bit] NOT NULL,
-                                                            CONSTRAINT [PK_PermissionControls] PRIMARY KEY CLUSTERED 
-                                                        (
-	                                                        [UserGroupControlID] ASC
-                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                        ) ON [PRIMARY]
-
-
-                                                        ALTER TABLE [dbo].[UserGroupControls]  WITH CHECK ADD  CONSTRAINT [FK_UserGroupControls_Locations] FOREIGN KEY([LocationID])
-                                                        REFERENCES [dbo].[Locations] ([LocationID])
-
-
-                                                        ALTER TABLE [dbo].[UserGroupControls] CHECK CONSTRAINT [FK_UserGroupControls_Locations]
-
-
-                                                        ALTER TABLE [dbo].[UserGroupControls]  WITH CHECK ADD  CONSTRAINT [FK_UserGroupControls_ModuleDetails] FOREIGN KEY([ModuleDetailID])
-                                                        REFERENCES [dbo].[ModuleDetails] ([ModuleDetailID])
-
-
-                                                        ALTER TABLE [dbo].[UserGroupControls] CHECK CONSTRAINT [FK_UserGroupControls_ModuleDetails]
-
-
-                                                        ALTER TABLE [dbo].[UserGroupControls]  WITH CHECK ADD  CONSTRAINT [FK_UserGroupControls_UserGroups] FOREIGN KEY([UserGroupID])
-                                                        REFERENCES [dbo].[UserGroups] ([UserGroupID])
-
-
-                                                        ALTER TABLE [dbo].[UserGroupControls] CHECK CONSTRAINT [FK_UserGroupControls_UserGroups]                                               
-                                                ", new ObjectParameter[] { });
-
-            }
-            #endregion
-
-            #region Devices
-            if (!this.totalSmartCodingEntities.TableExists("Devices"))
-            {
-                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[Devices](
-	                                                [DeviceID] [int] NOT NULL,
-	                                                [Code] [nvarchar](60) NOT NULL,
-	                                                [Name] [nvarchar](60) NOT NULL,
-                                                 CONSTRAINT [PK_Devices] PRIMARY KEY CLUSTERED 
-                                                    ([DeviceID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]	                                                
-                                                ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand(@"                                                              
-                                        
-                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (1, N'Digit Printer', N'Digit Printer')
-                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (2, N'2D Printer', N'2D Printer')
-                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (3, N'Carton/ Pail Printer', N'Carton/ Pail Printer')
-                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (100002, N'Matching Scanner', N'Matching Scanner')
-                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (100003, N'Carton/ Pail Scanner', N'Carton/ Pail Scanner')
-                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (100006, N'Label Scanner', N'Label Scanner')
-
-                                             ", new ObjectParameter[] { });
-
-
-
-                this.ExecuteStoreCommand(@" CREATE TABLE [dbo].[FillingLineDetails](
-	                                                    [FillingLineDetailID] [int] IDENTITY(1,1) NOT NULL,
-	                                                    [FillingLineID] [int] NOT NULL,
-	                                                    [DeviceID] [int] NOT NULL,
-	                                                    [IPv4Byte1] [int] NOT NULL,
-	                                                    [IPv4Byte2] [int] NOT NULL,
-	                                                    [IPv4Byte3] [int] NOT NULL,
-	                                                    [IPv4Byte4] [int] NOT NULL,
-                                                     CONSTRAINT [PK_FillingLineDetails] PRIMARY KEY CLUSTERED 
-                                                    (
-	                                                    [FillingLineDetailID] ASC
-                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                                                    ) ON [PRIMARY]
-
-                                                    ALTER TABLE [dbo].[FillingLineDetails]  WITH CHECK ADD  CONSTRAINT [FK_FillingLineDetails_Devices] FOREIGN KEY([DeviceID])
-                                                    REFERENCES [dbo].[Devices] ([DeviceID])
-
-                                                    ALTER TABLE [dbo].[FillingLineDetails] CHECK CONSTRAINT [FK_FillingLineDetails_Devices]
-
-                                                    ALTER TABLE [dbo].[FillingLineDetails]  WITH CHECK ADD  CONSTRAINT [FK_FillingLineDetails_FillingLines] FOREIGN KEY([FillingLineID])
-                                                    REFERENCES [dbo].[FillingLines] ([FillingLineID])
-
-                                                    ALTER TABLE [dbo].[FillingLineDetails] CHECK CONSTRAINT [FK_FillingLineDetails_FillingLines]
-                                                ", new ObjectParameter[] { });
-
-
-                this.ExecuteStoreCommand(@" SET IDENTITY_INSERT FillingLineDetails ON                                                              
-                                        
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (1, 1, 1, 172, 21, 67, 157)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (2, 1, 2, 172, 21, 67, 158)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (3, 1, 3, 172, 21, 67, 159)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (4, 1, 100002, 172, 21, 67, 168)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (5, 1, 100003, 172, 21, 67, 169)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (6, 1, 100006, 172, 21, 67, 170)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (7, 2, 1, 172, 21, 67, 165)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (8, 2, 3, 172, 21, 67, 163)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (9, 2, 100003, 172, 21, 67, 172)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (10, 2, 100006, 172, 21, 67, 173)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (11, 3, 1, 172, 21, 67, 167)
-                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (12, 3, 100006, 172, 21, 67, 175)
-
-                                            SET IDENTITY_INSERT FillingLineDetails OFF ", new ObjectParameter[] { });
-
-            }
-            #endregion Devices
-
-
-            #region
-
-            if (!this.totalSmartCodingEntities.ColumnExists("ModuleDetails", "ControlTypeID"))
-            {
-                this.totalSmartCodingEntities.ColumnAdd("ModuleDetails", "ControlTypeID", "int", "0", true);
-                this.ExecuteStoreCommand("UPDATE ModuleDetails SET ControlTypeID = 1 WHERE ModuleID = 6 ", new ObjectParameter[] { });
-            }
-            #endregion
-
-            #region EmployeeLocationIDs & Roles
-            this.totalSmartCodingEntities.ColumnAdd("Employees", "InActive", "bit", "0", true);
-            if (!this.totalSmartCodingEntities.ColumnExists("Employees", "EmployeeRoleIDs"))
-            {
-                this.ExecuteStoreCommand("UPDATE ModuleDetails SET InActive = 1 WHERE ModuleDetailID IN (" + (int)GlobalEnums.NmvnTaskID.AvailableItems + ", " + (int)GlobalEnums.NmvnTaskID.PendingOrders + ") ", new ObjectParameter[] { });
-
-                this.ExecuteStoreCommand("UPDATE Employees SET Title = N'#'", new ObjectParameter[] { });
-
-                this.totalSmartCodingEntities.ColumnAdd("Employees", "EmployeeRoleIDs", "nvarchar(100)", "", false);
-                this.totalSmartCodingEntities.ColumnAdd("Employees", "EmployeeLocationIDs", "nvarchar(100)", "", false);
-
-                this.totalSmartCodingEntities.ColumnDrop("Employees", "Birthday");
-                this.totalSmartCodingEntities.ColumnAdd("Employees", "Birthday", "date", "01/01/1900", true);
-
-                this.ExecuteStoreCommand(@" DECLARE @EmployeeID Int  
-
-                                            DECLARE Action_Cursor CURSOR FOR SELECT EmployeeID FROM Employees OPEN Action_Cursor;
-                                            FETCH NEXT FROM Action_Cursor INTO @EmployeeID;
-
-                                            WHILE @@FETCH_STATUS = 0
-                                            BEGIN
-
-                                               UPDATE Employees SET EmployeeLocationIDs = STUFF((SELECT ',' + CAST(LocationID AS varchar)  FROM (SELECT DISTINCT LocationID FROM EmployeeLocations WHERE EmployeeID = @EmployeeID) DistinctLocationIDs FOR XML PATH('')) ,1,1,'') WHERE EmployeeID = @EmployeeID
-
-                                               UPDATE Employees SET EmployeeRoleIDs = STUFF((SELECT ',' + CAST(RoleID AS varchar)  FROM (SELECT DISTINCT RoleID FROM EmployeeRoles WHERE EmployeeID = @EmployeeID) DistinctRoleIDs FOR XML PATH('')) ,1,1,'') WHERE EmployeeID = @EmployeeID
-
-                                               FETCH NEXT FROM Action_Cursor  INTO @EmployeeID;
-                                            END
-
-                                            CLOSE Action_Cursor;
-                                            DEALLOCATE Action_Cursor; ", new ObjectParameter[] { });
-
-            }
-            #endregion EmployeeLocationIDs & Roles
-
-
-            #region REMOVE FirstName, LastName
-            //if (this.totalSmartCodingEntities.ColumnExists("Users", "FirstName"))
-            //{
-            //    this.totalSmartCodingEntities.ColumnDrop("Users", "FirstName");
-            //    this.totalSmartCodingEntities.ColumnDrop("Users", "LastName");
-            //}
-            #endregion REMOVE FirstName, LastName
-
-
-
-
+            #region UPDATE CBPP
+            #endregion UPDATE CBPP
         }
 
 
@@ -1868,12 +1221,662 @@ namespace TotalDAL.Repositories
         }
 
 
-        private void UpdateBackup()
+        private void UpdateBackup(bool restoreProcedures)
         {
 
-            #region 01SEP2018
-            var query = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.FillingLine + ";", new object[] { });
+
+
+
+
+            #region FINAL 29OCT2018
+            this.totalSmartCodingEntities.ColumnAdd("Configs", "LegalNotice", "nvarchar(3999)", "", false);
+            #endregion FINAL 29OCT2018
+
+            #region FINAL 19OCT2018
+            if (this.totalSmartCodingEntities.ColumnExists("CommodityTypes", "Description"))
+            {
+                this.totalSmartCodingEntities.ColumnAdd("Batches", "AutoCarton", "bit", "0", true);
+
+                this.totalSmartCodingEntities.ColumnAdd("Customers", "IsReceiver", "bit", "0", true);
+                this.ExecuteStoreCommand("UPDATE Customers SET IsCustomer = 1, IsSupplier = 1", new ObjectParameter[] { });
+                this.totalSmartCodingEntities.ColumnAdd("Customers", "Email", "nvarchar(100)", "", false);
+
+
+                #region ADD NEW MODULE
+                this.ExecuteStoreCommand("UPDATE ModuleDetails SET FullName = '' WHERE FullName = '#' ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand("UPDATE ModuleDetails SET SerialID = 6 WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Employees, new ObjectParameter[] { });
+                var myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Teams + ";", new object[] { });
+                int myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.Teams + ", 1, 'Sales Teams', 'Sales Teams', '', '#', 'CUSTOMER MANAGEMENT', 1, 8, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.Teams + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Teams + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.Teams + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Teams + ") = 0", new ObjectParameter[] { });
+                }
+
+
+                this.ExecuteStoreCommand("DELETE FROM AccessControls WHERE NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.Territories, new ObjectParameter[] { });
+                this.ExecuteStoreCommand("DELETE FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories, new ObjectParameter[] { });
+                this.ExecuteStoreCommand("DELETE FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories, new ObjectParameter[] { });
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.Territories + ", 1, 'Territories', 'Territories', '', '#', 'CUSTOMER MANAGEMENT', 1, 27, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.Territories + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Territories + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.Territories + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Territories + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ", 1, 'Customer Types', 'Customer Types', '', '#', 'CUSTOMER MANAGEMENT', 1, 30, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerTypes + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ", 1, 'Customer Categories', 'Customer Categories', '', '#', 'CUSTOMER MANAGEMENT', 1, 36, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CustomerCategories + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ", 1, 'Item Types', 'Item Types', '', '#', 'WAREHOUSE RESOURCES', 1, 27, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityTypes + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ", 1, 'Item Categories', 'Item Categories', '', '#', 'WAREHOUSE RESOURCES', 1, 36, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.CommodityCategories + ") = 0", new ObjectParameter[] { });
+                }
+
+                this.ExecuteStoreCommand("DELETE FROM AccessControls WHERE NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.Warehouses, new ObjectParameter[] { });
+                this.ExecuteStoreCommand("DELETE FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses, new ObjectParameter[] { });
+                this.ExecuteStoreCommand("DELETE FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses, new ObjectParameter[] { });
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.Warehouses + ", 1, 'Warehouses', 'Warehouses', '', '#', 'WAREHOUSE RESOURCES', 1, 38, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.Warehouses + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.Warehouses + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.Warehouses + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.Warehouses + ") = 0", new ObjectParameter[] { });
+                }
+
+                #endregion ADD NEW MODULE
+
+
+
+                #region ADD PRODUCTION MODULE
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ", 108, 'Print & Scannings', 'Print & Scannings', '0,8 & 1 LITTRE', '#', '#', 1, 21, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingSmallpack + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ", 108, 'Print & Scannings', 'Print & Scannings', 'PAIL 18-25L', '#', '#', 1, 22, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingPail + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ", 108, 'Print & Scannings', 'Print & Scannings', 'DRUM', '#', '#', 1, 23, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingDrum + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ", 108, 'Print & Scannings', 'Print & Scannings', '4 LITTRES', '#', '#', 1, 24, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingMedium4L + ") = 0", new ObjectParameter[] { });
+                }
+
+                myQuery = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ";", new object[] { });
+                myExists = myQuery.Cast<int>().Single();
+                if (myExists == 0)
+                {
+                    this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ", 108, 'Print & Scannings', 'Print & Scannings', 'IMPORT', '#', '#', 1, 25, 1, 0, 0) ", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID,   AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + " AS NMVNTaskID, OrganizationalUnitID, 0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls    WHERE (NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM AccessControls    WHERE NMVNTaskID =     " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ") = 0", new ObjectParameter[] { });
+                    this.ExecuteStoreCommand("INSERT INTO UserGroupControls (UserGroupID, ModuleDetailID, LocationID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserGroupID, " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + " AS ModuleDetailID, LocationID,  0 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM UserGroupControls WHERE (ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCoding + ") AND (SELECT COUNT(*) FROM UserGroupControls WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.SmartCodingImport + ") = 0", new ObjectParameter[] { });
+                }
+
+                #endregion ADD PRODUCTION MODULE
+
+                #region CommodityTypes
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[CommodityTypes_ABC](
+	                                                    [CommodityTypeID] [int] NOT NULL,
+	                                                    [Name] [nvarchar](100) NOT NULL,
+	                                                    [AncestorID] [int] NULL,
+	                                                    [Remarks] [nvarchar](100) NULL,
+                                                     CONSTRAINT [PK_CommodityTypes_ABC] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [CommodityTypeID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]
+                                                ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand(@"INSERT INTO CommodityTypes_ABC (CommodityTypeID, Name, AncestorID, Remarks) SELECT CommodityTypeID, Name, AncestorID, Remarks FROM CommodityTypes
+                                                ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand(@"ALTER TABLE Commodities DROP CONSTRAINT FK_Commodities_CommodityTypes
+                                                ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand(@"DROP TABLE CommodityTypes
+                                                ", new ObjectParameter[] { });
+
+
+
+                this.ExecuteStoreCommand(@"ALTER TABLE CustomerCategories ALTER COLUMN Remarks nvarchar(100)
+                                                ", new ObjectParameter[] { });
+                this.ExecuteStoreCommand(@"ALTER TABLE CustomerTypes ALTER COLUMN Remarks nvarchar(100)
+                                                ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[CommodityTypes](
+	                                                [CommodityTypeID] [int] IDENTITY(1,1) NOT NULL,
+	                                                [Name] [nvarchar](100) NOT NULL,
+	                                                [AncestorID] [int] NULL,
+	                                                [Remarks] [nvarchar](100) NULL,
+                                                 CONSTRAINT [PK_CommodityTypes] PRIMARY KEY CLUSTERED 
+                                                (
+	                                                [CommodityTypeID] ASC
+                                                )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                ) ON [PRIMARY]
+                                                
+                                                ALTER TABLE [dbo].[CommodityTypes]  WITH CHECK ADD  CONSTRAINT [FK_CommodityTypes_CommodityTypes] FOREIGN KEY([AncestorID])
+                                                REFERENCES [dbo].[CommodityTypes] ([CommodityTypeID])                                                
+
+                                                ALTER TABLE [dbo].[CommodityTypes] CHECK CONSTRAINT [FK_CommodityTypes_CommodityTypes]
+                                                ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand("SET IDENTITY_INSERT CommodityTypes ON     INSERT INTO CommodityTypes (CommodityTypeID, Name, AncestorID, Remarks) SELECT CommodityTypeID, Name, AncestorID, Remarks FROM CommodityTypes_ABC      SET IDENTITY_INSERT CommodityTypes OFF ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand(@"ALTER TABLE [dbo].[Commodities]  WITH CHECK ADD  CONSTRAINT [FK_Commodities_CommodityTypes] FOREIGN KEY([CommodityTypeID])
+                                                REFERENCES [dbo].[CommodityTypes] ([CommodityTypeID])                                                
+                                                ", new ObjectParameter[] { });
+                this.ExecuteStoreCommand(@"ALTER TABLE [dbo].[Commodities] CHECK CONSTRAINT [FK_Commodities_CommodityTypes]
+                                                ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand(@"DROP TABLE CommodityTypes_ABC
+                                                ", new ObjectParameter[] { });
+
+                #endregion CommodityTypes
+
+                this.ExecuteStoreCommand("DELETE FROM Territories WHERE TerritoryID NOT IN (SELECT TerritoryID FROM EntireTerritories)", new ObjectParameter[] { });
+                this.ExecuteStoreCommand("UPDATE Territories SET Name = '##' WHERE TerritoryID = 7", new ObjectParameter[] { });
+                this.ExecuteStoreCommand("UPDATE EntireTerritories SET Name = '##', EntireName = '##', Name1 = '##', Name2 = '##', Name3 = '##' WHERE TerritoryID = 7", new ObjectParameter[] { });
+            }
+            #endregion FINAL 19OCT2018
+
+
+
+            #region NEW PERMISSION
+
+
+            #region DATALOGS
+            if (!this.totalSmartCodingEntities.ColumnExists("Locations", "OnDataLogs"))
+            {
+                this.totalSmartCodingEntities.ColumnAdd("Locations", "OnDataLogs", "int", "0", true);
+                this.totalSmartCodingEntities.ColumnAdd("Locations", "OnEventLogs", "int", "0", true);
+            }
+
+
+            if (!this.totalSmartCodingEntities.TableExists("DataLogs"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[DataLogs](
+	                                                    [DataLogID] [bigint] IDENTITY(1,1) NOT NULL,
+	                                                    [LocationID] [int] NULL,
+	                                                    [EntryID] [int] NULL,
+	                                                    [EntryDetailID] [int] NULL,
+	                                                    [EntryDate] [datetime] NULL,
+	                                                    [ModuleName] [nvarchar](80) NULL,
+	                                                    [UserName] [nvarchar](80) NULL,
+	                                                    [IPAddress] [nvarchar](60) NULL,
+	                                                    [ActionType] [nvarchar](60) NULL,
+	                                                    [EntityName] [nvarchar](60) NULL,
+	                                                    [PropertyName] [nvarchar](60) NULL,
+	                                                    [PropertyValue] [nvarchar](500) NULL,
+                                                     CONSTRAINT [PK_DataLogs] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [DataLogID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+            }
+            if (!this.totalSmartCodingEntities.TableExists("EventLogs"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[EventLogs](
+	                                                    [EventLogID] [bigint] IDENTITY(1,1) NOT NULL,
+	                                                    [LocationID] [int] NULL,
+	                                                    [EntryDate] [datetime] NULL,
+	                                                    [UserName] [nvarchar](80) NULL,
+	                                                    [IPAddress] [nvarchar](60) NULL,
+	                                                    [ModuleName] [nvarchar](80) NULL,
+	                                                    [ActionType] [nvarchar](60) NULL,
+	                                                    [EntryID] [int] NULL,
+	                                                    [Remarks] [nvarchar](200) NULL,
+                                                     CONSTRAINT [PK_EventLogs] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [EventLogID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+            }
+            if (!this.totalSmartCodingEntities.TableExists("LastEventLogs"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[LastEventLogs](
+	                                                    [LastEventLogID] [int] IDENTITY(1,1) NOT NULL,
+	                                                    [EventLogID] [bigint] NOT NULL,
+	                                                    [UserName] [nvarchar](80) NOT NULL,
+                                                     CONSTRAINT [PK_LastEventLogs] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [LastEventLogID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+            }
+
+            #endregion
+
+            #region ConfigLogs
+
+            if (false && !this.totalSmartCodingEntities.TableExists("ConfigLogs"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[ConfigLogs](
+	                                                    [ConfigLogID] [int] IDENTITY(1,1) NOT NULL,
+	                                                    [EntryDate] [datetime] NOT NULL,
+	                                                    [ProcedureName] [nvarchar](100) NOT NULL,
+	                                                    [Remarks] [nvarchar](100) NOT NULL,
+                                                     CONSTRAINT [PK_ConfigLogs] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [ConfigLogID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+            }
+            #endregion
+
+            #region ADD NEW MODULE: NmvnTaskID.MonthEnd
+            var query = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.MonthEnd + ";", new object[] { });
             int exists = query.Cast<int>().Single();
+            if (exists == 0)
+            {
+                this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive, ControlTypeID) VALUES(" + (int)GlobalEnums.NmvnTaskID.MonthEnd + ", 1, 'Month-end Closing', 'Month-end Closing', '#', '#', 'CUSTOMER MANAGEMENT', 1, 68, 1, 0, 0) ", new ObjectParameter[] { });
+                this.ExecuteStoreCommand("INSERT INTO AccessControls (UserID, NMVNTaskID, OrganizationalUnitID, AccessLevel, ApprovalPermitted, UnApprovalPermitted, VoidablePermitted, UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive) SELECT UserID, " + (int)GlobalEnums.NmvnTaskID.MonthEnd + " AS NMVNTaskID, OrganizationalUnitID, 1 AS AccessLevel, 0 AS ApprovalPermitted, 0 AS UnApprovalPermitted, 0 AS VoidablePermitted, 0 AS UnVoidablePermitted, ShowDiscount, AccessLevelBACKUP, ApprovalPermittedBACKUP, UnApprovalPermittedBACKUP, InActive FROM AccessControls WHERE (NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.Commodities + ") AND (SELECT COUNT(*) FROM AccessControls WHERE NMVNTaskID = " + (int)GlobalEnums.NmvnTaskID.MonthEnd + ") = 0", new ObjectParameter[] { });
+            }
+            #endregion ADD NEW MODULE: NmvnTaskID.MonthEnd
+
+            //MUST CALL this.UpdateUserControls() BEFORE CALL this.RestoreProcedures(): BECAUSE: WE ADD SOME CODE TO REGISTER REPORT CONTROL IN UserRegister 
+            //VERY IMPORTANT: WE CALL OLD VERSION OF UserRegister IN this.UpdateUserControls() [UserRegister WITHOUT REPORT CONTROL]
+            if (!this.totalSmartCodingEntities.TableExists("UserGroupReports"))
+            {
+                #region
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[UserGroupReports](
+	                                                        [UserGroupReportID] [int] IDENTITY(1,1) NOT NULL,
+	                                                        [UserGroupID] [int] NOT NULL,
+	                                                        [ReportID] [int] NOT NULL,
+	                                                        [Enabled] [bit] NOT NULL,
+                                                         CONSTRAINT [PK_UserGroupReports] PRIMARY KEY CLUSTERED 
+                                                        (
+	                                                        [UserGroupReportID] ASC
+                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                        ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+
+
+                #endregion
+
+                this.UpdateUserControls();
+            }
+
+            if (!this.totalSmartCodingEntities.TableExists("UserSalespersons"))
+            {
+                if (true)
+                {
+                    this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[UserSalespersons](
+	                                                        [UserSalespersonID] [int] IDENTITY(1,1) NOT NULL,	
+	                                                        [SecurityIdentifier] [nvarchar](256) NOT NULL,
+	                                                        [EmployeeID] [int] NOT NULL,
+	                                                        [EntryDate] [datetime] NOT NULL,
+                                                         CONSTRAINT [PK_UserSalespersons] PRIMARY KEY CLUSTERED 
+                                                        (
+	                                                        [UserSalespersonID] ASC
+                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+                                                         CONSTRAINT [IX_UserSalespersons] UNIQUE NONCLUSTERED 
+                                                        (
+	                                                        [SecurityIdentifier] ASC,
+	                                                        [EmployeeID] ASC
+                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                        ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+                }
+            }
+            #endregion
+
+
+            #region Reports
+
+            if (restoreProcedures)
+            {
+                //this.ExecuteStoreCommand("DELETE FROM Reports WHERE ReportID IN (" + (int)GlobalEnums.ReportID.DataLogJournals + "," + (int)GlobalEnums.ReportID.EventLogJournals + "," + (int)GlobalEnums.ReportID.LastEventLogJournals + ")", new ObjectParameter[] { });
+                //string reportTabPageIDs = ((int)GlobalEnums.ReportTabPageID.TabPageWarehouses).ToString() + "," + ((int)GlobalEnums.ReportTabPageID.TabPageCommodities).ToString();
+                //string optionBoxIDs = GlobalEnums.OBx(GlobalEnums.OptionBoxID.FromDate) + GlobalEnums.OBx(GlobalEnums.OptionBoxID.ToDate);
+                //this.ExecuteStoreCommand("SET IDENTITY_INSERT Reports ON  INSERT INTO Reports (ReportID, ReportUniqueID, ReportGroupID, ReportGroupName, ReportName, ReportURL, ReportTabPageIDs, OptionBoxIDs, ReportTypeID, SerialID, Remarks) VALUES (" + (int)GlobalEnums.ReportID.DataLogJournals + ", " + (int)GlobalEnums.ReportID.DataLogJournals + ", 20, 'X.LOGS', N'Data Logs', N'DataLogJournals', N'" + reportTabPageIDs + "', N'" + optionBoxIDs + GlobalEnums.OBx(GlobalEnums.OptionBoxID.UserName) + "', " + (int)GlobalEnums.ReportTypeID.Logs + ", 11, N'')      SET IDENTITY_INSERT Reports OFF ", new ObjectParameter[] { });
+                //this.ExecuteStoreCommand("SET IDENTITY_INSERT Reports ON  INSERT INTO Reports (ReportID, ReportUniqueID, ReportGroupID, ReportGroupName, ReportName, ReportURL, ReportTabPageIDs, OptionBoxIDs, ReportTypeID, SerialID, Remarks) VALUES (" + (int)GlobalEnums.ReportID.EventLogJournals + ", " + (int)GlobalEnums.ReportID.EventLogJournals + ", 20, 'X.LOGS', N'Event Logs', N'EventLogJournals', N'" + reportTabPageIDs + "', N'" + optionBoxIDs + GlobalEnums.OBx(GlobalEnums.OptionBoxID.UserName) + "', " + (int)GlobalEnums.ReportTypeID.Logs + ", 16, N'')      SET IDENTITY_INSERT Reports OFF ", new ObjectParameter[] { });
+                //this.ExecuteStoreCommand("SET IDENTITY_INSERT Reports ON  INSERT INTO Reports (ReportID, ReportUniqueID, ReportGroupID, ReportGroupName, ReportName, ReportURL, ReportTabPageIDs, OptionBoxIDs, ReportTypeID, SerialID, Remarks) VALUES (" + (int)GlobalEnums.ReportID.LastEventLogJournals + ", " + (int)GlobalEnums.ReportID.LastEventLogJournals + ", 20, 'X.LOGS', N'Latest Event Logs', N'EventLogJournals', N'" + reportTabPageIDs + "', N'" + optionBoxIDs + "', " + (int)GlobalEnums.ReportTypeID.Logs + ", 18, N'')      SET IDENTITY_INSERT Reports OFF ", new ObjectParameter[] { });
+            }
+            #endregion Reports
+
+
+
+            #region 4L
+            var query4L = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(FillingLineID) AS Expr1 FROM FillingLines WHERE FillingLineID = " + (int)GlobalVariables.FillingLine.Medium4L + ";", new object[] { });
+            int exist4Ls = query4L.Cast<int>().Single();
+            if (exist4Ls == 0)
+            {
+                this.ExecuteStoreCommand("INSERT INTO Configs (ConfigID, VersionID, VersionDate, Remarks, StoredID) VALUES(" + (int)GlobalVariables.FillingLine.Medium4L + ", " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Medium4L) + ", GetDate(), NULL, " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Medium4L) + ") ", new ObjectParameter[] { });
+                this.ExecuteStoreCommand("INSERT INTO Configs (ConfigID, VersionID, VersionDate, Remarks, StoredID) VALUES(" + (int)GlobalVariables.FillingLine.Import + ", " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Import) + ", GetDate(), NULL, " + GlobalVariables.ConfigVersionID((int)GlobalVariables.FillingLine.Import) + ") ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand("INSERT INTO FillingLines (FillingLineID, Code, Name, NickName, HasPack, HasCarton, HasPallet, LocationID, LastLogonFillingLineID, PortName, ServerID, ServerName, DatabaseName, Remarks, PalletChanged, InActive) VALUES(" + (int)GlobalVariables.FillingLine.Medium4L + ", N'S2', N'4 LITTRES', N'S2', 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0) ", new ObjectParameter[] { });
+                this.ExecuteStoreCommand("INSERT INTO FillingLines (FillingLineID, Code, Name, NickName, HasPack, HasCarton, HasPallet, LocationID, LastLogonFillingLineID, PortName, ServerID, ServerName, DatabaseName, Remarks, PalletChanged, InActive) VALUES(" + (int)GlobalVariables.FillingLine.Import + ", N'IP', N'IMPORT', N'IP', 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0) ", new ObjectParameter[] { });
+                #region INIT IP ADDRESS
+                foreach (GlobalVariables.FillingLine fillingLine in Enum.GetValues(typeof(GlobalVariables.FillingLine)))
+                {
+                    if (fillingLine == GlobalVariables.FillingLine.Medium4L || fillingLine == GlobalVariables.FillingLine.Import)
+                    {
+                        foreach (GlobalVariables.PrinterName printerName in Enum.GetValues(typeof(GlobalVariables.PrinterName)))
+                        {
+                            string ipAddress = GlobalVariables.IpAddress(fillingLine, printerName);
+                            if (ipAddress != "" & ipAddress != "127.0.0.1")
+                                this.ExecuteStoreCommand("INSERT INTO FillingLineDetails (FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (" + (int)fillingLine + ", " + (int)printerName + ", " + ipAddress.Substring(0, ipAddress.IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".") + 1) + ")", new ObjectParameter[] { });
+                        }
+
+                        foreach (GlobalVariables.ScannerName scannerName in Enum.GetValues(typeof(GlobalVariables.ScannerName)))
+                        {
+                            string ipAddress = GlobalVariables.IpAddress(fillingLine, scannerName);
+                            if (ipAddress != "" & ipAddress != "127.0.0.1")
+                                this.ExecuteStoreCommand("INSERT INTO FillingLineDetails (FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (" + (int)fillingLine + ", " + ((int)GlobalVariables.ScannerName.Base + (int)scannerName) + ", " + ipAddress.Substring(0, ipAddress.IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(0, ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".")) + ", " + ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).Substring(ipAddress.Substring(ipAddress.IndexOf(".") + 1).IndexOf(".") + 1).IndexOf(".") + 1) + ")", new ObjectParameter[] { });
+                        }
+                    }
+                }
+                #endregion INIT IP ADDRESS
+
+
+                Helpers.SqlProgrammability.Inventories.GoodsReceipt goodsReceipt = new Helpers.SqlProgrammability.Inventories.GoodsReceipt(totalSmartCodingEntities);
+                goodsReceipt.RestoreProcedure19JUL2018();
+
+            }
+
+            #endregion 4L
+
+
+
+            #region ApplicationRoles
+            if (!this.totalSmartCodingEntities.TableExists("ApplicationRoles"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[ApplicationRoles](
+	                                                    [ApplicationRoleID] [int] NOT NULL,
+	                                                    [Name] [nvarchar](100) NOT NULL,
+	                                                    [Password] [nvarchar](100) NOT NULL,
+	                                                    [EditedDate] [datetime] NOT NULL,
+                                                     CONSTRAINT [PK_ApplicationRoles] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [ApplicationRoleID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]
+                                                ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand(@" UPDATE Locations SET LockedDate = CONVERT(DATETIME, '2017-10-31 23:59:59', 102), EditedDate = GETDATE() ", new ObjectParameter[] { });
+            }
+            #endregion ApplicationRoles
+
+
+
+            #region UserGroups
+            if (!this.totalSmartCodingEntities.TableExists("UserGroups"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[UserGroups](
+	                                                    [UserGroupID] [int] IDENTITY(1,1) NOT NULL,
+	                                                    [Code] [nvarchar](50) NOT NULL,
+	                                                    [Name] [nvarchar](100) NOT NULL,
+	                                                    [Description] [nvarchar](100) NULL,
+	                                                    [Remarks] [nvarchar](100) NULL,
+                                                     CONSTRAINT [PK_ControlGroups] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [UserGroupID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand(@"	CREATE TABLE [dbo].[UserGroupDetails](
+	                                                        [UserGroupDetailID] [int] IDENTITY(1,1) NOT NULL,
+	                                                        [UserGroupID] [int] NOT NULL,
+	                                                        [SecurityIdentifier] [nvarchar](256) NOT NULL,
+	                                                        [EntryDate] [datetime] NOT NULL,
+                                                         CONSTRAINT [PK_UserGroupDetails] PRIMARY KEY CLUSTERED 
+                                                        (
+	                                                        [UserGroupDetailID] ASC
+                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+                                                         CONSTRAINT [IX_UserGroupDetails] UNIQUE NONCLUSTERED 
+                                                        (
+	                                                        [UserGroupID] ASC,
+	                                                        [SecurityIdentifier] ASC
+                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                        ) ON [PRIMARY]                                                
+                                                ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand(@"	 CREATE TABLE [dbo].[UserGroupControls](
+	                                                        [UserGroupControlID] [int] IDENTITY(1,1) NOT NULL,
+	                                                        [UserGroupID] [int] NOT NULL,
+	                                                        [ModuleDetailID] [int] NOT NULL,
+	                                                        [LocationID] [int] NOT NULL,
+	                                                        [AccessLevel] [int] NOT NULL,
+	                                                        [ApprovalPermitted] [bit] NOT NULL,
+	                                                        [UnApprovalPermitted] [bit] NOT NULL,
+	                                                        [VoidablePermitted] [bit] NOT NULL,
+	                                                        [UnVoidablePermitted] [bit] NOT NULL,
+	                                                        [ShowDiscount] [bit] NOT NULL,
+	                                                        [AccessLevelBACKUP] [int] NULL,
+	                                                        [ApprovalPermittedBACKUP] [bit] NULL,
+	                                                        [UnApprovalPermittedBACKUP] [bit] NULL,
+	                                                        [InActive] [bit] NOT NULL,
+                                                            CONSTRAINT [PK_PermissionControls] PRIMARY KEY CLUSTERED 
+                                                        (
+	                                                        [UserGroupControlID] ASC
+                                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                        ) ON [PRIMARY]
+
+
+                                                        ALTER TABLE [dbo].[UserGroupControls]  WITH CHECK ADD  CONSTRAINT [FK_UserGroupControls_Locations] FOREIGN KEY([LocationID])
+                                                        REFERENCES [dbo].[Locations] ([LocationID])
+
+
+                                                        ALTER TABLE [dbo].[UserGroupControls] CHECK CONSTRAINT [FK_UserGroupControls_Locations]
+
+
+                                                        ALTER TABLE [dbo].[UserGroupControls]  WITH CHECK ADD  CONSTRAINT [FK_UserGroupControls_ModuleDetails] FOREIGN KEY([ModuleDetailID])
+                                                        REFERENCES [dbo].[ModuleDetails] ([ModuleDetailID])
+
+
+                                                        ALTER TABLE [dbo].[UserGroupControls] CHECK CONSTRAINT [FK_UserGroupControls_ModuleDetails]
+
+
+                                                        ALTER TABLE [dbo].[UserGroupControls]  WITH CHECK ADD  CONSTRAINT [FK_UserGroupControls_UserGroups] FOREIGN KEY([UserGroupID])
+                                                        REFERENCES [dbo].[UserGroups] ([UserGroupID])
+
+
+                                                        ALTER TABLE [dbo].[UserGroupControls] CHECK CONSTRAINT [FK_UserGroupControls_UserGroups]                                               
+                                                ", new ObjectParameter[] { });
+
+            }
+            #endregion
+
+            #region Devices
+            if (!this.totalSmartCodingEntities.TableExists("Devices"))
+            {
+                this.ExecuteStoreCommand(@"CREATE TABLE [dbo].[Devices](
+	                                                [DeviceID] [int] NOT NULL,
+	                                                [Code] [nvarchar](60) NOT NULL,
+	                                                [Name] [nvarchar](60) NOT NULL,
+                                                 CONSTRAINT [PK_Devices] PRIMARY KEY CLUSTERED 
+                                                    ([DeviceID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]	                                                
+                                                ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand(@"                                                              
+                                        
+                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (1, N'Digit Printer', N'Digit Printer')
+                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (2, N'2D Printer', N'2D Printer')
+                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (3, N'Carton/ Pail Printer', N'Carton/ Pail Printer')
+                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (100002, N'Matching Scanner', N'Matching Scanner')
+                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (100003, N'Carton/ Pail Scanner', N'Carton/ Pail Scanner')
+                                            INSERT INTO Devices (DeviceID, Code, Name)   VALUES (100006, N'Label Scanner', N'Label Scanner')
+
+                                             ", new ObjectParameter[] { });
+
+
+
+                this.ExecuteStoreCommand(@" CREATE TABLE [dbo].[FillingLineDetails](
+	                                                    [FillingLineDetailID] [int] IDENTITY(1,1) NOT NULL,
+	                                                    [FillingLineID] [int] NOT NULL,
+	                                                    [DeviceID] [int] NOT NULL,
+	                                                    [IPv4Byte1] [int] NOT NULL,
+	                                                    [IPv4Byte2] [int] NOT NULL,
+	                                                    [IPv4Byte3] [int] NOT NULL,
+	                                                    [IPv4Byte4] [int] NOT NULL,
+                                                     CONSTRAINT [PK_FillingLineDetails] PRIMARY KEY CLUSTERED 
+                                                    (
+	                                                    [FillingLineDetailID] ASC
+                                                    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                                                    ) ON [PRIMARY]
+
+                                                    ALTER TABLE [dbo].[FillingLineDetails]  WITH CHECK ADD  CONSTRAINT [FK_FillingLineDetails_Devices] FOREIGN KEY([DeviceID])
+                                                    REFERENCES [dbo].[Devices] ([DeviceID])
+
+                                                    ALTER TABLE [dbo].[FillingLineDetails] CHECK CONSTRAINT [FK_FillingLineDetails_Devices]
+
+                                                    ALTER TABLE [dbo].[FillingLineDetails]  WITH CHECK ADD  CONSTRAINT [FK_FillingLineDetails_FillingLines] FOREIGN KEY([FillingLineID])
+                                                    REFERENCES [dbo].[FillingLines] ([FillingLineID])
+
+                                                    ALTER TABLE [dbo].[FillingLineDetails] CHECK CONSTRAINT [FK_FillingLineDetails_FillingLines]
+                                                ", new ObjectParameter[] { });
+
+
+                this.ExecuteStoreCommand(@" SET IDENTITY_INSERT FillingLineDetails ON                                                              
+                                        
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (1, 1, 1, 172, 21, 67, 157)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (2, 1, 2, 172, 21, 67, 158)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (3, 1, 3, 172, 21, 67, 159)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (4, 1, 100002, 172, 21, 67, 168)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (5, 1, 100003, 172, 21, 67, 169)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (6, 1, 100006, 172, 21, 67, 170)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (7, 2, 1, 172, 21, 67, 165)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (8, 2, 3, 172, 21, 67, 163)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (9, 2, 100003, 172, 21, 67, 172)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (10, 2, 100006, 172, 21, 67, 173)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (11, 3, 1, 172, 21, 67, 167)
+                                            INSERT INTO FillingLineDetails (FillingLineDetailID, FillingLineID, DeviceID, IPv4Byte1, IPv4Byte2, IPv4Byte3, IPv4Byte4) VALUES (12, 3, 100006, 172, 21, 67, 175)
+
+                                            SET IDENTITY_INSERT FillingLineDetails OFF ", new ObjectParameter[] { });
+
+            }
+            #endregion Devices
+
+
+
+
+            #region
+
+            if (!this.totalSmartCodingEntities.ColumnExists("ModuleDetails", "ControlTypeID"))
+            {
+                this.totalSmartCodingEntities.ColumnAdd("ModuleDetails", "ControlTypeID", "int", "0", true);
+                this.ExecuteStoreCommand("UPDATE ModuleDetails SET ControlTypeID = 1 WHERE ModuleID = 6 ", new ObjectParameter[] { });
+            }
+            #endregion
+
+
+            #region EmployeeLocationIDs & Roles
+            this.totalSmartCodingEntities.ColumnAdd("Employees", "InActive", "bit", "0", true);
+            if (!this.totalSmartCodingEntities.ColumnExists("Employees", "EmployeeRoleIDs"))
+            {
+                this.ExecuteStoreCommand("UPDATE ModuleDetails SET InActive = 1 WHERE ModuleDetailID IN (" + (int)GlobalEnums.NmvnTaskID.AvailableItems + ", " + (int)GlobalEnums.NmvnTaskID.PendingOrders + ") ", new ObjectParameter[] { });
+
+                this.ExecuteStoreCommand("UPDATE Employees SET Title = N'#'", new ObjectParameter[] { });
+
+                this.totalSmartCodingEntities.ColumnAdd("Employees", "EmployeeRoleIDs", "nvarchar(100)", "", false);
+                this.totalSmartCodingEntities.ColumnAdd("Employees", "EmployeeLocationIDs", "nvarchar(100)", "", false);
+
+                this.totalSmartCodingEntities.ColumnDrop("Employees", "Birthday");
+                this.totalSmartCodingEntities.ColumnAdd("Employees", "Birthday", "date", "01/01/1900", true);
+
+                this.ExecuteStoreCommand(@" DECLARE @EmployeeID Int  
+
+                                            DECLARE Action_Cursor CURSOR FOR SELECT EmployeeID FROM Employees OPEN Action_Cursor;
+                                            FETCH NEXT FROM Action_Cursor INTO @EmployeeID;
+
+                                            WHILE @@FETCH_STATUS = 0
+                                            BEGIN
+
+                                               UPDATE Employees SET EmployeeLocationIDs = STUFF((SELECT ',' + CAST(LocationID AS varchar)  FROM (SELECT DISTINCT LocationID FROM EmployeeLocations WHERE EmployeeID = @EmployeeID) DistinctLocationIDs FOR XML PATH('')) ,1,1,'') WHERE EmployeeID = @EmployeeID
+
+                                               UPDATE Employees SET EmployeeRoleIDs = STUFF((SELECT ',' + CAST(RoleID AS varchar)  FROM (SELECT DISTINCT RoleID FROM EmployeeRoles WHERE EmployeeID = @EmployeeID) DistinctRoleIDs FOR XML PATH('')) ,1,1,'') WHERE EmployeeID = @EmployeeID
+
+                                               FETCH NEXT FROM Action_Cursor  INTO @EmployeeID;
+                                            END
+
+                                            CLOSE Action_Cursor;
+                                            DEALLOCATE Action_Cursor; ", new ObjectParameter[] { });
+
+            }
+            #endregion EmployeeLocationIDs & Roles
+
+
+            #region REMOVE FirstName, LastName
+            //if (this.totalSmartCodingEntities.ColumnExists("Users", "FirstName"))
+            //{
+            //    this.totalSmartCodingEntities.ColumnDrop("Users", "FirstName");
+            //    this.totalSmartCodingEntities.ColumnDrop("Users", "LastName");
+            //}
+            #endregion REMOVE FirstName, LastName
+
+
+
+            #region 01SEP2018
+            query = this.totalSmartCodingEntities.Database.SqlQuery(typeof(int), "SELECT COUNT(ModuleDetailID) AS Expr1 FROM ModuleDetails WHERE ModuleDetailID = " + (int)GlobalEnums.NmvnTaskID.FillingLine + ";", new object[] { });
+            exists = query.Cast<int>().Single();
             if (exists == 0)
             {
                 this.ExecuteStoreCommand("INSERT INTO ModuleDetails (ModuleDetailID, ModuleID, Code, Name, FullName, Actions, Controller, LastOpen, SerialID, ImageIndex, InActive) VALUES(" + (int)GlobalEnums.NmvnTaskID.FillingLine + ", 108, 'IP Settings', 'IP Settings', '#', '#', '#', 1, 68, 1, 0) ", new ObjectParameter[] { });

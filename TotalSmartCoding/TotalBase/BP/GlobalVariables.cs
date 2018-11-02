@@ -79,7 +79,8 @@ namespace TotalBase
             QualityScanner = 1,
             PackScanner = 2,
             CartonScanner = 3,
-            PalletScanner = 6
+            PalletScanner = 6,
+            LabelScanner = 8
         }
 
 
