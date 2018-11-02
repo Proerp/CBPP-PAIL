@@ -744,7 +744,7 @@ namespace TotalSmartCoding.Controllers.Productions
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
                 if (receivedBarcode != "" && (this.FillingData.HasPack || lastCartonCode != receivedBarcode || receivedBarcode == "NoRead"))
                 {
-                    if (this.matchPacktoCarton(receivedBarcode, receivedBarcode == "NoRead"))
+                    if (this.matchPacktoCarton(receivedBarcode, null))
                     {
                         lastCartonCode = receivedBarcode;
                         barcodeReceived = true;
@@ -756,8 +756,9 @@ namespace TotalSmartCoding.Controllers.Productions
             return barcodeReceived;
         }
 
-        private bool matchPacktoCarton(string cartonCode, bool isPending)
+        private bool matchPacktoCarton(string cartonCode, string cartonLabel)
         {
+            bool isPending = cartonCode == "NoRead" || cartonLabel == "NoRead";
 
             if (this.packsetQueue.Count <= 0) { this.MakePackset(); }
 
@@ -767,7 +768,7 @@ namespace TotalSmartCoding.Controllers.Productions
                 {//BY NOW: GlobalVariables.IgnoreEmptyCarton = TRUE. LATER, WE WILL ADD AN OPTION ON MENU FOR USER, IF NEEDED
                     if (!GlobalVariables.IgnoreEmptyCarton || this.packsetQueue.Count > 0 || !this.FillingData.HasPack) //BY NOT this.FillingData.HasPack: this.packsetQueue.Count WILL ALWAYS BE: 0 (NO PACK RECEIVED)
                     {//IF this.packsetQueue.Count <= 0 => THIS WILL SAVE AN EMPTY CARTON. this.packsetQueue.EntityIDs WILL BE BLANK => NO PACK BE UPDATED FOR THIS CARTON
-                        CartonDTO cartonDTO = new CartonDTO(this.FillingData) { Code = this.interpretBarcode(cartonCode), PackCounts = this.packsetQueue.Count, Quantity = 1, LineVolume = (this.FillingData.HasPack ? this.packsetQueue.TotalLineVolume : this.FillingData.PackageVolume) };
+                        CartonDTO cartonDTO = new CartonDTO(this.FillingData) { Code = this.interpretBarcode(cartonCode), Label = this.interpretBarcode(cartonLabel), PackCounts = this.packsetQueue.Count, Quantity = 1, LineVolume = (this.FillingData.HasPack ? this.packsetQueue.TotalLineVolume : this.FillingData.PackageVolume) };
                         if (isPending) cartonDTO.EntryStatusID = (int)GlobalVariables.BarcodeStatus.Noread;
 
                         lock (this.cartonController)

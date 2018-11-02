@@ -22,6 +22,7 @@ namespace TotalDTO.Productions
         public int BatchID { get; set; }
         public int CommodityID { get; set; }
         public string Code { get; set; }
+        public string Label { get; set; }
 
         public decimal Quantity { get; set; }
         public virtual int PackCounts { get; set; }

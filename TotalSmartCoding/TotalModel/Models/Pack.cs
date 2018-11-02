@@ -33,6 +33,7 @@ namespace TotalModel.Models
         public string Code { get; set; }
         public decimal LineVolume { get; set; }
         public int EntryStatusID { get; set; }
+        public string Label { get; set; }
     
         public virtual Carton Carton { get; set; }
         public virtual FillingLine FillingLine { get; set; }
