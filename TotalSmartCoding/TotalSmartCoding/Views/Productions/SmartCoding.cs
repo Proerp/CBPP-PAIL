@@ -133,6 +133,9 @@ namespace TotalSmartCoding.Views.Productions
         {
             try
             {
+                if (GlobalEnums.NoPallet) GlobalEnums.OnTestPalletReceivedNow = true;
+
+
                 BatchIndex batchIndex = (new BatchAPIs(CommonNinject.Kernel.Get<IBatchAPIRepository>())).GetActiveBatchIndex();
                 if (batchIndex != null) Mapper.Map<BatchIndex, FillingData>(batchIndex, this.fillingData);
 
@@ -144,7 +147,7 @@ namespace TotalSmartCoding.Views.Productions
                 this.Text = "Printing & Scanning" + (!fillingData.HasPack ? " - " + commodityDescription : "");
 
                 this.buttonCartonNoreadNow.Visible = GlobalEnums.OnTestScanner && GlobalEnums.OnTestCartonNoreadNowVisible;
-                this.buttonPalletReceivedNow.Visible = GlobalEnums.OnTestScanner;
+                this.buttonPalletReceivedNow.Visible = GlobalEnums.NoPallet ? false : GlobalEnums.OnTestScanner;
 
                 this.labelFinalCartonNo.Visible = GlobalEnums.OnTestPrinter; this.textFinalCartonNo.Visible = GlobalEnums.OnTestPrinter;
                 this.digitStatusbox.BackColor = GlobalEnums.OnTestPrinter ? SystemColors.ControlDark : SystemColors.Control; this.digitStatusbox.ScrollBars = GlobalEnums.OnTestPrinter ? ScrollBars.None : ScrollBars.Vertical;
@@ -714,7 +717,12 @@ namespace TotalSmartCoding.Views.Productions
                         printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 6, 6);
                     else
                         if (this.fillingData.HasLabel)
-                            printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 20, 20);
+                        {
+                            if (sender != null && (sender.Equals(this.dgvPalletQueue) || sender.Equals(this.dgvPalletPickupQueue)))
+                                printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 6, 6);
+                            else
+                                printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 20, 20);
+                        }
                         else
                         {
                             if (sender != null && ((this.fillingData.HasCarton || this.fillingData.FillingLineID == GlobalVariables.FillingLine.Import) && (sender.Equals(this.dgvPalletQueue) || sender.Equals(this.dgvPalletPickupQueue))))

@@ -2,6 +2,8 @@
 {
     public static class GlobalEnums
     {
+        public static bool NoPallet = true;
+
         //REMOVE THIS BEFORE PUBLISH
         public static bool NMVNOnly = false;
         public static bool ShowStringReceived = false;

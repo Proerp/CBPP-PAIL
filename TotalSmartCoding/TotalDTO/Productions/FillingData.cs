@@ -75,7 +75,7 @@ namespace TotalDTO.Productions
         public bool HasPack { get { return this.FillingLineID == GlobalVariables.FillingLine.Smallpack; } }
         public bool HasCarton { get { return this.FillingLineID == GlobalVariables.FillingLine.Smallpack || this.FillingLineID == GlobalVariables.FillingLine.Pail || this.FillingLineID == GlobalVariables.FillingLine.Medium4L || (this.FillingLineID == GlobalVariables.FillingLine.Import && this.CartonPerPallet > 1); } }
         public bool HasLabel { get { return this.HasPackLabel || this.HasCartonLabel; } }        
-        public bool HasPallet { get { return false; } }
+        public bool HasPallet { get { return true; } }
 
         public bool HasPackLabel { get { return true; } }
         public bool HasCartonLabel { get { return this.HasCarton && true; } }

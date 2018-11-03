@@ -552,7 +552,7 @@ namespace TotalSmartCoding.Controllers.Productions
                         {
                             cartonQueueChanged = this.ReceiveCarton(stringReceived) || cartonQueueChanged;
                             packsetQueueChanged = packsetQueueChanged || cartonQueueChanged; cartonPendingQueueChanged = cartonQueueChanged;
-                        }                        
+                        }
                     }
 
                     if (this.OnScanning && this.FillingData.HasCartonLabel)
@@ -561,10 +561,10 @@ namespace TotalSmartCoding.Controllers.Productions
                         {
                             cartonQueueChanged = this.ReceiveCarton(stringReceived, false) || cartonQueueChanged;
                             packsetQueueChanged = packsetQueueChanged || cartonQueueChanged; cartonPendingQueueChanged = cartonPendingQueueChanged || cartonQueueChanged;
-                        }                        
+                        }
                     }
 
-                    if (this.OnScanning && (this.FillingData.HasCarton ||this.FillingData.HasCartonLabel))
+                    if (this.OnScanning && (this.FillingData.HasCarton || this.FillingData.HasCartonLabel))
                     {
                         cartonsetQueueChanged = this.MakeCartonset(); cartonQueueChanged = cartonQueueChanged || cartonsetQueueChanged;
                     }
@@ -725,7 +725,7 @@ namespace TotalSmartCoding.Controllers.Productions
         private bool waitforLabel(ref string stringReceived)
         {
             if (GlobalEnums.OnTestScanner) //THE SAME AS waitforCarton
-                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : this.FillingData.NextAutoCartonCode; this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
+                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet + 2 && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : this.FillingData.NextAutoCartonCode; this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
             else
                 if (this.FillingData.PalletCameraOnly)
                     stringReceived = "AutoLabelOnly";
@@ -742,7 +742,7 @@ namespace TotalSmartCoding.Controllers.Productions
         private bool waitforCarton(ref string stringReceived)
         {
             if (GlobalEnums.OnTestScanner)
-                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : this.FillingData.NextAutoCartonCode; this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
+                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet + 2 && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : this.FillingData.NextAutoCartonCode; this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
             else
                 if (this.FillingData.PalletCameraOnly)
                 {
@@ -903,7 +903,7 @@ namespace TotalSmartCoding.Controllers.Productions
         private bool waitforPallet(ref string stringReceived)
         {
             if (GlobalEnums.OnTestScanner || GlobalEnums.OnTestPalletScanner)
-                if ((GlobalEnums.OnTestPalletReceivedNow) && ((DateTime.Now.Second % 10) == 0 || GlobalEnums.OnTestPalletReceivedNow) && this.FillingData.NextAutoPalletCode != "" && (this.cartonsetQueue.Count > 0 || !this.FillingData.HasCarton)) { stringReceived = this.FillingData.NextAutoPalletCode; this.FillingData.NextAutoPalletCode = ""; GlobalEnums.OnTestPalletReceivedNow = false; } else stringReceived = "";
+                if ((GlobalEnums.OnTestPalletReceivedNow) && ((DateTime.Now.Second % 10) == 0 || GlobalEnums.OnTestPalletReceivedNow) && this.FillingData.NextAutoPalletCode != "" && ((this.cartonsetQueue.Count > 0 && this.cartonQueue.Count + 2 > this.FillingData.CartonPerPallet) || !this.FillingData.HasCarton)) { stringReceived = this.FillingData.NextAutoPalletCode; this.FillingData.NextAutoPalletCode = ""; GlobalEnums.OnTestPalletReceivedNow = (GlobalEnums.NoPallet ? GlobalEnums.OnTestPalletReceivedNow : false); } else stringReceived = "";
             else
                 stringReceived = this.ionetSocketPallet.ReadoutStream().Trim();
 
@@ -947,7 +947,7 @@ namespace TotalSmartCoding.Controllers.Productions
                     if (!GlobalVariables.IgnoreEmptyPallet || ((this.cartonsetQueue.Count > 0 || !this.FillingData.HasCarton) && (this.FillingData.CartonsetQueueZebraStatus == GlobalVariables.ZebraStatus.Printed || GlobalEnums.OnTestScanner || GlobalEnums.OnTestPalletReceivedNow))) //BY NOW: GlobalVariables.IgnoreEmptyPallet = TRUE. LATER, WE WILL ADD AN OPTION ON MENU FOR USER, IF NEEDED.               NOTES: HERE WE CHECK this.FillingData.CartonsetQueueLabelPrintedCount != 0: TO ENSURE THAT A NEW LABEL HAS BEEN PRINTED BY PrinterController IN ORDER TO MatchingAndAddPallet
                     {//IF this.cartonsetQueue.Count <= 0 => THIS WILL SAVE AN EMPTY PALLET: this.cartonsetQueue.EntityIDs WILL BE BLANK => NO CARTON BE UPDATED FOR THIS PALLET
 
-                        PalletDTO palletDTO = new PalletDTO(this.FillingData) { Code = palletCode, PackCounts = this.cartonsetQueue.PackCounts, CartonCounts = this.cartonsetQueue.Count, Quantity = (this.FillingData.HasCarton ? this.cartonsetQueue.TotalQuantity : 1), LineVolume = (this.FillingData.HasCarton ? this.cartonsetQueue.TotalLineVolume : this.FillingData.PackageVolume) };
+                        PalletDTO palletDTO = new PalletDTO(this.FillingData) { Code = palletCode, Label = "", PackCounts = this.cartonsetQueue.PackCounts, CartonCounts = this.cartonsetQueue.Count, Quantity = (this.FillingData.HasCarton ? this.cartonsetQueue.TotalQuantity : 1), LineVolume = (this.FillingData.HasCarton ? this.cartonsetQueue.TotalLineVolume : this.FillingData.PackageVolume) };
 
                         lock (this.palletController)
                         {
