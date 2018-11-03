@@ -59,7 +59,7 @@ namespace TotalDTO.Productions
         {
             this.settingDate = DateTime.Now;
 
-            this.CartontoZebraQueue = new BarcodeQueue<CartonDTO>();
+            this.CartontoZebraQueue = new BarcodeQueue<CartonDTO>(this.HasCartonLabel);
         }
 
         #endregion Contructor
@@ -74,8 +74,12 @@ namespace TotalDTO.Productions
 
         public bool HasPack { get { return this.FillingLineID == GlobalVariables.FillingLine.Smallpack; } }
         public bool HasCarton { get { return this.FillingLineID == GlobalVariables.FillingLine.Smallpack || this.FillingLineID == GlobalVariables.FillingLine.Pail || this.FillingLineID == GlobalVariables.FillingLine.Medium4L || (this.FillingLineID == GlobalVariables.FillingLine.Import && this.CartonPerPallet > 1); } }
-        public bool HasLabel { get { return true; } }
+        public bool HasLabel { get { return this.HasPackLabel || this.HasCartonLabel; } }        
         public bool HasPallet { get { return false; } }
+
+        public bool HasPackLabel { get { return true; } }
+        public bool HasCartonLabel { get { return this.HasCarton && true; } }
+        public bool IgnoreNoreadCarton { get { return !this.HasPack & false; } } //THIS PROPERTY WILL DEFINE WHEN A Noread CARTON IS IGNORED. NOW, FOR THE PAIL: NEVER IGONRE, BECAUSE: EACH PAIL HAS A TSA LABEL ==> MUST PUT Noread INTO cartonPendingQueue
 
         public bool CartonViaPalletZebra { get { return this.FillingLineID == GlobalVariables.FillingLine.Import; } }
         public bool PalletCameraOnly { get { return this.FillingLineID == GlobalVariables.FillingLine.Import; } }

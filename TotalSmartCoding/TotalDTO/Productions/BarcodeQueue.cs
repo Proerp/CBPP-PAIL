@@ -18,6 +18,8 @@ namespace TotalDTO.Productions
         where TBarcodeDTO : BarcodeDTO, IPrimitiveEntity, IShallowClone<TBarcodeDTO>, new()
     {
 
+        public bool HasLabel { get; set; }
+
         /// <summary>
         /// Number of item per whole package: Pack per carton, carton per pallet
         /// This property should be set right after change commodity by setting function
@@ -81,13 +83,18 @@ namespace TotalDTO.Productions
 
 
         public BarcodeQueue()
-            : this(1, 1, false)
+            : this(false, 1, 1, false)
+        { }
+        public BarcodeQueue(bool hasLabel)
+            : this(hasLabel, 1, 1, false)
         { }
 
-        public BarcodeQueue(int noSubQueue, int itemPerSubQueue, bool repeatSubQueueIndex)
+        public BarcodeQueue(bool hasLabel, int noSubQueue, int itemPerSubQueue, bool repeatSubQueueIndex)
         {
             if (noSubQueue > 0)
             {
+                this.HasLabel = hasLabel;
+
                 this.NoSubQueue = noSubQueue;
 
                 this.itemPerSubQueue = itemPerSubQueue;
@@ -109,10 +116,12 @@ namespace TotalDTO.Productions
 
         #region Public Properties
 
-        public int NoSubQueue { 
+        public int NoSubQueue
+        {
             get { return this.list2DBarcode.Count; }
-            set {  
-                if  (this.list2DBarcode == null || this.list2DBarcode.Count != value )
+            set
+            {
+                if (this.list2DBarcode == null || this.list2DBarcode.Count != value)
                 {
                     this.list2DBarcode = new List<List<TBarcodeDTO>>();
                     for (int i = 1; i <= value; i++)
@@ -163,6 +172,34 @@ namespace TotalDTO.Productions
         }
 
         public void ResetNextQueueID() { if (this.repeatSubQueueIndex) this.noItemAdded = 0 - this.itemPerSubQueue; else this.noItemAdded = 0; } //SHOULD CHECK AGAIN WHEN this.repeatSubQueueIndex. HAVE NOT CHECK YET FOR CHEVRON
+
+
+        private int FindNullIndex(List<TBarcodeDTO> subQueue)
+        {
+            if (!this.HasLabel) return -1;
+            for (var i = 0; i < subQueue.Count; i++)
+            {
+                if (subQueue[i].Code == "" || subQueue[i].Label == "") return i;
+            }
+            return -1;
+        }
+
+        public TBarcodeDTO FindNullItem(bool codeVslabel)
+        {
+            foreach (List<TBarcodeDTO> subQueue in this.list2DBarcode)
+            {
+                for (var i = 0; i < subQueue.Count; i++)
+                {
+                    TBarcodeDTO eachBarcodeDTO = subQueue[i];
+                    if ((codeVslabel && eachBarcodeDTO.Code == "") || (!codeVslabel && eachBarcodeDTO.Label == ""))
+                    {
+                        return eachBarcodeDTO;
+                    }
+                }
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Add messageData by specific messageData.QueueID, without increase noItemAdded by 1
@@ -245,11 +282,14 @@ namespace TotalDTO.Productions
         {
             if ((((decimal)this.ItemPerSet / (decimal)this.NoSubQueue) % 1) == 0) //CHECK FOR AN Integer RESULT
             {
-                BarcodeQueue<TBarcodeDTO> barcodesetQueue = new BarcodeQueue<TBarcodeDTO>(this.NoSubQueue, this.ItemPerSet / this.NoSubQueue, false) { ItemPerSet = this.ItemPerSet };
+                BarcodeQueue<TBarcodeDTO> barcodesetQueue = new BarcodeQueue<TBarcodeDTO>(this.HasLabel, this.NoSubQueue, this.ItemPerSet / this.NoSubQueue, false) { ItemPerSet = this.ItemPerSet };
 
                 foreach (List<TBarcodeDTO> subQueue in this.list2DBarcode)
                 {
-                    if (barcodesetQueue.itemPerSubQueue > subQueue.Count && !this.LastsetProcessing) return barcodesetQueue; //There is not enough element in this sub queue to dequeue. //IF LastsetProcessing: TO ALLOW TO MAKE A PARTILAL SET. IT MEANS: THE PENDING Item IS LESS THAN THE ItemPerSet, OTHERWISE: return empty
+                    int nullIndex = this.FindNullIndex(subQueue);
+                    //There is not enough element in this sub queue to dequeue. //IF LastsetProcessing: TO ALLOW TO MAKE A PARTILAL SET. IT MEANS: THE PENDING Item IS LESS THAN THE ItemPerSet, OTHERWISE: return empty
+                    if (this.LastsetProcessing && nullIndex != -1) return barcodesetQueue;  //LastsetProcessing: MUST HAVE NO NULL Code OR LABEL
+                    if (!this.LastsetProcessing && (barcodesetQueue.itemPerSubQueue > subQueue.Count || (nullIndex != -1 && barcodesetQueue.itemPerSubQueue > nullIndex))) return barcodesetQueue;
                 }
 
 
@@ -321,6 +361,16 @@ namespace TotalDTO.Productions
                         if (subQueue.Count > i) dataRow[i] = subQueue.ElementAt<TBarcodeDTO>(i).Code + GlobalVariables.doubleTabChar + GlobalVariables.doubleTabChar + subQueue.ElementAt<TBarcodeDTO>(i).GetID(); //Fill data row
                     }
                     barcodeTable.Rows.Add(dataRow);
+
+                    if (this.HasLabel)
+                    {
+                        dataRow = barcodeTable.NewRow(); //add row for each sub queue
+                        for (int i = 0; i < maxSubQueueCount; i++)
+                        {//Zero base queue element
+                            if (subQueue.Count > i) dataRow[i] = subQueue.ElementAt<TBarcodeDTO>(i).Label + GlobalVariables.doubleTabChar + GlobalVariables.doubleTabChar + subQueue.ElementAt<TBarcodeDTO>(i).GetID(); //Fill data row
+                        }
+                        barcodeTable.Rows.Add(dataRow);
+                    }
                 }
             }
             return barcodeTable;

@@ -95,12 +95,12 @@ namespace TotalSmartCoding.Controllers.Productions
                 this.ionetSocketPallet = new IONetSocket(IPAddress.Parse(productionAPIs.IpAddress((int)GlobalVariables.ScannerName.Base + (int)GlobalVariables.ScannerName.PalletScanner)), 23, 120);
 
 
-                this.packQueue = new BarcodeQueue<PackDTO>(this.FillingData.NoSubQueue, this.FillingData.ItemPerSubQueue, this.FillingData.RepeatSubQueueIndex) { ItemPerSet = this.FillingData.PackPerCarton };
-                this.packsetQueue = new BarcodeQueue<PackDTO>(this.FillingData.NoSubQueue, this.FillingData.ItemPerSubQueue, false) { ItemPerSet = this.FillingData.PackPerCarton };
+                this.packQueue = new BarcodeQueue<PackDTO>(this.FillingData.HasPackLabel, this.FillingData.NoSubQueue, this.FillingData.ItemPerSubQueue, this.FillingData.RepeatSubQueueIndex) { ItemPerSet = this.FillingData.PackPerCarton };
+                this.packsetQueue = new BarcodeQueue<PackDTO>(this.FillingData.HasPackLabel, this.FillingData.NoSubQueue, this.FillingData.ItemPerSubQueue, false) { ItemPerSet = this.FillingData.PackPerCarton };
 
-                this.cartonPendingQueue = new BarcodeQueue<CartonDTO>() { ItemPerSet = this.FillingData.CartonPerPallet };
-                this.cartonQueue = new BarcodeQueue<CartonDTO>() { ItemPerSet = this.FillingData.CartonPerPallet };
-                this.cartonsetQueue = new BarcodeQueue<CartonDTO>() { ItemPerSet = this.FillingData.CartonPerPallet };
+                this.cartonPendingQueue = new BarcodeQueue<CartonDTO>(this.FillingData.HasCartonLabel) { ItemPerSet = this.FillingData.CartonPerPallet };
+                this.cartonQueue = new BarcodeQueue<CartonDTO>(this.FillingData.HasCartonLabel) { ItemPerSet = this.FillingData.CartonPerPallet };
+                this.cartonsetQueue = new BarcodeQueue<CartonDTO>(this.FillingData.HasCartonLabel) { ItemPerSet = this.FillingData.CartonPerPallet };
 
                 this.palletQueue = new BarcodeQueue<PalletDTO>();
                 this.palletPickupQueue = new BarcodeQueue<PalletDTO>();
@@ -418,7 +418,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
                     if (this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly)
                         this.ionetSocketCarton.Connect();
-                    
+
                     if (this.FillingData.HasLabel && !this.FillingData.PalletCameraOnly)
                         this.ionetSocketLabel.Connect();
 
@@ -552,7 +552,20 @@ namespace TotalSmartCoding.Controllers.Productions
                         {
                             cartonQueueChanged = this.ReceiveCarton(stringReceived) || cartonQueueChanged;
                             packsetQueueChanged = packsetQueueChanged || cartonQueueChanged; cartonPendingQueueChanged = cartonQueueChanged;
-                        }
+                        }                        
+                    }
+
+                    if (this.OnScanning && this.FillingData.HasCartonLabel)
+                    {
+                        if (this.waitforLabel(ref stringReceived))
+                        {
+                            cartonQueueChanged = this.ReceiveCarton(stringReceived, false) || cartonQueueChanged;
+                            packsetQueueChanged = packsetQueueChanged || cartonQueueChanged; cartonPendingQueueChanged = cartonPendingQueueChanged || cartonQueueChanged;
+                        }                        
+                    }
+
+                    if (this.OnScanning && (this.FillingData.HasCarton ||this.FillingData.HasCartonLabel))
+                    {
                         cartonsetQueueChanged = this.MakeCartonset(); cartonQueueChanged = cartonQueueChanged || cartonsetQueueChanged;
                     }
 
@@ -709,6 +722,22 @@ namespace TotalSmartCoding.Controllers.Productions
 
 
 
+        private bool waitforLabel(ref string stringReceived)
+        {
+            if (GlobalEnums.OnTestScanner) //THE SAME AS waitforCarton
+                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : this.FillingData.NextAutoCartonCode; this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
+            else
+                if (this.FillingData.PalletCameraOnly)
+                    stringReceived = "AutoLabelOnly";
+                else
+                    stringReceived = this.ionetSocketLabel.ReadoutStream().Trim();
+
+            return stringReceived != "";
+        }
+
+
+
+
 
         private bool waitforCarton(ref string stringReceived)
         {
@@ -734,18 +763,19 @@ namespace TotalSmartCoding.Controllers.Productions
         }
 
         /// <summary>
-        /// FillingData.HasPack:        CARTON: WHEN RECEIVE NoRead => ACCEPT: IT WILL ADD NEW CARTON, WHICH CODE WILL BE 'NoRead' 
-        ///                             AND THEN: => USER MUST UPDATE ACTUAL BARCODE BY MANUALL LATER/ OR: REMOVE CARTON WRAPPER => TO WRAP CARTON AGAIN (PRINT + SCAN AGAIN) FROM THE PRODUCTION LINE
+        /// NOT FillingData.IgnoreNoreadCarton:         CARTON: WHEN RECEIVE NoRead => ACCEPT: IT WILL ADD NEW CARTON, WHICH CODE WILL BE 'NoRead' 
+        ///                                             AND THEN: => USER MUST UPDATE ACTUAL BARCODE BY MANUALL LATER/ OR: REMOVE CARTON WRAPPER => TO WRAP CARTON AGAIN (PRINT + SCAN AGAIN) FROM THE PRODUCTION LINE
         /// 
-        /// NOT FillingData.HasPack:    CARTON: NO READ => IGNORE. MEANS: USER MUST TRY TO SCAN UNTIL READ SUCCESSFULLY/ OR USER MUST REMOVE THIS PAIL OUT OF PRODUCTION LINE (DELETE) (JUST ONLY SUCCESSFULLY READ => TO ADD TO CartonQueue)
-        ///                             IF REPEATED READ => THE SOFTWARE JUST ACCEPT THE FIRST ONE ONLY (ONLY FOR: NOT FillingData.HasPack)
+        /// FillingData.IgnoreNoreadCarton:             CARTON: NO READ => IGNORE. MEANS: USER MUST TRY TO SCAN UNTIL READ SUCCESSFULLY/ OR USER MUST REMOVE THIS PAIL OUT OF PRODUCTION LINE (DELETE) (JUST ONLY SUCCESSFULLY READ => TO ADD TO CartonQueue)
+        ///                                             IF REPEATED READ => THE SOFTWARE JUST ACCEPT THE FIRST ONE ONLY (ONLY FOR: NOT FillingData.HasPack)
         /// 
         /// WHEN this.packsetQueue.Count = 0: EMPTY CARTON WILL BE IGNORE. SEE MatchingAndAddCarton FOR MORE INFORMATION
         /// </summary>
         /// <param name="stringReceived"></param>
         /// <returns></returns>
-        private string lastCartonCode = "";
-        private bool ReceiveCarton(string stringReceived)
+        private string lastCartonCode = ""; private string lastCartonLabel = "";
+        private bool ReceiveCarton(string stringReceived) { return this.ReceiveCarton(stringReceived, true); }
+        private bool ReceiveCarton(string stringReceived, bool codeVslabel)
         {
             bool barcodeReceived = false;
             string[] arrayBarcode = stringReceived.Split(new string[] { GlobalVariables.charTAB }, StringSplitOptions.RemoveEmptyEntries);
@@ -753,14 +783,15 @@ namespace TotalSmartCoding.Controllers.Productions
             foreach (string stringBarcode in arrayBarcode)
             {
                 string receivedBarcode = stringBarcode.Trim();
-                if (!this.FillingData.HasPack) receivedBarcode = receivedBarcode.Replace("NoRead", "").Trim(); //IGNORE WHEN NoRead (IF MATCHING BEFORE FILLING: USER MUST RE-PRINT BEFORE READ AGAIN. IF MATCHING AFTER FILL: USER MUST TRY TO READ UNTILL SUCCESS, OTHERWISE: THEY EMPTY THE BOX => THE RE-PRINT BEFORE READ AGAIN)
+                if (this.FillingData.IgnoreNoreadCarton) receivedBarcode = receivedBarcode.Replace("NoRead", "").Trim(); //IGNORE WHEN NoRead (IF MATCHING BEFORE FILLING: USER MUST RE-PRINT BEFORE READ AGAIN. IF MATCHING AFTER FILL: USER MUST TRY TO READ UNTILL SUCCESS, OTHERWISE: THEY EMPTY THE BOX => THE RE-PRINT BEFORE READ AGAIN)
 
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
-                if (receivedBarcode != "" && (this.FillingData.HasPack || lastCartonCode != receivedBarcode || receivedBarcode == "NoRead"))
+                if (receivedBarcode != "" && (this.FillingData.HasPack || (codeVslabel && lastCartonCode != receivedBarcode) || (!codeVslabel && lastCartonLabel != receivedBarcode) || receivedBarcode == "NoRead"))
                 {
-                    if (this.matchPacktoCarton(receivedBarcode, null))
+                    if (this.matchPacktoCarton(codeVslabel ? receivedBarcode : "", codeVslabel ? "" : receivedBarcode))
                     {
-                        lastCartonCode = receivedBarcode;
+                        if (codeVslabel) lastCartonCode = receivedBarcode;
+                        if (!codeVslabel) lastCartonLabel = receivedBarcode;
                         barcodeReceived = true;
                     }
                     else
@@ -772,9 +803,11 @@ namespace TotalSmartCoding.Controllers.Productions
 
         private bool matchPacktoCarton(string cartonCode, string cartonLabel)
         {
-            bool isPending = cartonCode == "NoRead" || cartonLabel == "NoRead";
+            if (cartonCode == "" && cartonLabel == "") return false;
 
-            if (this.packsetQueue.Count <= 0) { this.MakePackset(); }
+            if (this.FillingData.HasPack && this.packsetQueue.Count <= 0) { this.MakePackset(); }
+
+            CartonDTO cartonDTO = null; bool addNew = false; bool codeVslabel = cartonCode != null && cartonCode != "";
 
             lock (this.cartonQueue)
             {
@@ -782,30 +815,54 @@ namespace TotalSmartCoding.Controllers.Productions
                 {//BY NOW: GlobalVariables.IgnoreEmptyCarton = TRUE. LATER, WE WILL ADD AN OPTION ON MENU FOR USER, IF NEEDED
                     if (!GlobalVariables.IgnoreEmptyCarton || this.packsetQueue.Count > 0 || !this.FillingData.HasPack) //BY NOT this.FillingData.HasPack: this.packsetQueue.Count WILL ALWAYS BE: 0 (NO PACK RECEIVED)
                     {//IF this.packsetQueue.Count <= 0 => THIS WILL SAVE AN EMPTY CARTON. this.packsetQueue.EntityIDs WILL BE BLANK => NO PACK BE UPDATED FOR THIS CARTON
-                        CartonDTO cartonDTO = new CartonDTO(this.FillingData) { Code = this.interpretBarcode(cartonCode), Label = this.interpretBarcode(cartonLabel), PackCounts = this.packsetQueue.Count, Quantity = 1, LineVolume = (this.FillingData.HasPack ? this.packsetQueue.TotalLineVolume : this.FillingData.PackageVolume) };
-                        if (isPending) cartonDTO.EntryStatusID = (int)GlobalVariables.BarcodeStatus.Noread;
+                        cartonDTO = this.cartonQueue.FindNullItem(codeVslabel);
+                        if (cartonDTO == null) //CHECK FOR ADD NEW CARTON OR: JUST UPDATE ONLY
+                        {
+                            addNew = true;
+                            cartonDTO = new CartonDTO(this.FillingData) { Code = this.interpretBarcode(cartonCode), Label = this.interpretBarcode(cartonLabel), PackCounts = this.packsetQueue.Count, Quantity = 1, LineVolume = (this.FillingData.HasPack ? this.packsetQueue.TotalLineVolume : this.FillingData.PackageVolume) };
+                        }
+                        else
+                        {
+                            if (codeVslabel) cartonDTO.Code = cartonCode;
+                            if (!codeVslabel) cartonDTO.Label = cartonLabel;
+                        }
+
+                        if (cartonCode == "NoRead" || cartonLabel == "NoRead") cartonDTO.EntryStatusID = (int)GlobalVariables.BarcodeStatus.Noread;
 
                         lock (this.cartonController)
                         {
                             CartonController freshCartonController = new CartonController(CommonNinject.Kernel.Get<ICartonService>(), this.cartonViewModel);
                             freshCartonController.cartonService.ServiceBag["EntryStatusIDs"] = cartonDTO.EntryStatusID;
-                            freshCartonController.cartonService.ServiceBag["PackIDs"] = this.FillingData.HasPack ? this.packsetQueue.EntityIDs : ""; //VERY IMPORTANT: NEED TO ADD PackIDs TO NEW CartonDTO
+                            freshCartonController.cartonService.ServiceBag["PackIDs"] = this.FillingData.HasPack && addNew ? this.packsetQueue.EntityIDs : ""; //VERY IMPORTANT: NEED TO ADD PackIDs TO NEW CartonDTO. WHEN NOT addNew: NNO NEED TO UPDATE PackIDs (BECAUSE: THERE IS NO CHANGE TO PackIDs COLLECTION)
                             if (freshCartonController.cartonService.Save(cartonDTO))
-                                this.packsetQueue = new BarcodeQueue<PackDTO>(this.FillingData.NoSubQueue, this.FillingData.ItemPerSubQueue, false) { ItemPerSet = this.FillingData.PackPerCarton }; //CLEAR AFTER ADD TO CartonDTO
+                            {
+                                if (addNew)
+                                {
+                                    if (this.FillingData.HasCartonLabel) this.cartonQueue.Enqueue(cartonDTO); //(*)ADD TO cartonQueue FIRST FOR NEW cartonDTO
+                                    this.packsetQueue = new BarcodeQueue<PackDTO>(this.FillingData.HasPackLabel, this.FillingData.NoSubQueue, this.FillingData.ItemPerSubQueue, false) { ItemPerSet = this.FillingData.PackPerCarton }; //CLEAR AFTER ADD TO CartonDTO                                
+                                }
+                            }
                             else
                                 throw new Exception("Lỗi lưu mã vạch carton: " + cartonDTO.Code);
                         }
 
-                        if (isPending)
-                            this.cartonPendingQueue.Enqueue(cartonDTO);
-                        else
-                            this.cartonQueue.Enqueue(cartonDTO);
-                        return true;
+                        if (!this.FillingData.HasCartonLabel)
+                        {
+                            if (cartonCode == "NoRead" || cartonLabel == "NoRead")
+                                this.cartonPendingQueue.Enqueue(cartonDTO);
+                            else
+                                this.cartonQueue.Enqueue(cartonDTO);
+                        }
                     }
                     else
                         return false;
                 }
             }
+
+            if (this.FillingData.HasCartonLabel && cartonDTO != null && !addNew && cartonDTO.Code != "" && cartonDTO.Label != "" & (cartonDTO.Code == "NoRead" || cartonDTO.Label == "NoRead"))
+                this.MoveCartonToPendingQueue(cartonDTO.CartonID, false); //(*)SECOND: MOVE TO cartonPendingQueue 
+
+            return true;
         }
 
         private bool MakeCartonset()
@@ -897,7 +954,7 @@ namespace TotalSmartCoding.Controllers.Productions
                             PalletController freshPalletController = new PalletController(CommonNinject.Kernel.Get<IPalletService>(), this.palletViewModel);
                             freshPalletController.palletService.ServiceBag["CartonIDs"] = this.cartonsetQueue.EntityIDs; //VERY IMPORTANT: NEED TO ADD CartonIDs TO NEW PalletDTO
                             if (freshPalletController.palletService.Save(palletDTO))
-                                this.cartonsetQueue = new BarcodeQueue<CartonDTO>(); //CLEAR AFTER ADD TO PalletDTO
+                                this.cartonsetQueue = new BarcodeQueue<CartonDTO>(this.FillingData.HasCartonLabel); //CLEAR AFTER ADD TO PalletDTO
                             else
                                 throw new Exception("Lỗi lưu pallet: " + palletDTO.Code);
                         }

@@ -97,6 +97,8 @@ namespace TotalBase
 
             EmptyCarton = 10,
 
+            Tsa = 88,
+
             HasSent = 99,
             Deleted = 199
         }

@@ -116,7 +116,7 @@ namespace TotalSmartCoding.Views.Productions
                 this.buttonSendToZebra.Visible = this.fillingData.FillingLineID == GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit;
 
 
-                if (!fillingData.HasPack) { this.labelNextPackNo.Visible = false; this.textNextPackNo.Visible = false; this.dgvCartonPendingQueue.RowTemplate.Height = 280; this.dgvCartonQueue.RowTemplate.Height = 280; this.dgvCartonsetQueue.RowTemplate.Height = 280; this.labelLEDPack.Visible = false; this.labelLEDCartonIgnore.Visible = false; this.separatorLEDPack.Visible = false; this.separatorLEDCartonIgnore.Visible = false; } //this.labelCommodityNameCarton.Visible = !this.fillingData.CartonViaPalletZebra; 
+                if (!fillingData.HasPack) { this.labelNextPackNo.Visible = false; this.textNextPackNo.Visible = false; this.dgvCartonPendingQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 140 : 280; this.dgvCartonQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 140 : 280; this.dgvCartonsetQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 140 : 280; this.labelLEDPack.Visible = false; this.labelLEDCartonIgnore.Visible = false; this.separatorLEDPack.Visible = false; this.separatorLEDCartonIgnore.Visible = false; } //this.labelCommodityNameCarton.Visible = !this.fillingData.CartonViaPalletZebra; 
                 if (!fillingData.HasCarton && this.fillingData.FillingLineID != GlobalVariables.FillingLine.Import) { this.labelNextCartonNo.Visible = false; this.textNextCartonNo.Visible = false; this.dgvPalletQueue.RowTemplate.Height = 280; this.dgvPalletPickupQueue.RowTemplate.Height = 280; this.labelLEDCarton.Visible = false; this.labelLEDCartonPending.Visible = false; this.separatorLEDCarton.Visible = false; this.separatorLEDCartonPending.Visible = false; this.labelCommodityNamePallet.Visible = true; }
                 if (!fillingData.HasCarton && GlobalEnums.DrumWithDigit) { this.labelNextPalletNo.Visible = false; this.textNextPalletNo.Visible = false; } else { this.labelNextDigitNo.Visible = false; this.textNextDigitNo.Visible = false; }
                 if (!this.fillingData.CartonViaPalletZebra) { this.buttonSendCartontoZebra.Visible = false; this.textNthCartontoZebra.Visible = false; this.labelNthCartontoZebra.Visible = false; this.separatorSendCartontoZebra.Visible = false; }
@@ -708,15 +708,20 @@ namespace TotalSmartCoding.Views.Productions
             //else if (printedBarcode.Length > 6) printedBarcode = printedBarcode.Substring(printedBarcode.Length - 7, 6); //Char[3][4][5]...[9]: Serial Number
             else
             {
-                if (this.fillingData.HasPack && printedBarcode.Length >= 29)
-                    printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 6, 6);
-
-                if (!this.fillingData.HasPack && printedBarcode.Length >= 29)
+                if (printedBarcode.Length >= 29)
                 {
-                    if (sender != null && ((this.fillingData.HasCarton || this.fillingData.FillingLineID == GlobalVariables.FillingLine.Import) && (sender.Equals(this.dgvPalletQueue) || sender.Equals(this.dgvPalletPickupQueue))))
+                    if (this.fillingData.HasPack)
                         printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 6, 6);
                     else
-                        printedBarcode = printedBarcode.Substring(0, indexOfDoubleTabChar);
+                        if (this.fillingData.HasLabel)
+                            printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 20, 20);
+                        else
+                        {
+                            if (sender != null && ((this.fillingData.HasCarton || this.fillingData.FillingLineID == GlobalVariables.FillingLine.Import) && (sender.Equals(this.dgvPalletQueue) || sender.Equals(this.dgvPalletPickupQueue))))
+                                printedBarcode = printedBarcode.Substring(indexOfDoubleTabChar - 6, 6);
+                            else
+                                printedBarcode = printedBarcode.Substring(0, indexOfDoubleTabChar);
+                        }
                 }
             }
 
