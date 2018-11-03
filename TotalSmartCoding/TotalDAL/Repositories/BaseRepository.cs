@@ -103,6 +103,7 @@ namespace TotalDAL.Repositories
             }
 
             #region UPDATE CBPP
+            //ADD HERE
             #endregion UPDATE CBPP
         }
 
@@ -434,6 +435,8 @@ namespace TotalDAL.Repositories
 
         }
 
+
+        #region CHEVRON
         private void InitReports()
         {
             string reportTabPageIDs = ((int)GlobalEnums.ReportTabPageID.TabPageWarehouses).ToString() + "," + ((int)GlobalEnums.ReportTabPageID.TabPageCommodities).ToString();
@@ -2592,7 +2595,7 @@ namespace TotalDAL.Repositories
         }
         #endregion Backup for update log
 
-
+        #endregion CHEVRON
 
 
 

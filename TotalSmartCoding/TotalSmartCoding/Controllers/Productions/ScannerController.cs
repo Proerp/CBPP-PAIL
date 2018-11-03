@@ -38,6 +38,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
         private IONetSocket ionetSocketPack;
         private IONetSocket ionetSocketCarton;
+        private IONetSocket ionetSocketLabel;
         private IONetSocket ionetSocketPallet;
 
 
@@ -90,6 +91,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
                 this.ionetSocketPack = new IONetSocket(IPAddress.Parse(productionAPIs.IpAddress((int)GlobalVariables.ScannerName.Base + (int)GlobalVariables.ScannerName.PackScanner)), 23, 120); //PORT 2112: DATA LOGIC
                 this.ionetSocketCarton = new IONetSocket(IPAddress.Parse(productionAPIs.IpAddress((int)GlobalVariables.ScannerName.Base + (int)GlobalVariables.ScannerName.CartonScanner)), 23, 120);
+                this.ionetSocketLabel = new IONetSocket(IPAddress.Parse(productionAPIs.IpAddress((int)GlobalVariables.ScannerName.Base + (int)GlobalVariables.ScannerName.LabelScanner)), 23, 120);
                 this.ionetSocketPallet = new IONetSocket(IPAddress.Parse(productionAPIs.IpAddress((int)GlobalVariables.ScannerName.Base + (int)GlobalVariables.ScannerName.PalletScanner)), 23, 120);
 
 
@@ -416,6 +418,9 @@ namespace TotalSmartCoding.Controllers.Productions
 
                     if (this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly)
                         this.ionetSocketCarton.Connect();
+                    
+                    if (this.FillingData.HasLabel && !this.FillingData.PalletCameraOnly)
+                        this.ionetSocketLabel.Connect();
 
                     if (this.FillingData.HasPallet && !GlobalEnums.OnTestPalletScanner)
                         this.ionetSocketPallet.Connect();
@@ -440,6 +445,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
                 this.ionetSocketPack.Disconnect();
                 this.ionetSocketCarton.Disconnect();
+                this.ionetSocketLabel.Disconnect();
                 this.ionetSocketPallet.Disconnect();
 
                 this.setLED();
@@ -473,6 +479,14 @@ namespace TotalSmartCoding.Controllers.Productions
                         lock (this.ionetSocketCarton)
                         {
                             this.ionetSocketCarton.ReadoutStream();
+                        }
+                    }
+
+                    if (this.FillingData.HasLabel && !this.FillingData.PalletCameraOnly)
+                    {
+                        lock (this.ionetSocketLabel)
+                        {
+                            this.ionetSocketLabel.ReadoutStream();
                         }
                     }
 
