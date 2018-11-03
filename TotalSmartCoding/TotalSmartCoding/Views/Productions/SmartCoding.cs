@@ -862,13 +862,13 @@ namespace TotalSmartCoding.Views.Productions
                 {
                     string selectedBarcode = "";
                     int cartonID = this.getBarcodeID(this.dgvCartonPendingQueue.CurrentCell, out selectedBarcode);
-                    if (cartonID > 0 && CustomMsgBox.Show(this, "Bạn có muốn " + (sender.Equals(this.buttonRemoveCartonPending) ? "xã thùng carton này ra và đóng lại không:" : "xóa toàn bộ thùng carton, bao gồm các chai bên trong,: ") + (char)13 + (char)13 + selectedBarcode, "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+                    if (cartonID > 0 && CustomMsgBox.Show(this, "Bạn có muốn " + (sender.Equals(this.buttonRemoveCartonPending) ? "xã thùng carton này ra và đóng lại không:" : "xóa " + (sender.Equals(this.buttonDeleteAllCartonPending) ? "toàn bộ " : "") + "thùng carton, bao gồm các chai bên trong") + (sender.Equals(this.buttonDeleteAllCartonPending) ? "?" + (char)13 + (char)13 + "[XÓA TOÀN BỘ]" : ":" + (char)13 + (char)13 + selectedBarcode), "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
                     {
                         if (sender.Equals(this.buttonRemoveCartonPending))
                             if ((this.fillingData.HasPack && this.scannerController.UnwrapCartontoPack(cartonID)) || (!this.fillingData.HasPack && this.scannerController.TakebackCartonFromPendingQueue(cartonID))) CustomMsgBox.Show(this, "Carton: " + selectedBarcode + "\r\nĐã được xã thành công.", "Handle exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        if (sender.Equals(this.buttonDeleteCartonPending))
-                            if (this.scannerController.DeleteCarton(cartonID)) CustomMsgBox.Show(this, "Carton: " + selectedBarcode + "\r\nĐã được xóa, bao gồm các chai bên trong." + "\r\nVui lòng đọc lại từng chai nếu muốn đóng lại carton.", "Handle exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (sender.Equals(this.buttonDeleteCartonPending) || sender.Equals(this.buttonDeleteAllCartonPending))
+                            if (this.scannerController.DeleteCarton(cartonID, sender.Equals(this.buttonDeleteAllCartonPending))) CustomMsgBox.Show(this, "Carton: " + selectedBarcode + "\r\nĐã được xóa, bao gồm các chai bên trong." + "\r\nVui lòng đọc lại từng chai nếu muốn đóng lại carton.", "Handle exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception exception)

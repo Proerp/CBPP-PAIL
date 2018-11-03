@@ -1286,7 +1286,7 @@ namespace TotalSmartCoding.Controllers.Productions
             }
         }
 
-        public Boolean DeleteCarton(int cartonID)
+        public Boolean DeleteCarton(int cartonID, bool removeAll)
         {
             if (cartonID <= 0) return false;
 
@@ -1296,17 +1296,25 @@ namespace TotalSmartCoding.Controllers.Productions
                 {
                     lock (this.cartonController)
                     {
-                        IList<Pack> packs = this.packController.packService.GetPacks(this.FillingData.FillingLineID, (int)GlobalVariables.BarcodeStatus.Wrapped + "", cartonID);
+                        do
+                        {
+                            if (this.cartonPendingQueue.Count > 0)
+                            {
+                                if (removeAll) cartonID = this.cartonPendingQueue.ElementAt(0).CartonID;
 
-                        this.cartonController.cartonService.ServiceBag["EntryStatusIDs"] = (int)GlobalVariables.BarcodeStatus.Noread + "," + (int)GlobalVariables.BarcodeStatus.Pending; //THIS CARTON MUST BE Noread || Pending IN ORDER TO UNWRAP TO PACK
-                        this.cartonController.cartonService.ServiceBag["PackIDs"] = string.Join(",", packs.Select(d => d.PackID));
-                        this.cartonController.cartonService.ServiceBag["DeletePack"] = true;
-                        if (!this.cartonController.cartonService.Delete(cartonID)) throw new System.ArgumentException("Lỗi", "Không thể xóa carton trên CSDL");
+                                IList<Pack> packs = this.packController.packService.GetPacks(this.FillingData.FillingLineID, (int)GlobalVariables.BarcodeStatus.Wrapped + "", cartonID);
 
-                        this.cartonPendingQueue.Dequeue(cartonID);
+                                this.cartonController.cartonService.ServiceBag["EntryStatusIDs"] = (int)GlobalVariables.BarcodeStatus.Noread + "," + (int)GlobalVariables.BarcodeStatus.Pending; //THIS CARTON MUST BE Noread || Pending IN ORDER TO UNWRAP TO PACK
+                                this.cartonController.cartonService.ServiceBag["PackIDs"] = string.Join(",", packs.Select(d => d.PackID));
+                                this.cartonController.cartonService.ServiceBag["DeletePack"] = true;
+                                if (!this.cartonController.cartonService.Delete(cartonID)) throw new System.ArgumentException("Lỗi", "Không thể xóa carton trên CSDL");
 
-                        this.NotifyPropertyChanged("CartonPendingQueue");
+                                this.cartonPendingQueue.Dequeue(cartonID);
 
+                                this.NotifyPropertyChanged("CartonPendingQueue");
+                            }
+                            else throw new System.ArgumentException("Lỗi", "Không còn carton");
+                        } while (removeAll && this.cartonPendingQueue.Count > 0);
                     }
                 }
                 return true;

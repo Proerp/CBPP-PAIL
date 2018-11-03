@@ -77,6 +77,7 @@
             this.toolStrip5 = new System.Windows.Forms.ToolStrip();
             this.buttonRemoveCartonPending = new System.Windows.Forms.ToolStripButton();
             this.buttonCartonPendingQueueCount = new System.Windows.Forms.ToolStripButton();
+            this.buttonDeleteAllCartonPending = new System.Windows.Forms.ToolStripButton();
             this.buttonDeleteCartonPending = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton17 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel9 = new System.Windows.Forms.ToolStripLabel();
@@ -776,6 +777,7 @@
             this.buttonRemoveCartonPending,
             this.buttonCartonPendingQueueCount,
             this.buttonDeleteCartonPending,
+            this.buttonDeleteAllCartonPending,            
             this.toolStripButton17,
             this.toolStripLabel9,
             this.toolStripButtonWarningNewMonth,
@@ -809,15 +811,26 @@
             this.buttonCartonPendingQueueCount.Text = "[0]";
             this.buttonCartonPendingQueueCount.ToolTipText = "Số lượng carton đang chờ xử lý cuối ca";
             // 
+            // buttonDeleteAllCartonPending
+            // 
+            this.buttonDeleteAllCartonPending.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonDeleteAllCartonPending.Image = global::TotalSmartCoding.Properties.Resources.Red_cross;
+            this.buttonDeleteAllCartonPending.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonDeleteAllCartonPending.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonDeleteAllCartonPending.Name = "buttonDeleteAllCartonPending";
+            this.buttonDeleteAllCartonPending.Size = new System.Drawing.Size(52, 52);
+            this.buttonDeleteAllCartonPending.ToolTipText = "Xóa toàn bộ carton, bao gồm xóa tất cả chai bên trong carton.";
+            this.buttonDeleteAllCartonPending.Click += new System.EventHandler(this.dgvCartonPending_RemoveDelete);
+            // 
             // buttonDeleteCartonPending
             // 
             this.buttonDeleteCartonPending.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonDeleteCartonPending.Image = global::TotalSmartCoding.Properties.Resources.Red_cross;
+            this.buttonDeleteCartonPending.Image = global::TotalSmartCoding.Properties.Resources.Yellow_cross;
             this.buttonDeleteCartonPending.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.buttonDeleteCartonPending.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonDeleteCartonPending.Name = "buttonDeleteCartonPending";
             this.buttonDeleteCartonPending.Size = new System.Drawing.Size(52, 52);
-            this.buttonDeleteCartonPending.ToolTipText = "Xóa toàn bộ carton đang chọn, bao gồm xóa tất chai bên trong carton.";
+            this.buttonDeleteCartonPending.ToolTipText = "Xóa carton đang chọn, bao gồm xóa tất cả chai bên trong carton.";
             this.buttonDeleteCartonPending.Click += new System.EventHandler(this.dgvCartonPending_RemoveDelete);
             // 
             // toolStripButton17
@@ -2601,6 +2614,7 @@
         private System.Windows.Forms.ToolStripButton buttonRemoveCarton;
         private System.Windows.Forms.ToolStripButton buttonRemoveCartonPending;
         private System.Windows.Forms.ToolStripButton buttonRemoveCartonset;
+        private System.Windows.Forms.ToolStripButton buttonDeleteAllCartonPending;
         private System.Windows.Forms.ToolStripButton buttonDeleteCartonPending;
         private System.Windows.Forms.ToolStrip toolStrip11;
         private System.Windows.Forms.ToolStripButton buttonPackQueueCount;
