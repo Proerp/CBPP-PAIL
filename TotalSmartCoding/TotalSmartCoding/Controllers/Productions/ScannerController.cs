@@ -859,8 +859,8 @@ namespace TotalSmartCoding.Controllers.Productions
                 }
             }
 
-            if (this.FillingData.HasCartonLabel && cartonDTO != null && !addNew && cartonDTO.Code != "" && cartonDTO.Label != "" & (cartonDTO.Code == "NoRead" || cartonDTO.Label == "NoRead"))
-                this.MoveCartonToPendingQueue(cartonDTO.CartonID, false); //(*)SECOND: MOVE TO cartonPendingQueue 
+            if (this.FillingData.HasCartonLabel && cartonDTO != null && !addNew && cartonDTO.Code != "" && cartonDTO.Label != "" & (cartonDTO.Code.IndexOf("NoRead") != -1 || cartonDTO.Label.IndexOf("NoRead") != -1))
+                this.MoveCartonToPendingQueue(cartonDTO.CartonID, false, false); //(*)SECOND: MOVE TO cartonPendingQueue 
 
             return true;
         }
@@ -971,7 +971,7 @@ namespace TotalSmartCoding.Controllers.Productions
         private string interpretBarcode(string barcode)
         {
             if (barcode == "NoRead")
-                barcode = this.FillingData.FirstLineA1(false) + this.FillingData.FirstLineA2(false) + this.FillingData.SecondLineA1(false) + this.FillingData.SecondLineA2(false) + new String('X', 5) + DateTime.Now.ToString("hhmm");
+                barcode = this.FillingData.FirstLineA1(false) + this.FillingData.FirstLineA2(false) + this.FillingData.SecondLineA1(false) + this.FillingData.SecondLineA2(false) + "NoRead" + DateTime.Now.ToString("hhmm");
             return barcode;
         }
 
@@ -1139,7 +1139,7 @@ namespace TotalSmartCoding.Controllers.Productions
             }
         }
 
-        public bool MoveCartonToPendingQueue(int cartonID, bool fromCartonsetQueue)
+        public bool MoveCartonToPendingQueue(int cartonID, bool fromCartonsetQueue, bool externalCall)
         {
             if (cartonID <= 0) return false;
 
@@ -1159,8 +1159,11 @@ namespace TotalSmartCoding.Controllers.Productions
                                 cartonDTO.EntryStatusID = (int)GlobalVariables.BarcodeStatus.Pending;
                                 this.cartonPendingQueue.Enqueue(cartonDTO);
 
-                                this.NotifyPropertyChanged("CartonPendingQueue");
-                                if (fromCartonsetQueue) this.NotifyPropertyChanged("CartonsetQueue"); else this.NotifyPropertyChanged("CartonQueue");
+                                if (externalCall)
+                                {
+                                    this.NotifyPropertyChanged("CartonPendingQueue");
+                                    if (fromCartonsetQueue) this.NotifyPropertyChanged("CartonsetQueue"); else this.NotifyPropertyChanged("CartonQueue");
+                                }
 
                                 lock (this.cartonController)
                                 {
@@ -1175,8 +1178,11 @@ namespace TotalSmartCoding.Controllers.Productions
                                                 cartonDTO.EntryStatusID = (int)GlobalVariables.BarcodeStatus.Readytoset;
                                                 this.cartonsetQueue.Enqueue(cartonDTO);
 
-                                                this.NotifyPropertyChanged("CartonQueue");
-                                                this.NotifyPropertyChanged("CartonsetQueue");
+                                                if (externalCall)
+                                                {
+                                                    this.NotifyPropertyChanged("CartonQueue");
+                                                    this.NotifyPropertyChanged("CartonsetQueue");
+                                                }
 
                                                 if (this.cartonController.cartonService.UpdateEntryStatus(cartonDTO.CartonID.ToString(), GlobalVariables.BarcodeStatus.Readytoset)) return true;
                                                 else throw new System.ArgumentException("Fail to handle this carton", "Can not delete carton from the line");
