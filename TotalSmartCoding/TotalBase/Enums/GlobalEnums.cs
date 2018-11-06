@@ -2,6 +2,8 @@
 {
     public static class GlobalEnums
     {
+        public static bool CBPP = true;
+
         public static bool NoPallet = true;
 
         //REMOVE THIS BEFORE PUBLISH

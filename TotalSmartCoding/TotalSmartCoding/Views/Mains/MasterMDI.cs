@@ -954,8 +954,11 @@ namespace TotalSmartCoding.Views.Mains
 
         private void buttonLicenseTerms_Click(object sender, EventArgs e)
         {
-            LicenseTerms licenseTerms = new LicenseTerms();
-            licenseTerms.ShowDialog(); licenseTerms.Dispose();
+            if (!GlobalEnums.CBPP)
+            {
+                LicenseTerms licenseTerms = new LicenseTerms();
+                licenseTerms.ShowDialog(); licenseTerms.Dispose();
+            }
         }
 
         private void buttonUserManuals_Click(object sender, EventArgs e)

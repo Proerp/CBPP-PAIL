@@ -59,7 +59,7 @@ namespace TotalSmartCoding
 
                 if (logon.ShowDialog() == DialogResult.OK)
                 {
-                    if (false)
+                    if (!GlobalEnums.CBPP)
                     {
                         LegalNotice legalNotice = new LegalNotice();
                         legalNotice.ShowDialog(); legalNotice.Dispose();
