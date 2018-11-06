@@ -3,11 +3,14 @@
     public static class GlobalEnums
     {
         public static bool CBPP = true;
+        public static bool IOAlarm = false;
+
+
 
         public static bool NoPallet = true;
 
         //REMOVE THIS BEFORE PUBLISH
-        public static bool NMVNOnly = false;
+        public static bool NMVNOnly = true;
         public static bool ShowStringReceived = false;
         //REMOVE THIS BEFORE PUBLISH
 

@@ -417,12 +417,18 @@ namespace TotalSmartCoding.Controllers.Productions
                         this.ionetSocketPack.Connect();
 
                     if (this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly)
+                    {
                         this.ionetSocketCarton.Connect();
+                        this.ionetSocketCarton.WritetoStream("||>SET OUTPUT.ACTION 1 1\r\n");  //SET IO TO CLEAR ALARM
+                    }
 
                     if (this.FillingData.HasLabel && !this.FillingData.PalletCameraOnly)
+                    {
                         this.ionetSocketLabel.Connect();
+                        this.ionetSocketLabel.WritetoStream("||>SET OUTPUT.ACTION 1 1\r\n");  //SET IO TO CLEAR ALARM
+                    }
 
-                    if (this.FillingData.HasPallet && !GlobalEnums.OnTestPalletScanner)
+                    if (this.FillingData.HasPallet && !GlobalEnums.CBPP && !GlobalEnums.OnTestPalletScanner)
                         this.ionetSocketPallet.Connect();
                 }
 
@@ -443,10 +449,21 @@ namespace TotalSmartCoding.Controllers.Productions
             {
                 this.MainStatus = "Đã ngắt kết nối ...";
 
-                this.ionetSocketPack.Disconnect();
-                this.ionetSocketCarton.Disconnect();
-                this.ionetSocketLabel.Disconnect();
+                this.ionetSocketPack.Disconnect();               
+                
                 this.ionetSocketPallet.Disconnect();
+
+
+                if (!GlobalEnums.OnTestScanner && this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly)
+                    this.ionetSocketCarton.WritetoStream("||>SET OUTPUT.ACTION 1 1\r\n");  //SET IO TO CLEAR ALARM
+
+                this.ionetSocketCarton.Disconnect();
+
+
+                if (!GlobalEnums.OnTestScanner && this.FillingData.HasCartonLabel && !this.FillingData.PalletCameraOnly)
+                    this.ionetSocketLabel.WritetoStream("||>SET OUTPUT.ACTION 1 1\r\n");  //SET IO TO CLEAR ALARM
+
+                this.ionetSocketLabel.Disconnect();
 
                 this.setLED();
 
@@ -490,7 +507,7 @@ namespace TotalSmartCoding.Controllers.Productions
                         }
                     }
 
-                    if (this.FillingData.HasPallet && !GlobalEnums.OnTestPalletScanner)
+                    if (this.FillingData.HasPallet && !GlobalEnums.CBPP && !GlobalEnums.OnTestPalletScanner)
                     {
                         lock (this.ionetSocketPallet)
                         {
@@ -591,6 +608,13 @@ namespace TotalSmartCoding.Controllers.Productions
 
                     if (palletQueueChanged) { this.NotifyPropertyChanged("PalletQueue"); palletQueueChanged = false; }
 
+                    if (this.OnScanning && this.FillingData.HasCarton && this.FillingData.HasCartonLabel && !this.FillingData.PalletCameraOnly)
+                        this.cartonQueue.FindNullInValid();
+
+                    if (this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly && GlobalEnums.IOAlarm)
+                        this.ionetSocketCarton.WritetoStream("||>SET OUTPUT.ACTION 1 0\r\n"); //SET IO TO ACTIVE ALARM
+                    if (this.FillingData.HasCartonLabel && !this.FillingData.PalletCameraOnly && GlobalEnums.IOAlarm)
+                        this.ionetSocketLabel.WritetoStream("||>SET OUTPUT.ACTION 1 0\r\n"); //SET IO TO ACTIVE ALARM
 
                     Thread.Sleep(100);
 
@@ -773,7 +797,7 @@ namespace TotalSmartCoding.Controllers.Productions
         /// </summary>
         /// <param name="stringReceived"></param>
         /// <returns></returns>
-        private string lastCartonCode = ""; private string lastCartonLabel = "";
+        
         private bool ReceiveCarton(string stringReceived) { return this.ReceiveCarton(stringReceived, true); }
         private bool ReceiveCarton(string stringReceived, bool codeVslabel)
         {
@@ -786,14 +810,10 @@ namespace TotalSmartCoding.Controllers.Productions
                 if (this.FillingData.IgnoreNoreadCarton) receivedBarcode = receivedBarcode.Replace("NoRead", "").Trim(); //IGNORE WHEN NoRead (IF MATCHING BEFORE FILLING: USER MUST RE-PRINT BEFORE READ AGAIN. IF MATCHING AFTER FILL: USER MUST TRY TO READ UNTILL SUCCESS, OTHERWISE: THEY EMPTY THE BOX => THE RE-PRINT BEFORE READ AGAIN)
 
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
-                if (receivedBarcode != "" && (this.FillingData.HasPack || (codeVslabel && lastCartonCode != receivedBarcode) || (!codeVslabel && lastCartonLabel != receivedBarcode) || receivedBarcode == "NoRead"))
+                if (receivedBarcode != "")
                 {
-                    if (this.matchPacktoCarton(codeVslabel ? receivedBarcode : "", codeVslabel ? "" : receivedBarcode))
-                    {
-                        if (codeVslabel) lastCartonCode = receivedBarcode;
-                        if (!codeVslabel) lastCartonLabel = receivedBarcode;
-                        barcodeReceived = true;
-                    }
+                    if (this.matchPacktoCarton(codeVslabel ? receivedBarcode : "", codeVslabel ? "" : receivedBarcode))                                           
+                        barcodeReceived = true;                    
                     else
                         this.CartonIgnoreCount++;
                 }
@@ -902,7 +922,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
         private bool waitforPallet(ref string stringReceived)
         {
-            if (GlobalEnums.OnTestScanner || GlobalEnums.OnTestPalletScanner)
+            if (GlobalEnums.CBPP || GlobalEnums.OnTestScanner || GlobalEnums.OnTestPalletScanner)
                 if ((GlobalEnums.OnTestPalletReceivedNow) && ((DateTime.Now.Second % 10) == 0 || GlobalEnums.OnTestPalletReceivedNow) && this.FillingData.NextAutoPalletCode != "" && ((this.cartonsetQueue.Count > 0 && this.cartonQueue.Count + 2 > this.FillingData.CartonPerPallet) || !this.FillingData.HasCarton)) { stringReceived = this.FillingData.NextAutoPalletCode; this.FillingData.NextAutoPalletCode = ""; GlobalEnums.OnTestPalletReceivedNow = (GlobalEnums.NoPallet ? GlobalEnums.OnTestPalletReceivedNow : false); } else stringReceived = "";
             else
                 stringReceived = this.ionetSocketPallet.ReadoutStream().Trim();

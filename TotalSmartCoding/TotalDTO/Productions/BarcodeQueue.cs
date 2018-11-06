@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TotalBase;
+using TotalBase.Enums;
 using TotalModel;
 
 namespace TotalDTO.Productions
@@ -192,14 +193,24 @@ namespace TotalDTO.Productions
                 {
                     TBarcodeDTO eachBarcodeDTO = subQueue[i];
                     if ((codeVslabel && eachBarcodeDTO.Code == "") || (!codeVslabel && eachBarcodeDTO.Label == ""))
-                    {
                         return eachBarcodeDTO;
-                    }
                 }
             }
             return null;
         }
 
+
+        public void FindNullInValid()
+        {
+            foreach (List<TBarcodeDTO> subQueue in this.list2DBarcode)
+            {
+                for (var i = 0; i < subQueue.Count; i++)
+                {
+                    TBarcodeDTO eachBarcodeDTO = subQueue[i];
+                    if ((eachBarcodeDTO.Code == "" || eachBarcodeDTO.Label == "") && i < (subQueue.Count - 1)) { GlobalEnums.IOAlarm = true; return; }//TOO MUCH DIFFERENT BETWEEN 2 BARCODES (ALLOW ONLY ONE)
+                }
+            }
+        }
 
         /// <summary>
         /// Add messageData by specific messageData.QueueID, without increase noItemAdded by 1
