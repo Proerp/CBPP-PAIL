@@ -840,7 +840,7 @@
             this.toolStripButton17.Name = "toolStripButton17";
             this.toolStripButton17.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.toolStripButton17.Size = new System.Drawing.Size(57, 24);
-            this.toolStripButton17.Text = "      ";
+            this.toolStripButton17.Text = " ";
             this.toolStripButton17.ToolTipText = "Khu vực carton chờ xử lý";
             // 
             // toolStripLabel9
@@ -848,7 +848,7 @@
             this.toolStripLabel9.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripLabel9.Name = "toolStripLabel9";
             this.toolStripLabel9.Size = new System.Drawing.Size(65, 20);
-            this.toolStripLabel9.Text = "              ";
+            this.toolStripLabel9.Text = " ";
             // 
             // toolStripButtonWarningNewMonth
             // 
