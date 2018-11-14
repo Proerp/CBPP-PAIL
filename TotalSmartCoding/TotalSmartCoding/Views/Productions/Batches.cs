@@ -85,6 +85,9 @@ namespace TotalSmartCoding.Views.Productions
                 this.buttonApply.Enabled = this.allQueueEmpty && this.ReadonlyMode;
                 this.buttonDiscontinued.Enabled = this.Newable && this.ReadonlyMode;
             }
+
+            if (propertyName == "EntryDate")
+                this.batchViewModel.EntryMonthID = CommonExpressions.GetEntryMonthID(this.batchViewModel.EntryDate);
         }
 
         protected override void InitializeTabControl()
@@ -95,9 +98,10 @@ namespace TotalSmartCoding.Views.Productions
 
                 this.checkAutoBarcode.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail;
                 this.checkAutoCarton.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import;
-                if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Medium4L || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import || (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit)) { this.labelNextPackNo.Visible = false; this.textexNextPackNo.Visible = false; }
+                if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Medium4L || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import || (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit)) { this.labelNextPackNo.Visible = false; this.textexNextPackNo.Visible = false; this.labelBatchPackNo.Visible = false; this.textexBatchPackNo.Visible = false; }
                 if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum) { this.labelNextCartonNo.Visible = false; this.textexNextCartonNo.Visible = false; }
                 if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && GlobalEnums.DrumWithDigit) { this.labelNextPalletNo.Visible = false; this.textexNextPalletNo.Visible = false; }
+                if (GlobalEnums.CBPP) { this.labelCommodityAPICode.Visible = false; this.textexCommodityAPICode.Visible = false; this.labelNextPalletNo.Visible = false; this.textexNextPalletNo.Visible = false; this.labelBatchPalletNo.Visible = false; this.textexBatchPalletNo.Visible = false; }
 
                 CustomTabControl customTabBatch = new CustomTabControl();
                 //customTabControlCustomerChannel.ImageList = this.imageListTabControl;

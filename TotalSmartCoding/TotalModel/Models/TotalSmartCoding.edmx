@@ -16,9 +16,13 @@
           <Property Name="FillingLineID" Type="int" Nullable="false" />
           <Property Name="CommodityID" Type="int" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="EntryMonthID" Type="int" Nullable="false" />
           <Property Name="NextPackNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchPackNo" Type="nvarchar" MaxLength="10" />
           <Property Name="NextCartonNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchCartonNo" Type="nvarchar" MaxLength="10" />
           <Property Name="NextPalletNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchPalletNo" Type="nvarchar" MaxLength="10" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -8844,6 +8848,10 @@
           <NavigationProperty Name="FillingLine" Relationship="TotalSmartCodingModel.FK_Batches_FillingLines" FromRole="Batch" ToRole="FillingLine" />
           <NavigationProperty Name="DeliveryAdviceDetails" Relationship="TotalSmartCodingModel.FK_DeliveryAdviceDetails_Batches" FromRole="Batch" ToRole="DeliveryAdviceDetail" />
           <Property Name="AutoCarton" Type="Boolean" Nullable="false" />
+          <Property Name="EntryMonthID" Type="Int32" Nullable="false" />
+          <Property Name="BatchPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BatchCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BatchPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Batches_Commodities">
           <End Type="TotalSmartCodingModel.Commodity" Role="Commodity" Multiplicity="1" />
@@ -11775,6 +11783,10 @@
           <EntitySetMapping Name="Batches">
             <EntityTypeMapping TypeName="TotalSmartCodingModel.Batch">
               <MappingFragment StoreEntitySet="Batches">
+                <ScalarProperty Name="BatchPalletNo" ColumnName="BatchPalletNo" />
+                <ScalarProperty Name="BatchCartonNo" ColumnName="BatchCartonNo" />
+                <ScalarProperty Name="BatchPackNo" ColumnName="BatchPackNo" />
+                <ScalarProperty Name="EntryMonthID" ColumnName="EntryMonthID" />
                 <ScalarProperty Name="AutoCarton" ColumnName="AutoCarton" />
                 <ScalarProperty Name="FinalCartonNo" ColumnName="FinalCartonNo" />
                 <ScalarProperty Name="AutoBarcode" ColumnName="AutoBarcode" />

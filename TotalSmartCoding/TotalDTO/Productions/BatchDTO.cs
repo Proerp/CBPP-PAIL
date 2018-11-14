@@ -48,12 +48,28 @@ namespace TotalDTO.Productions
         }
 
 
+        private int entryMonthID;
+        public int EntryMonthID   //ResetSerialNumber
+        {
+            get { return this.entryMonthID; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, int>(ref this.entryMonthID, o => o.EntryMonthID, value); }
+        }
+
+
         private string nextPackNo;
         [DefaultValue("000001")]
         public string NextPackNo
         {
             get { return this.nextPackNo; }
             set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.nextPackNo, o => o.NextPackNo, value); }
+        }
+
+        private string batchPackNo;
+        [DefaultValue("000001")]
+        public string BatchPackNo
+        {
+            get { return this.batchPackNo; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.batchPackNo, o => o.BatchPackNo, value); }
         }
 
         private string nextCartonNo;
@@ -64,12 +80,28 @@ namespace TotalDTO.Productions
             set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.nextCartonNo, o => o.NextCartonNo, value); }
         }
 
+        private string batchCartonNo;
+        [DefaultValue("000001")]
+        public string BatchCartonNo
+        {
+            get { return this.batchCartonNo; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.batchCartonNo, o => o.BatchCartonNo, value); }
+        }
+
         private string nextPalletNo;
         [DefaultValue("000001")]
         public string NextPalletNo
         {
             get { return this.nextPalletNo; }
             set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.nextPalletNo, o => o.NextPalletNo, value); }
+        }
+
+        private string batchPalletNo;
+        [DefaultValue("000001")]
+        public string BatchPalletNo
+        {
+            get { return this.batchPalletNo; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.batchPalletNo, o => o.BatchPalletNo, value); }
         }
 
         private string finalCartonNo;

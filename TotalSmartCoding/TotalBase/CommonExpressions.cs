@@ -35,6 +35,17 @@ namespace TotalBase
                 return code;
         }
 
+        public static int GetEntryMonthID()
+        {
+            return CommonExpressions.GetEntryMonthID(DateTime.Now);
+        }
+
+        public static int GetEntryMonthID(DateTime? dateTime)
+        {
+            if (dateTime == null) dateTime = DateTime.Now;
+            return (((DateTime)dateTime).Year - 2013) * 12 + ((DateTime)dateTime).Month - 5;
+        }
+
     }
 
     public class OptionBool

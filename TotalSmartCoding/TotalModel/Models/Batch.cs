@@ -40,6 +40,10 @@ namespace TotalModel.Models
         public bool AutoBarcode { get; set; }
         public string FinalCartonNo { get; set; }
         public bool AutoCarton { get; set; }
+        public int EntryMonthID { get; set; }
+        public string BatchPackNo { get; set; }
+        public string BatchCartonNo { get; set; }
+        public string BatchPalletNo { get; set; }
     
         public virtual Commodity Commodity { get; set; }
         public virtual FillingLine FillingLine { get; set; }
