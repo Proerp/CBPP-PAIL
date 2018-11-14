@@ -12,6 +12,7 @@ using Ninject;
 
 using TotalDAL;
 using TotalBase;
+using TotalBase.Enums;
 using TotalSmartCoding.Libraries.Helpers;
 using TotalSmartCoding.Controllers.APIs.Commons;
 using TotalSmartCoding.Libraries;
@@ -118,7 +119,7 @@ namespace TotalSmartCoding.Views.Mains
                 this.baseRepository = CommonNinject.Kernel.Get<IBaseRepository>();
 
                 UserAPIs userAPIs = new UserAPIs(CommonNinject.Kernel.Get<IUserAPIRepository>());
-                IList<ActiveUser> activeUsers = userAPIs.GetActiveUsers(currentUserPrincipal.Sid.Value);
+                IList<ActiveUser> activeUsers = userAPIs.GetActiveUsers(GlobalEnums.CBPP ? "S-1-5-21-2058209122-1687518253-2045704780-1001" : currentUserPrincipal.Sid.Value);
 
                 if (activeUsers.Count > 0)
                 {
