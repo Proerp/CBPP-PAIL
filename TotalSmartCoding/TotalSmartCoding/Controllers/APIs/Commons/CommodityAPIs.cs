@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Collections.Generic;
 
 using TotalBase;
@@ -21,6 +22,11 @@ namespace TotalSmartCoding.Controllers.APIs.Commons
             this.commodityAPIRepository = commodityAPIRepository;
         }
 
+
+        public void ImportCommodities()
+        {
+            this.commodityAPIRepository.ExecuteStoreCommand("EXEC ImportCommodities", new ObjectParameter[] { });
+        }
 
         public ICollection<CommodityIndex> GetCommodityIndexes()
         {

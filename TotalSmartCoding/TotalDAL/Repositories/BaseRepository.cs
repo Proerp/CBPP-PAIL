@@ -88,7 +88,7 @@ namespace TotalDAL.Repositories
 
                 this.RestoreProcedures();
 
-                this.ExecuteStoreCommand("EXEC SubmitUserAccessControls", new ObjectParameter[] { });
+                //////this.ExecuteStoreCommand("EXEC SubmitUserAccessControls", new ObjectParameter[] { });
             }
 
 

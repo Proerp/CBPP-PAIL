@@ -26,6 +26,8 @@ namespace TotalDAL.Helpers.SqlProgrammability.Commons
             this.CommodityDeletable();
             this.CommoditySaveRelative();
 
+            this.ImportCommodities();
+
             this.GetCommodityBases();
             this.GetCommodityTrees();
 
@@ -92,6 +94,37 @@ namespace TotalDAL.Helpers.SqlProgrammability.Commons
             this.totalSmartCodingEntities.CreateProcedureToCheckExisting("CommodityDeletable", queryArray);
         }
 
+        private void ImportCommodities()
+        {
+            string queryString;
+
+            queryString = " " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       SET IDENTITY_INSERT Commodities ON " + "\r\n";
+            queryString = queryString + "           INSERT INTO     Commodities (CommodityID, Code, OfficialCode, Name, OfficialName, CommodityCategoryID, CommodityTypeID, Unit, PackageSize, Origin, APICode, FillingLineIDs, Volume, Weight, PackPerCarton, CartonPerPallet, PackageVolume, Shelflife, Remarks, Discontinue, InActive) " + "\r\n";
+            queryString = queryString + "           SELECT          ProductID AS CommodityID, ProductCode AS Code, ProductCodeOriginal AS OfficialCode, ProductName AS Name, ProductName AS OfficialName, 1 AS CommodityCategoryID, 1 AS CommodityTypeID, NULL AS Unit, N'1 x 1' AS PackageSize, NULL AS Origin, NULL AS APICode, IIF(IsPailLabel = 1, '2', '0') AS FillingLineIDs, 1 AS Volume, 1 AS Weight, NoItemPerCarton AS PackPerCarton, 30 AS CartonPerPallet, 1 AS PackageVolume, NoExpiryDate AS Shelflife, NULL AS Remarks, 0 AS Discontinue, 0 AS InActive " + "\r\n";
+            queryString = queryString + "           FROM            BPFillingSystem.dbo.ListProductName " + "\r\n";
+            queryString = queryString + "           WHERE           ProductID NOT IN (SELECT CommodityID FROM Commodities) " + "\r\n";
+            queryString = queryString + "       SET IDENTITY_INSERT Commodities OFF " + "\r\n";
+
+            queryString = queryString + "       UPDATE      Commodities " + "\r\n";
+            queryString = queryString + "       SET         Commodities.Code = ListProductName.ProductCode, " + "\r\n";
+            queryString = queryString + "                   Commodities.OfficialCode = ListProductName.ProductCodeOriginal, " + "\r\n";
+            queryString = queryString + "                   Commodities.Name = ListProductName.ProductName, " + "\r\n";
+            queryString = queryString + "                   Commodities.OfficialName = ListProductName.ProductName, " + "\r\n";
+            queryString = queryString + "                   Commodities.PackPerCarton = ListProductName.NoItemPerCarton, " + "\r\n";
+            queryString = queryString + "                   Commodities.Shelflife = ListProductName.NoExpiryDate, " + "\r\n";
+            queryString = queryString + "                   Commodities.FillingLineIDs = IIF(ListProductName.IsPailLabel = 1, '2', '0') " + "\r\n";
+            queryString = queryString + "       FROM        Commodities INNER JOIN BPFillingSystem.dbo.ListProductName AS ListProductName ON Commodities.CommodityID = ListProductName.ProductID " + "\r\n";
+            
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("ImportCommodities", queryString);
+        }
+
         private void GetCommodityBases()
         {
             this.totalSmartCodingEntities.CreateStoredProcedure("GetCommodityBases", this.GetCommodityBUILD(0));
@@ -108,7 +141,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Commons
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
-            queryString = queryString + "       SELECT      Commodities.CommodityID, Commodities.Code, Commodities.Name, Commodities.Unit, Commodities.APICode, Commodities.Volume, Commodities.PackageSize, Commodities.PackageVolume, Commodities.FillingLineIDs, Commodities.CommodityCategoryID, CommodityCategories.Name AS CommodityCategoryName " + "\r\n";
+            queryString = queryString + "       SELECT      Commodities.CommodityID, Commodities.Code, Commodities.OfficialCode, Commodities.Name, Commodities.Code + '    [' + Commodities.OfficialCode + ']' AS DisplayCode, Commodities.Unit, Commodities.APICode, Commodities.Volume, Commodities.PackageSize, Commodities.PackageVolume, Commodities.FillingLineIDs, Commodities.CommodityCategoryID, CommodityCategories.Name AS CommodityCategoryName " + "\r\n";
             queryString = queryString + "       FROM        Commodities " + "\r\n";
             queryString = queryString + "                   INNER JOIN CommodityCategories ON Commodities.CommodityCategoryID = CommodityCategories.CommodityCategoryID " + "\r\n";
             queryString = queryString + "       WHERE       " + (switchID == 0 ? "InActive = 0" : (switchID == 1 ? "CommodityID = @CommodityID" : "Code = @Code")) + "\r\n";

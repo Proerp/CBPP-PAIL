@@ -5465,6 +5465,8 @@
           <Property Type="String" Name="FillingLineIDs" Nullable="true" MaxLength="60" />
           <Property Type="Int32" Name="CommodityCategoryID" Nullable="false" />
           <Property Type="String" Name="CommodityCategoryName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="OfficialCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DisplayCode" Nullable="false" MaxLength="106" />
           </ComplexType>
         <ComplexType Name="PickupIndex">
           <Property Type="Int32" Name="PickupID" Nullable="false" />
@@ -9355,6 +9357,8 @@
                 <ScalarProperty Name="FillingLineIDs" ColumnName="FillingLineIDs" />
                 <ScalarProperty Name="CommodityCategoryID" ColumnName="CommodityCategoryID" />
                 <ScalarProperty Name="CommodityCategoryName" ColumnName="CommodityCategoryName" />
+                <ScalarProperty Name="OfficialCode" ColumnName="OfficialCode" />
+                <ScalarProperty Name="DisplayCode" ColumnName="DisplayCode" />
                 </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -11586,6 +11590,8 @@
                 <ScalarProperty Name="FillingLineIDs" ColumnName="FillingLineIDs" />
                 <ScalarProperty Name="CommodityCategoryID" ColumnName="CommodityCategoryID" />
                 <ScalarProperty Name="CommodityCategoryName" ColumnName="CommodityCategoryName" />
+                <ScalarProperty Name="OfficialCode" ColumnName="OfficialCode" />
+                <ScalarProperty Name="DisplayCode" ColumnName="DisplayCode" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -11603,6 +11609,8 @@
                 <ScalarProperty Name="FillingLineIDs" ColumnName="FillingLineIDs" />
                 <ScalarProperty Name="CommodityCategoryID" ColumnName="CommodityCategoryID" />
                 <ScalarProperty Name="CommodityCategoryName" ColumnName="CommodityCategoryName" />
+                <ScalarProperty Name="OfficialCode" ColumnName="OfficialCode" />
+                <ScalarProperty Name="DisplayCode" ColumnName="DisplayCode" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

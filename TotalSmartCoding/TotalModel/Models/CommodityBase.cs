@@ -24,5 +24,7 @@ namespace TotalModel.Models
         public string FillingLineIDs { get; set; }
         public int CommodityCategoryID { get; set; }
         public string CommodityCategoryName { get; set; }
+        public string OfficialCode { get; set; }
+        public string DisplayCode { get; set; }
     }
 }
