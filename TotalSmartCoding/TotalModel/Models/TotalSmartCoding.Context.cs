@@ -3373,5 +3373,60 @@ namespace TotalModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateLegalNotice", legalNoticeParameter);
         }
+    
+        public virtual int BatchExtendedUpdate(Nullable<int> batchID, string batchPackNo, string batchCartonNo, string batchPalletNo)
+        {
+            var batchIDParameter = batchID.HasValue ?
+                new ObjectParameter("BatchID", batchID) :
+                new ObjectParameter("BatchID", typeof(int));
+    
+            var batchPackNoParameter = batchPackNo != null ?
+                new ObjectParameter("BatchPackNo", batchPackNo) :
+                new ObjectParameter("BatchPackNo", typeof(string));
+    
+            var batchCartonNoParameter = batchCartonNo != null ?
+                new ObjectParameter("BatchCartonNo", batchCartonNo) :
+                new ObjectParameter("BatchCartonNo", typeof(string));
+    
+            var batchPalletNoParameter = batchPalletNo != null ?
+                new ObjectParameter("BatchPalletNo", batchPalletNo) :
+                new ObjectParameter("BatchPalletNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("BatchExtendedUpdate", batchIDParameter, batchPackNoParameter, batchCartonNoParameter, batchPalletNoParameter);
+        }
+    
+        public virtual ObjectResult<BatchMaxNoByCode> GetBatchMaxNoByCode(Nullable<int> fillingLineID, Nullable<int> commodityID, string code)
+        {
+            var fillingLineIDParameter = fillingLineID.HasValue ?
+                new ObjectParameter("FillingLineID", fillingLineID) :
+                new ObjectParameter("FillingLineID", typeof(int));
+    
+            var commodityIDParameter = commodityID.HasValue ?
+                new ObjectParameter("CommodityID", commodityID) :
+                new ObjectParameter("CommodityID", typeof(int));
+    
+            var codeParameter = code != null ?
+                new ObjectParameter("Code", code) :
+                new ObjectParameter("Code", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNoByCode>("GetBatchMaxNoByCode", fillingLineIDParameter, commodityIDParameter, codeParameter);
+        }
+    
+        public virtual ObjectResult<BatchMaxNoByEntryMonthID> GetBatchMaxNoByEntryMonthID(Nullable<int> fillingLineID, Nullable<int> commodityID, Nullable<int> entryMonthID)
+        {
+            var fillingLineIDParameter = fillingLineID.HasValue ?
+                new ObjectParameter("FillingLineID", fillingLineID) :
+                new ObjectParameter("FillingLineID", typeof(int));
+    
+            var commodityIDParameter = commodityID.HasValue ?
+                new ObjectParameter("CommodityID", commodityID) :
+                new ObjectParameter("CommodityID", typeof(int));
+    
+            var entryMonthIDParameter = entryMonthID.HasValue ?
+                new ObjectParameter("EntryMonthID", entryMonthID) :
+                new ObjectParameter("EntryMonthID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNoByEntryMonthID>("GetBatchMaxNoByEntryMonthID", fillingLineIDParameter, commodityIDParameter, entryMonthIDParameter);
+        }
     }
 }

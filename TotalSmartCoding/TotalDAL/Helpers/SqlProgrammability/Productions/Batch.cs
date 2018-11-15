@@ -28,8 +28,9 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
             this.BatchInitReference();
 
-
+            this.GetBatchMaxNo();
             this.BatchCommonUpdate();
+            this.BatchExtendedUpdate();
         }
 
 
@@ -124,6 +125,29 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
         }
 
 
+        private void GetBatchMaxNo()
+        {
+            string querySELECT = "              SELECT      MAX(NextPackNo) AS NextPackNo, MAX(BatchPackNo) AS BatchPackNo, MAX(NextCartonNo) AS NextCartonNo, MAX(BatchCartonNo) AS BatchCartonNo, MAX(NextPalletNo) AS NextPalletNo, MAX(BatchPalletNo) AS BatchPalletNo " + "\r\n";
+            querySELECT = querySELECT + "       FROM        Batches " + "\r\n";
+            querySELECT = querySELECT + "       WHERE       FillingLineID = @FillingLineID AND CommodityID = @CommodityID " + "\r\n";
+
+            string queryString = "  @FillingLineID int, @CommodityID int, @EntryMonthID int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "       " + querySELECT + "\r\n";
+            queryString = queryString + "       " + querySELECT + " AND EntryMonthID = @EntryMonthID " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("GetBatchMaxNoByEntryMonthID", queryString);
+
+            queryString = "         @FillingLineID int, @CommodityID int, @Code nvarchar(20) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "       " + querySELECT + "\r\n";
+            queryString = queryString + "       " + querySELECT + " AND Code = @Code " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("GetBatchMaxNoByCode", queryString);
+        }
+
         private void BatchCommonUpdate()
         {
             string queryString = " @BatchID int, @NextPackNo nvarchar(10), @NextCartonNo nvarchar(10), @NextPalletNo nvarchar(10) " + "\r\n";
@@ -134,6 +158,18 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "       WHERE       BatchID = @BatchID " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("BatchCommonUpdate", queryString);
+        }
+
+        private void BatchExtendedUpdate()
+        {
+            string queryString = " @BatchID int, @BatchPackNo nvarchar(10), @BatchCartonNo nvarchar(10), @BatchPalletNo nvarchar(10) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "       UPDATE      Batches" + "\r\n";
+            queryString = queryString + "       SET         BatchPackNo = CASE WHEN @BatchPackNo != '' THEN @BatchPackNo ELSE BatchPackNo END, BatchCartonNo = CASE WHEN @BatchCartonNo != '' THEN @BatchCartonNo ELSE BatchCartonNo END, BatchPalletNo = CASE WHEN @BatchPalletNo != '' THEN @BatchPalletNo ELSE BatchPalletNo END " + "\r\n";
+            queryString = queryString + "       WHERE       BatchID = @BatchID " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("BatchExtendedUpdate", queryString);
         }
 
 
