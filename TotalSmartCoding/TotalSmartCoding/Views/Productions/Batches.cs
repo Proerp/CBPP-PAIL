@@ -88,6 +88,9 @@ namespace TotalSmartCoding.Views.Productions
 
             if (propertyName == "EntryDate")
                 this.batchViewModel.EntryMonthID = CommonExpressions.GetEntryMonthID(this.batchViewModel.EntryDate);
+
+            if (propertyName == "EntryMonthID")
+                ExceptionHandlers.ShowExceptionMessageBox(this, "TEST");
         }
 
         protected override void InitializeTabControl()
@@ -131,6 +134,10 @@ namespace TotalSmartCoding.Views.Productions
         Binding bindingNextCartonNo;
         Binding bindingNextPalletNo;
 
+        Binding bindingBatchPackNo;
+        Binding bindingBatchCartonNo;
+        Binding bindingBatchPalletNo;
+
         Binding bindingFinalCartonNo;
 
         Binding bindingAutoBarcode;
@@ -150,6 +157,11 @@ namespace TotalSmartCoding.Views.Productions
             this.bindingNextPackNo = this.textexNextPackNo.DataBindings.Add("Text", this.batchViewModel, "NextPackNo", true, DataSourceUpdateMode.OnPropertyChanged);
             this.bindingNextCartonNo = this.textexNextCartonNo.DataBindings.Add("Text", this.batchViewModel, "NextCartonNo", true, DataSourceUpdateMode.OnPropertyChanged);
             this.bindingNextPalletNo = this.textexNextPalletNo.DataBindings.Add("Text", this.batchViewModel, "NextPalletNo", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            this.bindingBatchPackNo = this.textexBatchPackNo.DataBindings.Add("Text", this.batchViewModel, "BatchPackNo", true, DataSourceUpdateMode.OnPropertyChanged);
+            this.bindingBatchCartonNo = this.textexBatchCartonNo.DataBindings.Add("Text", this.batchViewModel, "BatchCartonNo", true, DataSourceUpdateMode.OnPropertyChanged);
+            this.bindingBatchPalletNo = this.textexBatchPalletNo.DataBindings.Add("Text", this.batchViewModel, "BatchPalletNo", true, DataSourceUpdateMode.OnPropertyChanged);
+
             this.bindingFinalCartonNo = this.textexFinalCartonNo.DataBindings.Add("Text", this.batchViewModel, "FinalCartonNo", true, DataSourceUpdateMode.OnPropertyChanged);
 
             this.bindingAutoCarton = this.checkAutoCarton.DataBindings.Add("Checked", this.batchViewModel, "AutoCarton", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -177,7 +189,12 @@ namespace TotalSmartCoding.Views.Productions
             this.bindingNextCartonNo.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
             this.bindingNextPalletNo.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
 
+            this.bindingBatchPackNo.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
+            this.bindingBatchCartonNo.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
+            this.bindingBatchPalletNo.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
+
             this.bindingFinalCartonNo.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
+
             this.bindingAutoBarcode.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
             this.bindingAutoCarton.BindingComplete += new BindingCompleteEventHandler(CommonControl_BindingComplete);
 
