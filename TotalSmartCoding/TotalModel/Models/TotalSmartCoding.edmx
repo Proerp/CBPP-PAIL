@@ -5334,12 +5334,12 @@
             <Parameter Name="BatchCartonNo" Mode="In" Type="String" />
             <Parameter Name="BatchPalletNo" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetBatchMaxNoByCode" ReturnType="Collection(TotalSmartCodingModel.BatchMaxNoByCode)">
+          <FunctionImport Name="GetBatchMaxNoByCode" ReturnType="Collection(TotalSmartCodingModel.BatchMaxNo)">
             <Parameter Name="FillingLineID" Mode="In" Type="Int32" />
             <Parameter Name="CommodityID" Mode="In" Type="Int32" />
             <Parameter Name="Code" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetBatchMaxNoByEntryMonthID" ReturnType="Collection(TotalSmartCodingModel.BatchMaxNoByEntryMonthID)">
+          <FunctionImport Name="GetBatchMaxNoByEntryMonthID" ReturnType="Collection(TotalSmartCodingModel.BatchMaxNo)">
             <Parameter Name="FillingLineID" Mode="In" Type="Int32" />
             <Parameter Name="CommodityID" Mode="In" Type="Int32" />
             <Parameter Name="EntryMonthID" Mode="In" Type="Int32" />
@@ -9191,15 +9191,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="BatchMaxNoByCode">
-          <Property Type="String" Name="NextPackNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchPackNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="NextCartonNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchCartonNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="NextPalletNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchPalletNo" Nullable="true" MaxLength="10" />
-        </ComplexType>
-        <ComplexType Name="BatchMaxNoByEntryMonthID">
+        <ComplexType Name="BatchMaxNo">
           <Property Type="String" Name="NextPackNo" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="BatchPackNo" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="NextCartonNo" Nullable="true" MaxLength="10" />
@@ -12162,7 +12154,7 @@
           <FunctionImportMapping FunctionImportName="BatchExtendedUpdate" FunctionName="TotalSmartCodingModel.Store.BatchExtendedUpdate" />
           <FunctionImportMapping FunctionImportName="GetBatchMaxNoByCode" FunctionName="TotalSmartCodingModel.Store.GetBatchMaxNoByCode">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="TotalSmartCodingModel.BatchMaxNoByCode">
+              <ComplexTypeMapping TypeName="TotalSmartCodingModel.BatchMaxNo">
                 <ScalarProperty Name="NextPackNo" ColumnName="NextPackNo" />
                 <ScalarProperty Name="BatchPackNo" ColumnName="BatchPackNo" />
                 <ScalarProperty Name="NextCartonNo" ColumnName="NextCartonNo" />
@@ -12174,7 +12166,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetBatchMaxNoByEntryMonthID" FunctionName="TotalSmartCodingModel.Store.GetBatchMaxNoByEntryMonthID">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="TotalSmartCodingModel.BatchMaxNoByEntryMonthID">
+              <ComplexTypeMapping TypeName="TotalSmartCodingModel.BatchMaxNo">
                 <ScalarProperty Name="NextPackNo" ColumnName="NextPackNo" />
                 <ScalarProperty Name="BatchPackNo" ColumnName="BatchPackNo" />
                 <ScalarProperty Name="NextCartonNo" ColumnName="NextCartonNo" />

@@ -29,5 +29,20 @@ namespace TotalService.Productions
                 return false;
             }
         }
+
+        public bool ExtendedUpdate(int batchID, string batchPackNo, string batchCartonNo, string batchPalletNo)
+        {
+            try
+            {
+                this.batchRepository.ExtendedUpdate(batchID, batchPackNo, batchCartonNo, batchPalletNo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                this.ServiceTag = ex.Message;
+                return false;
+            }
+        }
+
     }
 }

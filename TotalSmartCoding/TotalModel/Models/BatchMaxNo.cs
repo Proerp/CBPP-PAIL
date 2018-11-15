@@ -11,7 +11,7 @@ namespace TotalModel.Models
 {
     using System;
     
-    public partial class BatchMaxNoByCode
+    public partial class BatchMaxNo
     {
         public string NextPackNo { get; set; }
         public string BatchPackNo { get; set; }

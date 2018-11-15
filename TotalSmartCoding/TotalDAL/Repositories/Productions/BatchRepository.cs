@@ -22,6 +22,11 @@ namespace TotalDAL.Repositories.Productions
         {
             this.TotalSmartCodingEntities.BatchCommonUpdate(batchID, nextPackNo, nextCartonNo, nextPalletNo);
         }
+
+        public void ExtendedUpdate(int batchID, string batchPackNo, string batchCartonNo, string batchPalletNo)
+        {
+            this.TotalSmartCodingEntities.BatchExtendedUpdate(batchID, batchPackNo, batchCartonNo, batchPalletNo);
+        }
     }
 
 
@@ -43,6 +48,16 @@ namespace TotalDAL.Repositories.Productions
             ObjectParameter[] baseParameters = base.GetEntityIndexParameters(userID, fromDate, toDate);
 
             return new ObjectParameter[] { baseParameters[0], baseParameters[1], baseParameters[2], new ObjectParameter("FillingLineID", (int)GlobalVariables.FillingLineID), new ObjectParameter("ActiveOption", (int)(this.RepositoryBag["ActiveOption"] != null ? this.RepositoryBag["ActiveOption"] : GlobalEnums.ActiveOption.Both)) };
+        }
+
+        public List<BatchMaxNo> GetBatchMaxNoByCode(int? fillingLineID, int? commodityID, string code)
+        {
+            return base.TotalSmartCodingEntities.GetBatchMaxNoByCode(fillingLineID, commodityID, code).ToList();
+        }
+
+        public List<BatchMaxNo> GetBatchMaxNoByEntryMonthID(int? fillingLineID, int? commodityID, int? entryMonthID)
+        {
+            return base.TotalSmartCodingEntities.GetBatchMaxNoByEntryMonthID(fillingLineID, commodityID, entryMonthID).ToList();
         }
 
         public List<BatchAvailable> GetBatchAvailables(int? locationID, int? deliveryAdviceID, int? transferOrderID, int? commodityID, bool withNullRow)

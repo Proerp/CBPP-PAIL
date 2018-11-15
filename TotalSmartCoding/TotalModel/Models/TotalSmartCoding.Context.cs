@@ -3395,7 +3395,7 @@ namespace TotalModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("BatchExtendedUpdate", batchIDParameter, batchPackNoParameter, batchCartonNoParameter, batchPalletNoParameter);
         }
     
-        public virtual ObjectResult<BatchMaxNoByCode> GetBatchMaxNoByCode(Nullable<int> fillingLineID, Nullable<int> commodityID, string code)
+        public virtual ObjectResult<BatchMaxNo> GetBatchMaxNoByCode(Nullable<int> fillingLineID, Nullable<int> commodityID, string code)
         {
             var fillingLineIDParameter = fillingLineID.HasValue ?
                 new ObjectParameter("FillingLineID", fillingLineID) :
@@ -3409,10 +3409,10 @@ namespace TotalModel.Models
                 new ObjectParameter("Code", code) :
                 new ObjectParameter("Code", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNoByCode>("GetBatchMaxNoByCode", fillingLineIDParameter, commodityIDParameter, codeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNo>("GetBatchMaxNoByCode", fillingLineIDParameter, commodityIDParameter, codeParameter);
         }
     
-        public virtual ObjectResult<BatchMaxNoByEntryMonthID> GetBatchMaxNoByEntryMonthID(Nullable<int> fillingLineID, Nullable<int> commodityID, Nullable<int> entryMonthID)
+        public virtual ObjectResult<BatchMaxNo> GetBatchMaxNoByEntryMonthID(Nullable<int> fillingLineID, Nullable<int> commodityID, Nullable<int> entryMonthID)
         {
             var fillingLineIDParameter = fillingLineID.HasValue ?
                 new ObjectParameter("FillingLineID", fillingLineID) :
@@ -3426,7 +3426,7 @@ namespace TotalModel.Models
                 new ObjectParameter("EntryMonthID", entryMonthID) :
                 new ObjectParameter("EntryMonthID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNoByEntryMonthID>("GetBatchMaxNoByEntryMonthID", fillingLineIDParameter, commodityIDParameter, entryMonthIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNo>("GetBatchMaxNoByEntryMonthID", fillingLineIDParameter, commodityIDParameter, entryMonthIDParameter);
         }
     }
 }
