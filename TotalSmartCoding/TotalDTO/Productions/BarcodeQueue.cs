@@ -378,9 +378,11 @@ namespace TotalDTO.Productions
                         dataRow = barcodeTable.NewRow(); //add row for each sub queue
                         for (int i = 0; i < maxSubQueueCount; i++)
                         {//Zero base queue element
-                            if (subQueue.Count > i) dataRow[i] = subQueue.ElementAt<TBarcodeDTO>(i).Label + GlobalVariables.doubleTabChar + GlobalVariables.doubleTabChar + subQueue.ElementAt<TBarcodeDTO>(i).GetID(); //Fill data row
+                            string label = subQueue.ElementAt<TBarcodeDTO>(i).Label;
+                            if (label.Length > 10) label = label.Substring(label.Length - 10, 10);
+                            if (subQueue.Count > i) dataRow[i] = label + GlobalVariables.doubleTabChar + GlobalVariables.doubleTabChar + subQueue.ElementAt<TBarcodeDTO>(i).GetID(); //Fill data row
                         }
-                        barcodeTable.Rows.Add(dataRow);
+                        barcodeTable.Rows.InsertAt(dataRow, 0);
                     }
                 }
             }

@@ -564,6 +564,8 @@ namespace TotalSmartCoding.Views.Productions
                     if (e.PropertyName == "CartonPendingQueue")
                     {
                         this.dgvCartonPendingQueue.DataSource = this.scannerController.GetCartonPendingQueue();
+
+                        if (this.dgvCartonPendingQueue.Rows.Count >= 2) { this.dgvCartonPendingQueue.Rows[0].Height = 80; }
                         if (this.dgvCartonPendingQueue.Rows.Count > 1) this.dgvCartonPendingQueue.CurrentCell = this.dgvCartonPendingQueue.Rows[0].Cells[0];
 
                         this.buttonCartonPendingQueueCount.Text = "[" + this.scannerController.CartonPendingQueueCount.ToString("N0") + "]";
@@ -573,6 +575,8 @@ namespace TotalSmartCoding.Views.Productions
                     if (e.PropertyName == "CartonQueue")
                     {
                         this.dgvCartonQueue.DataSource = this.scannerController.GetCartonQueue();
+
+                        if (this.dgvCartonQueue.Rows.Count >= 2) { this.dgvCartonQueue.Rows[0].Height = 80; }
                         if (this.dgvCartonQueue.Rows.Count > 1) this.dgvCartonQueue.CurrentCell = this.dgvCartonQueue.Rows[0].Cells[0];
 
                         this.buttonCartonQueueCount.Text = "[" + this.scannerController.CartonQueueCount.ToString("N0") + "]";
@@ -732,6 +736,8 @@ namespace TotalSmartCoding.Views.Productions
                                 printedBarcode = printedBarcode.Substring(0, indexOfDoubleTabChar);
                         }
                 }
+                else
+                    printedBarcode = printedBarcode.Substring(0, indexOfDoubleTabChar);
             }
 
             //////--BP CASTROL
