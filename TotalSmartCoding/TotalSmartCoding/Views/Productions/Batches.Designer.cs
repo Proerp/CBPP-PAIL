@@ -65,6 +65,8 @@
             this.buttonDiscontinued = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.comboDiscontinued = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.iconNewMonth = new System.Windows.Forms.ToolStripButton();
             this.naviBarMaster = new Guifreaks.Navisuite.NaviBar(this.components);
             this.naviBand1 = new Guifreaks.Navisuite.NaviBand(this.components);
             this.fastBatchIndex = new BrightIdeasSoftware.FastObjectListView();
@@ -82,6 +84,7 @@
             this.olvNextPalletNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvBatchPalletNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvIsDefault = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.timerEverySecond = new System.Windows.Forms.Timer(this.components);
             this.layoutMaster.SuspendLayout();
             this.toolStripChildForm.SuspendLayout();
             this.naviBarMaster.SuspendLayout();
@@ -509,10 +512,12 @@
             this.toolStripSeparator2,
             this.buttonDiscontinued,
             this.toolStripLabel1,
-            this.comboDiscontinued});
+            this.comboDiscontinued,
+            this.toolStripLabel2,
+            this.iconNewMonth});
             this.toolStripChildForm.Location = new System.Drawing.Point(0, 0);
             this.toolStripChildForm.Name = "toolStripChildForm";
-            this.toolStripChildForm.Size = new System.Drawing.Size(982, 45);
+            this.toolStripChildForm.Size = new System.Drawing.Size(957, 39);
             this.toolStripChildForm.TabIndex = 29;
             this.toolStripChildForm.Text = "toolStrip1";
             this.toolStripChildForm.Visible = false;
@@ -520,7 +525,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 45);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
             // buttonApply
             // 
@@ -528,14 +533,14 @@
             this.buttonApply.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.buttonApply.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(171, 42);
+            this.buttonApply.Size = new System.Drawing.Size(171, 36);
             this.buttonApply.Text = "Applying for Production";
             this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 45);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
             // 
             // buttonDiscontinued
             // 
@@ -543,14 +548,14 @@
             this.buttonDiscontinued.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.buttonDiscontinued.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonDiscontinued.Name = "buttonDiscontinued";
-            this.buttonDiscontinued.Size = new System.Drawing.Size(113, 42);
+            this.buttonDiscontinued.Size = new System.Drawing.Size(113, 36);
             this.buttonDiscontinued.Text = "Discontinued";
             this.buttonDiscontinued.Click += new System.EventHandler(this.buttonDiscontinued_Click);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(25, 42);
+            this.toolStripLabel1.Size = new System.Drawing.Size(25, 36);
             this.toolStripLabel1.Text = "      ";
             // 
             // comboDiscontinued
@@ -561,8 +566,22 @@
             "Don\'t show discontinued batches",
             "Show discontinued batches"});
             this.comboDiscontinued.Name = "comboDiscontinued";
-            this.comboDiscontinued.Size = new System.Drawing.Size(204, 45);
+            this.comboDiscontinued.Size = new System.Drawing.Size(180, 39);
             this.comboDiscontinued.SelectedIndexChanged += new System.EventHandler(this.comboDiscontinued_SelectedIndexChanged);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(25, 36);
+            this.toolStripLabel2.Text = "      ";
+            // 
+            // iconNewMonth
+            // 
+            this.iconNewMonth.Image = global::TotalSmartCoding.Properties.Resources.Martz90_Circle_Addon2_Warning;
+            this.iconNewMonth.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.iconNewMonth.Name = "iconNewMonth";
+            this.iconNewMonth.Size = new System.Drawing.Size(97, 36);
+            this.iconNewMonth.Text = "New month!";
             // 
             // naviBarMaster
             // 
@@ -766,6 +785,12 @@
             this.olvIsDefault.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.olvIsDefault.Width = 24;
             // 
+            // timerEverySecond
+            // 
+            this.timerEverySecond.Enabled = true;
+            this.timerEverySecond.Interval = 1000;
+            this.timerEverySecond.Tick += new System.EventHandler(this.timerEverySecond_Tick);
+            // 
             // Batches
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -848,6 +873,9 @@
         private BrightIdeasSoftware.OLVColumn olvBatchCartonNo;
         private BrightIdeasSoftware.OLVColumn olvBatchPalletNo;
         private BrightIdeasSoftware.OLVColumn olvCommodityOfficialCode;
+        private System.Windows.Forms.ToolStripButton iconNewMonth;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.Timer timerEverySecond;
 
     }
 }

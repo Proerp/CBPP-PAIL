@@ -304,6 +304,17 @@ namespace TotalSmartCoding.Views.Productions
             return !this.batchViewModel.IsDefault;
         }
 
+        private void timerEverySecond_Tick(object sender, EventArgs e)
+        {
+            if (this.batchViewModel != null)
+            {
+                if (this.batchViewModel.EntryMonthID != CommonExpressions.GetEntryMonthID())
+                    this.iconNewMonth.Visible = !this.iconNewMonth.Visible;
+                else
+                    this.iconNewMonth.Visible = false;
+            }
+        }
+
 
     }
 }
