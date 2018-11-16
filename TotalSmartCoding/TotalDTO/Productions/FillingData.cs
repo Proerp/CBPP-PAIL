@@ -203,6 +203,13 @@ namespace TotalDTO.Productions
         public string SettingDateShortDateFormat { get { return this.settingDate.ToShortDateString(); } }
 
 
+        private int entryMonthID;
+        public int EntryMonthID
+        {
+            get { return this.entryMonthID; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, int>(ref this.entryMonthID, o => o.EntryMonthID, value); }
+        }
+
         //-------------------------
 
         public string NextDigitNo

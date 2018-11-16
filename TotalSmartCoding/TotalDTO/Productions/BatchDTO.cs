@@ -49,7 +49,7 @@ namespace TotalDTO.Productions
 
 
         private int entryMonthID;
-        public int EntryMonthID   //ResetSerialNumber
+        public int EntryMonthID
         {
             get { return this.entryMonthID; }
             set { ApplyPropertyChange<BatchPrimitiveDTO, int>(ref this.entryMonthID, o => o.EntryMonthID, value); }

@@ -459,18 +459,18 @@ namespace TotalSmartCoding.Views.Productions
         {
             try
             {
-                //this.textBoxSettingDate.TextBox.Text = DateTime.Now.ToString("dd/MM/yy");
-                //if (this.fillingData != null)
-                //{
-                //if (this.fillingData.SettingMonthID != 1) //GlobalStaticFunction.DateToContinuosMonth()
-                //{
-                //    this.toolStripButtonWarningNewMonth.Visible = !this.toolStripButtonWarningNewMonth.Visible; this.toolStripLabelWarningNewMonth.Visible = !this.toolStripLabelWarningNewMonth.Visible;
-                //}
-                //else
-                //{
-                //    this.toolStripButtonWarningNewMonth.Visible = false; this.toolStripLabelWarningNewMonth.Visible = false;
-                //}
-                //}
+                //this.fillingData.SettingDate = DateTime.Now; //NOT CHANGE. KEEP SettingDate AS THE DATE AT LOGON
+                if (this.fillingData != null)
+                {
+                    if (this.fillingData.EntryMonthID != CommonExpressions.GetEntryMonthID())
+                    {
+                        this.toolStripButtonWarningNewMonth.Visible = !this.toolStripButtonWarningNewMonth.Visible; this.toolStripLabelWarningNewMonth.Visible = !this.toolStripLabelWarningNewMonth.Visible;
+                    }
+                    else
+                    {
+                        this.toolStripButtonWarningNewMonth.Visible = false; this.toolStripLabelWarningNewMonth.Visible = false;
+                    }
+                }
             }
             catch (Exception exception)
             {
