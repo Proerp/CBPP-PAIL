@@ -40,5 +40,8 @@ namespace TotalModel.Models
         public string FinalCartonNo { get; set; }
         public decimal PackageVolume { get; set; }
         public bool AutoCarton { get; set; }
+        public string BatchPackNo { get; set; }
+        public string BatchCartonNo { get; set; }
+        public string BatchPalletNo { get; set; }
     }
 }

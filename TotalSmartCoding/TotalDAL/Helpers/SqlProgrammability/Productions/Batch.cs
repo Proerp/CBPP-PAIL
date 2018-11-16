@@ -44,7 +44,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "    BEGIN " + "\r\n";
 
             queryString = queryString + "       SELECT      Batches.BatchID, CAST(Batches.EntryDate AS DATE) AS EntryDate, Batches.Reference, Batches.Code AS BatchCode, Batches.FillingLineID, Batches.CommodityID, Commodities.Code AS CommodityCode, Commodities.OfficialCode AS CommodityOfficialCode, Commodities.Name AS CommodityName, Commodities.APICode AS CommodityAPICode, Commodities.Volume, Commodities.PackageVolume, Commodities.PackPerCarton, Commodities.CartonPerPallet, Commodities.Shelflife, " + "\r\n";
-            queryString = queryString + "                   Batches.NextPackNo, Batches.NextCartonNo, Batches.NextPalletNo, Batches.FinalCartonNo, Batches.AutoBarcode, Batches.AutoCarton, Batches.Description, Batches.Remarks, Batches.CreatedDate, Batches.EditedDate, Batches.IsDefault, Batches.InActive " + "\r\n";
+            queryString = queryString + "                   Batches.NextPackNo, Batches.NextCartonNo, Batches.NextPalletNo, Batches.BatchPackNo, Batches.BatchCartonNo, Batches.BatchPalletNo, Batches.FinalCartonNo, Batches.AutoBarcode, Batches.AutoCarton, Batches.Description, Batches.Remarks, Batches.CreatedDate, Batches.EditedDate, Batches.IsDefault, Batches.InActive " + "\r\n";
             queryString = queryString + "       FROM        Batches INNER JOIN " + "\r\n";
             queryString = queryString + "                   Commodities ON Batches.FillingLineID = @FillingLineID AND (@ActiveOption = " + (int)GlobalEnums.ActiveOption.Both + " OR Batches.InActive = @ActiveOption) AND ((Batches.EntryDate >= @FromDate AND Batches.EntryDate <= @ToDate) OR Batches.IsDefault = 1) AND Batches.CommodityID = Commodities.CommodityID " + "\r\n";
 
@@ -129,12 +129,11 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
         {
             string querySELECT = "              SELECT      MAX(NextPackNo) AS NextPackNo, MAX(BatchPackNo) AS BatchPackNo, MAX(NextCartonNo) AS NextCartonNo, MAX(BatchCartonNo) AS BatchCartonNo, MAX(NextPalletNo) AS NextPalletNo, MAX(BatchPalletNo) AS BatchPalletNo " + "\r\n";
             querySELECT = querySELECT + "       FROM        Batches " + "\r\n";
-            querySELECT = querySELECT + "       WHERE       FillingLineID = @FillingLineID AND CommodityID = @CommodityID " + "\r\n";
+            querySELECT = querySELECT + "       WHERE       FillingLineID = @FillingLineID AND CommodityID = @CommodityID ";
 
             string queryString = "  @FillingLineID int, @CommodityID int, @EntryMonthID int " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
-            queryString = queryString + "       " + querySELECT + "\r\n";
             queryString = queryString + "       " + querySELECT + " AND EntryMonthID = @EntryMonthID " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("GetBatchMaxNoByEntryMonthID", queryString);
@@ -142,7 +141,6 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = "         @FillingLineID int, @CommodityID int, @Code nvarchar(20) " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
-            queryString = queryString + "       " + querySELECT + "\r\n";
             queryString = queryString + "       " + querySELECT + " AND Code = @Code " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("GetBatchMaxNoByCode", queryString);

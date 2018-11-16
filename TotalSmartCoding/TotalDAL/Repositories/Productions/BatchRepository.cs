@@ -50,12 +50,12 @@ namespace TotalDAL.Repositories.Productions
             return new ObjectParameter[] { baseParameters[0], baseParameters[1], baseParameters[2], new ObjectParameter("FillingLineID", (int)GlobalVariables.FillingLineID), new ObjectParameter("ActiveOption", (int)(this.RepositoryBag["ActiveOption"] != null ? this.RepositoryBag["ActiveOption"] : GlobalEnums.ActiveOption.Both)) };
         }
 
-        public List<BatchMaxNo> GetBatchMaxNoByCode(int? fillingLineID, int? commodityID, string code)
+        public List<BatchMaxNo> GetBatchMaxNo(int? fillingLineID, int? commodityID, string code)
         {
             return base.TotalSmartCodingEntities.GetBatchMaxNoByCode(fillingLineID, commodityID, code).ToList();
         }
 
-        public List<BatchMaxNo> GetBatchMaxNoByEntryMonthID(int? fillingLineID, int? commodityID, int? entryMonthID)
+        public List<BatchMaxNo> GetBatchMaxNo(int? fillingLineID, int? commodityID, int? entryMonthID)
         {
             return base.TotalSmartCodingEntities.GetBatchMaxNoByEntryMonthID(fillingLineID, commodityID, entryMonthID).ToList();
         }

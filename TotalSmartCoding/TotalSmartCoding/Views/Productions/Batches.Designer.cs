@@ -72,11 +72,15 @@
             this.olvEntryDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvBatchCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCommodityCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvCommodityOfficialCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCommodityAPICode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCommodityName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvNextPackNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvBatchPackNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvNextCartonNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvBatchCartonNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvNextPalletNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvBatchPalletNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvIsDefault = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.layoutMaster.SuspendLayout();
             this.toolStripChildForm.SuspendLayout();
@@ -184,7 +188,7 @@
             this.textexBatchPackNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexBatchPackNo.Name = "textexBatchPackNo";
             this.textexBatchPackNo.Size = new System.Drawing.Size(230, 24);
-            this.textexBatchPackNo.TabIndex = 113;
+            this.textexBatchPackNo.TabIndex = 75;
             // 
             // labelBatchCartonNo
             // 
@@ -209,7 +213,7 @@
             this.textexBatchCartonNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexBatchCartonNo.Name = "textexBatchCartonNo";
             this.textexBatchCartonNo.Size = new System.Drawing.Size(230, 24);
-            this.textexBatchCartonNo.TabIndex = 111;
+            this.textexBatchCartonNo.TabIndex = 77;
             // 
             // labelBatchPalletNo
             // 
@@ -234,7 +238,7 @@
             this.textexBatchPalletNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexBatchPalletNo.Name = "textexBatchPalletNo";
             this.textexBatchPalletNo.Size = new System.Drawing.Size(230, 24);
-            this.textexBatchPalletNo.TabIndex = 109;
+            this.textexBatchPalletNo.TabIndex = 80;
             // 
             // checkAutoCarton
             // 
@@ -255,7 +259,7 @@
             this.textexFinalCartonNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexFinalCartonNo.Name = "textexFinalCartonNo";
             this.textexFinalCartonNo.Size = new System.Drawing.Size(230, 24);
-            this.textexFinalCartonNo.TabIndex = 107;
+            this.textexFinalCartonNo.TabIndex = 78;
             // 
             // labelFinalCartonNo
             // 
@@ -419,7 +423,7 @@
             this.textexCommodityName.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexCommodityName.Name = "textexCommodityName";
             this.textexCommodityName.Size = new System.Drawing.Size(230, 24);
-            this.textexCommodityName.TabIndex = 72;
+            this.textexCommodityName.TabIndex = 73;
             // 
             // textexNextPackNo
             // 
@@ -429,7 +433,7 @@
             this.textexNextPackNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexNextPackNo.Name = "textexNextPackNo";
             this.textexNextPackNo.Size = new System.Drawing.Size(230, 24);
-            this.textexNextPackNo.TabIndex = 73;
+            this.textexNextPackNo.TabIndex = 74;
             // 
             // textexNextCartonNo
             // 
@@ -439,7 +443,7 @@
             this.textexNextCartonNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexNextCartonNo.Name = "textexNextCartonNo";
             this.textexNextCartonNo.Size = new System.Drawing.Size(230, 24);
-            this.textexNextCartonNo.TabIndex = 74;
+            this.textexNextCartonNo.TabIndex = 76;
             // 
             // textexNextPalletNo
             // 
@@ -449,7 +453,7 @@
             this.textexNextPalletNo.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexNextPalletNo.Name = "textexNextPalletNo";
             this.textexNextPalletNo.Size = new System.Drawing.Size(230, 24);
-            this.textexNextPalletNo.TabIndex = 75;
+            this.textexNextPalletNo.TabIndex = 79;
             // 
             // textexRemarks
             // 
@@ -459,7 +463,7 @@
             this.textexRemarks.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexRemarks.Name = "textexRemarks";
             this.textexRemarks.Size = new System.Drawing.Size(230, 24);
-            this.textexRemarks.TabIndex = 76;
+            this.textexRemarks.TabIndex = 81;
             // 
             // labelCommodityAPICode
             // 
@@ -482,7 +486,7 @@
             this.textexCommodityAPICode.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.textexCommodityAPICode.Name = "textexCommodityAPICode";
             this.textexCommodityAPICode.Size = new System.Drawing.Size(230, 24);
-            this.textexCommodityAPICode.TabIndex = 78;
+            this.textexCommodityAPICode.TabIndex = 72;
             // 
             // checkAutoBarcode
             // 
@@ -605,11 +609,15 @@
             this.fastBatchIndex.AllColumns.Add(this.olvEntryDate);
             this.fastBatchIndex.AllColumns.Add(this.olvBatchCode);
             this.fastBatchIndex.AllColumns.Add(this.olvCommodityCode);
+            this.fastBatchIndex.AllColumns.Add(this.olvCommodityOfficialCode);
             this.fastBatchIndex.AllColumns.Add(this.olvCommodityAPICode);
             this.fastBatchIndex.AllColumns.Add(this.olvCommodityName);
             this.fastBatchIndex.AllColumns.Add(this.olvNextPackNo);
+            this.fastBatchIndex.AllColumns.Add(this.olvBatchPackNo);
             this.fastBatchIndex.AllColumns.Add(this.olvNextCartonNo);
+            this.fastBatchIndex.AllColumns.Add(this.olvBatchCartonNo);
             this.fastBatchIndex.AllColumns.Add(this.olvNextPalletNo);
+            this.fastBatchIndex.AllColumns.Add(this.olvBatchPalletNo);
             this.fastBatchIndex.AllColumns.Add(this.olvIsDefault);
             this.fastBatchIndex.BackColor = System.Drawing.Color.Ivory;
             this.fastBatchIndex.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -617,11 +625,10 @@
             this.olvEntryDate,
             this.olvBatchCode,
             this.olvCommodityCode,
-            this.olvCommodityAPICode,
+            this.olvCommodityOfficialCode,
             this.olvCommodityName,
-            this.olvNextPackNo,
             this.olvNextCartonNo,
-            this.olvNextPalletNo,
+            this.olvBatchCartonNo,
             this.olvIsDefault});
             this.fastBatchIndex.Cursor = System.Windows.Forms.Cursors.Default;
             this.fastBatchIndex.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -672,10 +679,20 @@
             this.olvCommodityCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.olvCommodityCode.Width = 90;
             // 
+            // olvCommodityOfficialCode
+            // 
+            this.olvCommodityOfficialCode.AspectName = "CommodityOfficialCode";
+            this.olvCommodityOfficialCode.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvCommodityOfficialCode.Text = "Official Code";
+            this.olvCommodityOfficialCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvCommodityOfficialCode.Width = 96;
+            // 
             // olvCommodityAPICode
             // 
             this.olvCommodityAPICode.AspectName = "CommodityAPICode";
+            this.olvCommodityAPICode.DisplayIndex = 4;
             this.olvCommodityAPICode.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvCommodityAPICode.IsVisible = false;
             this.olvCommodityAPICode.Text = "API";
             this.olvCommodityAPICode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.olvCommodityAPICode.Width = 50;
@@ -684,31 +701,63 @@
             // 
             this.olvCommodityName.AspectName = "CommodityName";
             this.olvCommodityName.Text = "Item Name";
-            this.olvCommodityName.Width = 250;
+            this.olvCommodityName.Width = 260;
             // 
             // olvNextPackNo
             // 
             this.olvNextPackNo.AspectName = "NextPackNo";
+            this.olvNextPackNo.DisplayIndex = 6;
             this.olvNextPackNo.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvNextPackNo.Text = "Next Pack";
+            this.olvNextPackNo.IsVisible = false;
+            this.olvNextPackNo.Text = "Monthly Pack";
             this.olvNextPackNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvNextPackNo.Width = 80;
+            this.olvNextPackNo.Width = 88;
+            // 
+            // olvBatchPackNo
+            // 
+            this.olvBatchPackNo.AspectName = "BatchPackNo";
+            this.olvBatchPackNo.DisplayIndex = 7;
+            this.olvBatchPackNo.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchPackNo.IsVisible = false;
+            this.olvBatchPackNo.Text = "Batch Pack";
+            this.olvBatchPackNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchPackNo.Width = 88;
             // 
             // olvNextCartonNo
             // 
             this.olvNextCartonNo.AspectName = "NextCartonNo";
             this.olvNextCartonNo.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvNextCartonNo.Text = "Next Carton";
+            this.olvNextCartonNo.Text = "Monthly Carton";
             this.olvNextCartonNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvNextCartonNo.Width = 80;
+            this.olvNextCartonNo.Width = 96;
+            // 
+            // olvBatchCartonNo
+            // 
+            this.olvBatchCartonNo.AspectName = "BatchCartonNo";
+            this.olvBatchCartonNo.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchCartonNo.Text = "Batch Carton";
+            this.olvBatchCartonNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchCartonNo.Width = 88;
             // 
             // olvNextPalletNo
             // 
             this.olvNextPalletNo.AspectName = "NextPalletNo";
+            this.olvNextPalletNo.DisplayIndex = 10;
             this.olvNextPalletNo.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvNextPalletNo.Text = "Next Pallet";
+            this.olvNextPalletNo.IsVisible = false;
+            this.olvNextPalletNo.Text = "Monthly Pallet";
             this.olvNextPalletNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvNextPalletNo.Width = 80;
+            this.olvNextPalletNo.Width = 88;
+            // 
+            // olvBatchPalletNo
+            // 
+            this.olvBatchPalletNo.AspectName = "BatchPalletNo";
+            this.olvBatchPalletNo.DisplayIndex = 11;
+            this.olvBatchPalletNo.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchPalletNo.IsVisible = false;
+            this.olvBatchPalletNo.Text = "Batch Pallet";
+            this.olvBatchPalletNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchPalletNo.Width = 88;
             // 
             // olvIsDefault
             // 
@@ -795,6 +844,10 @@
         private CustomControls.TextexBox textexBatchCartonNo;
         private System.Windows.Forms.Label labelBatchPalletNo;
         private CustomControls.TextexBox textexBatchPalletNo;
+        private BrightIdeasSoftware.OLVColumn olvBatchPackNo;
+        private BrightIdeasSoftware.OLVColumn olvBatchCartonNo;
+        private BrightIdeasSoftware.OLVColumn olvBatchPalletNo;
+        private BrightIdeasSoftware.OLVColumn olvCommodityOfficialCode;
 
     }
 }

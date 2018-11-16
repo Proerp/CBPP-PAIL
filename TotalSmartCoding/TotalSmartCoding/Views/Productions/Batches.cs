@@ -76,22 +76,6 @@ namespace TotalSmartCoding.Views.Productions
             this.baseDTO = this.batchViewModel;
         }
 
-        protected override void NotifyPropertyChanged(string propertyName)
-        {
-            base.NotifyPropertyChanged(propertyName);
-
-            if (propertyName == "ReadonlyMode")
-            {
-                this.buttonApply.Enabled = this.allQueueEmpty && this.ReadonlyMode;
-                this.buttonDiscontinued.Enabled = this.Newable && this.ReadonlyMode;
-            }
-
-            if (propertyName == "EntryDate")
-                this.batchViewModel.EntryMonthID = CommonExpressions.GetEntryMonthID(this.batchViewModel.EntryDate);
-
-            if (propertyName == "EntryMonthID")
-                ExceptionHandlers.ShowExceptionMessageBox(this, "TEST");
-        }
 
         protected override void InitializeTabControl()
         {
@@ -101,10 +85,10 @@ namespace TotalSmartCoding.Views.Productions
 
                 this.checkAutoBarcode.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail;
                 this.checkAutoCarton.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import;
-                if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Medium4L || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import || (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit)) { this.labelNextPackNo.Visible = false; this.textexNextPackNo.Visible = false; this.labelBatchPackNo.Visible = false; this.textexBatchPackNo.Visible = false; }
+                if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Medium4L || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import || (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit)) { this.labelNextPackNo.Visible = false; this.textexNextPackNo.Visible = false; this.labelBatchPackNo.Visible = false; this.textexBatchPackNo.Visible = false; this.olvNextPackNo.IsVisible = false; ; this.olvBatchPackNo.IsVisible = false; }
                 if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum) { this.labelNextCartonNo.Visible = false; this.textexNextCartonNo.Visible = false; }
                 if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && GlobalEnums.DrumWithDigit) { this.labelNextPalletNo.Visible = false; this.textexNextPalletNo.Visible = false; }
-                if (GlobalEnums.CBPP) { this.labelCommodityAPICode.Visible = false; this.textexCommodityAPICode.Visible = false; this.labelNextPalletNo.Visible = false; this.textexNextPalletNo.Visible = false; this.labelBatchPalletNo.Visible = false; this.textexBatchPalletNo.Visible = false; }
+                if (GlobalEnums.CBPP) { this.labelCommodityAPICode.Visible = false; this.textexCommodityAPICode.Visible = false; this.olvCommodityAPICode.IsVisible = false; this.labelNextPalletNo.Visible = false; this.textexNextPalletNo.Visible = false; this.labelBatchPalletNo.Visible = false; this.textexBatchPalletNo.Visible = false; this.olvNextPalletNo.IsVisible = false; this.olvBatchPalletNo.IsVisible = false; }
 
                 CustomTabControl customTabBatch = new CustomTabControl();
                 //customTabControlCustomerChannel.ImageList = this.imageListTabControl;
@@ -229,6 +213,63 @@ namespace TotalSmartCoding.Views.Productions
             base.Loading();
 
             this.smartCoding.Initialize();
+        }
+
+        protected override void invokeEdit(int? id)
+        {
+            base.invokeEdit(id);
+            
+            this.textexNextPackNo.BackColor = textexCommodityAPICode.BackColor;
+            this.textexNextCartonNo.BackColor = textexCommodityAPICode.BackColor;
+            this.textexNextPalletNo.BackColor = textexCommodityAPICode.BackColor;
+
+            this.textexBatchPackNo.BackColor = textexCommodityAPICode.BackColor;
+            this.textexBatchCartonNo.BackColor = textexCommodityAPICode.BackColor;
+            this.textexBatchPalletNo.BackColor = textexCommodityAPICode.BackColor;
+        }
+
+        protected override void NotifyPropertyChanged(string propertyName)
+        {
+            base.NotifyPropertyChanged(propertyName);
+
+            if (propertyName == "ReadonlyMode")
+            {
+                this.buttonApply.Enabled = this.allQueueEmpty && this.ReadonlyMode;
+                this.buttonDiscontinued.Enabled = this.Newable && this.ReadonlyMode;
+            }
+
+            if (propertyName == "EntryDate") this.batchViewModel.EntryMonthID = CommonExpressions.GetEntryMonthID(this.batchViewModel.EntryDate);
+            if (propertyName == "EntryMonthID") this.GetBatchMaxNo(null, this.batchViewModel.EntryMonthID);
+            if (propertyName == "Code") this.GetBatchMaxNo(this.batchViewModel.Code, null);
+            if (propertyName == "CommodityID") this.GetBatchMaxNo(this.batchViewModel.Code, this.batchViewModel.EntryMonthID);
+
+            if (propertyName == "NextPackNo") this.textexNextPackNo.BackColor = Color.LightSalmon;
+            if (propertyName == "NextCartonNo") this.textexNextCartonNo.BackColor = Color.LightSalmon;
+            if (propertyName == "NextPalletNo") this.textexNextPalletNo.BackColor = Color.LightSalmon;
+
+            if (propertyName == "BatchPackNo") this.textexBatchPackNo.BackColor = Color.LightSalmon;
+            if (propertyName == "BatchCartonNo") this.textexBatchCartonNo.BackColor = Color.LightSalmon;
+            if (propertyName == "BatchPalletNo") this.textexBatchPalletNo.BackColor = Color.LightSalmon;
+        }
+
+        private void GetBatchMaxNo(string code, int? entryMonthID)
+        {
+            if (code != null)
+            {
+                List<BatchMaxNo> batchMaxNoes = this.batchAPIs.GetBatchMaxNo(this.batchViewModel.FillingLineID, this.batchViewModel.CommodityID, code);
+                if (batchMaxNoes.Count > 0 && batchMaxNoes[0].BatchPackNo != null)
+                { this.batchViewModel.BatchPackNo = batchMaxNoes[0].BatchPackNo; this.batchViewModel.BatchCartonNo = batchMaxNoes[0].BatchCartonNo; this.batchViewModel.BatchPalletNo = batchMaxNoes[0].BatchPalletNo; }
+                else
+                { this.batchViewModel.BatchPackNo = "000001"; this.batchViewModel.BatchCartonNo = "900001"; this.batchViewModel.BatchPalletNo = "900001"; }
+            }
+            if (entryMonthID != null)
+            {
+                List<BatchMaxNo> batchMaxNoes = this.batchAPIs.GetBatchMaxNo(this.batchViewModel.FillingLineID, this.batchViewModel.CommodityID, entryMonthID);
+                if (batchMaxNoes.Count > 0 && batchMaxNoes[0].NextPackNo != null)
+                { this.batchViewModel.NextPackNo = batchMaxNoes[0].NextPackNo; this.batchViewModel.NextCartonNo = batchMaxNoes[0].NextCartonNo; this.batchViewModel.NextPalletNo = batchMaxNoes[0].NextPalletNo; }
+                else
+                { this.batchViewModel.NextPackNo = "000001"; this.batchViewModel.NextCartonNo = "900001"; this.batchViewModel.NextPalletNo = "900001"; }
+            }
         }
 
         private void comboDiscontinued_SelectedIndexChanged(object sender, EventArgs e)

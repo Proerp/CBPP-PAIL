@@ -40,14 +40,14 @@ namespace TotalSmartCoding.Controllers.APIs.Productions
             return goodsReceiptIndexes;
         }
 
-        public List<BatchMaxNo> GetBatchMaxNoByCode(int? fillingLineID, int? commodityID, string code)
+        public List<BatchMaxNo> GetBatchMaxNo(int? fillingLineID, int? commodityID, string code)
         {
-            return this.batchAPIRepository.GetBatchMaxNoByCode(fillingLineID, commodityID, code);
+            return this.batchAPIRepository.GetBatchMaxNo(fillingLineID, commodityID, code);
         }
 
-        public List<BatchMaxNo> GetBatchMaxNoByCode(int? fillingLineID, int? commodityID, int? entryMonthID)
+        public List<BatchMaxNo> GetBatchMaxNo(int? fillingLineID, int? commodityID, int? entryMonthID)
         {
-            return this.batchAPIRepository.GetBatchMaxNoByEntryMonthID(fillingLineID, commodityID, entryMonthID).ToList();
+            return this.batchAPIRepository.GetBatchMaxNo(fillingLineID, commodityID, entryMonthID);
         }
 
         public IList<BatchAvailable> GetBatchAvailables(int? locationID, int? deliveryAdviceID, int? transferOrderID, int? commodityID, bool withNullRow)
