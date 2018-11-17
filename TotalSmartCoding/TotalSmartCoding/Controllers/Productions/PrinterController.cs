@@ -567,7 +567,11 @@ namespace TotalSmartCoding.Controllers.Productions
             if (isSerialNumber)
                 return this.getNextNo();
             else
+            {
                 return this.privateFillingData.CommodityCode + this.privateFillingData.EntryMonthID.ToString("00") + this.privateFillingData.FillingLineCode;
+
+                return this.firstLineA2(true) + " " + this.thirdLine(true, -1); //THIS IS AS THE SAME AS wholeMessageLine.GlobalVariables.PrinterName.DigitInkjet
+            }
         }//NOTE: NEVER CHANGE THIS FUNCTION WITHOUT HAVE A LOOK AT this.wholeMessageLine
 
         #endregion Message Configuration
