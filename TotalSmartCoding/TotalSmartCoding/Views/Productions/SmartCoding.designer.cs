@@ -92,6 +92,7 @@
             this.textNthCartontoZebra = new System.Windows.Forms.ToolStripTextBox();
             this.buttonSendCartontoZebra = new System.Windows.Forms.ToolStripButton();
             this.labelCommodityNameCarton = new System.Windows.Forms.ToolStripLabel();
+            this.iconNewMonth = new System.Windows.Forms.ToolStripButton();
             this.dgvCartonsetQueue = new System.Windows.Forms.DataGridView();
             this.toolStrip10 = new System.Windows.Forms.ToolStrip();
             this.buttonRemoveCartonset = new System.Windows.Forms.ToolStripButton();
@@ -883,7 +884,8 @@
             this.labelNthCartontoZebra,
             this.textNthCartontoZebra,
             this.buttonSendCartontoZebra,
-            this.labelCommodityNameCarton});
+            this.labelCommodityNameCarton,
+            this.iconNewMonth});
             this.toolStrip9.Location = new System.Drawing.Point(0, 0);
             this.toolStrip9.Name = "toolStrip9";
             this.toolStrip9.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -960,6 +962,19 @@
             this.labelCommodityNameCarton.Size = new System.Drawing.Size(17, 52);
             this.labelCommodityNameCarton.Text = "  ";
             this.labelCommodityNameCarton.Visible = false;
+            // 
+            // iconNewMonth
+            // 
+            this.iconNewMonth.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.iconNewMonth.ForeColor = System.Drawing.Color.DarkRed;
+            this.iconNewMonth.Image = global::TotalSmartCoding.Properties.Resources.Martz90_Circle_Addon2_Warning;
+            this.iconNewMonth.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.iconNewMonth.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.iconNewMonth.Name = "iconNewMonth";
+            this.iconNewMonth.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.iconNewMonth.Size = new System.Drawing.Size(113, 36);
+            this.iconNewMonth.Text = "New Month!                  ";
+            this.iconNewMonth.Visible = false;
             // 
             // dgvCartonsetQueue
             // 
@@ -2665,5 +2680,6 @@
         private System.Windows.Forms.ToolStripButton buttonSendCartontoZebra;
         private System.Windows.Forms.ToolStripLabel labelNthCartontoZebra;
         private System.Windows.Forms.ToolStripTextBox textNthCartontoZebra;
+        private System.Windows.Forms.ToolStripButton iconNewMonth;
     }
 }

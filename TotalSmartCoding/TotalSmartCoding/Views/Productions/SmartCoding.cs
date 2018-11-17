@@ -463,13 +463,9 @@ namespace TotalSmartCoding.Views.Productions
                 if (this.fillingData != null)
                 {
                     if (this.fillingData.EntryMonthID != CommonExpressions.GetEntryMonthID())
-                    {
-                        this.toolStripButtonWarningNewMonth.Visible = !this.toolStripButtonWarningNewMonth.Visible; this.toolStripLabelWarningNewMonth.Visible = !this.toolStripLabelWarningNewMonth.Visible;
-                    }
+                        this.iconNewMonth.Visible = !this.iconNewMonth.Visible;
                     else
-                    {
-                        this.toolStripButtonWarningNewMonth.Visible = false; this.toolStripLabelWarningNewMonth.Visible = false;
-                    }
+                        this.iconNewMonth.Visible = false;
                 }
             }
             catch (Exception exception)
