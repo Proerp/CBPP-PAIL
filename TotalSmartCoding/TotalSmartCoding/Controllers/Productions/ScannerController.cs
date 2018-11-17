@@ -28,6 +28,10 @@ namespace TotalSmartCoding.Controllers.Productions
     public class ScannerController : CodingController //this is CommonThreadProperty
     {
         #region Storage
+
+        private FillingData privateFillingData;
+        private IBatchService batchService;
+
         private PackController packController;
         private CartonController cartonController;
         private PalletController palletController;
@@ -72,10 +76,12 @@ namespace TotalSmartCoding.Controllers.Productions
 
         #region Contructor
 
-        public ScannerController(FillingData fillingData)
+        public ScannerController(IBatchService batchService, FillingData fillingData)
         {
             try
             {
+                this.batchService = batchService;
+
                 base.FillingData = fillingData;
 
 
@@ -266,6 +272,131 @@ namespace TotalSmartCoding.Controllers.Productions
 
         public bool AllQueueEmpty { get { return (this.packQueue == null && this.packsetQueue == null && this.cartonPendingQueue == null && this.cartonQueue == null && this.cartonsetQueue == null) || (this.PackQueueCount == 0 && this.packsetQueue.Count == 0 && this.CartonPendingQueueCount == 0 && this.CartonQueueCount == 0 && this.cartonsetQueue.Count == 0); } } // && this.PalletQueueCount == 0 : HIEN TAI: KHONG CO CACH NAO UNWRAP PALLET TO CARTON => SO NO NEED TO CHECK ALL PalletQueueCount
 
+
+
+        public string BatchDigitNo
+        {
+            get { return this.privateFillingData.BatchDigitNo; }
+            private set
+            {
+                if (this.privateFillingData.BatchDigitNo != value)
+                {
+                    this.privateFillingData.BatchDigitNo = value;
+                    this.NotifyPropertyChanged("BatchDigitNo");
+                }
+            }
+        }
+
+        public string BatchPackNo
+        {
+            get { return this.privateFillingData.BatchPackNo; }
+            private set
+            {
+                if (this.privateFillingData.BatchPackNo != value)
+                {
+                    this.privateFillingData.BatchPackNo = value;
+                    this.NotifyPropertyChanged("BatchPackNo");
+                }
+            }
+        }
+
+        public string BatchCartonNo
+        {
+            get { return this.privateFillingData.BatchCartonNo; }
+            private set
+            {
+                if (this.privateFillingData.BatchCartonNo != value)
+                {
+                    this.privateFillingData.BatchCartonNo = value;
+                    this.NotifyPropertyChanged("BatchCartonNo");
+                }
+            }
+        }
+
+        public string BatchPalletNo
+        {
+            get { return this.privateFillingData.BatchPalletNo; }
+            private set
+            {
+                if (this.privateFillingData.BatchPalletNo != value)
+                {
+                    this.privateFillingData.BatchPalletNo = value;
+                    this.NotifyPropertyChanged("BatchPalletNo");
+                }
+            }
+        }
+
+        private string getBatchNo(GlobalVariables.BarcodeName barcodeName)
+        {
+            return this.getBatchNo(barcodeName, false);
+        }
+
+        private string getBatchNo(GlobalVariables.BarcodeName barcodeName, bool sendCartontoZebra)
+        {
+            if (barcodeName == GlobalVariables.BarcodeName.Digit || barcodeName == GlobalVariables.BarcodeName.Pack)
+            {
+                if (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Pail)
+                    return this.BatchCartonNo;
+                else
+                    if (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Drum)
+                        return barcodeName == GlobalVariables.BarcodeName.Digit ? this.BatchDigitNo : this.BatchCartonNo;
+                    else
+                        return this.BatchPackNo;
+            }
+            else
+                if (barcodeName == GlobalVariables.BarcodeName.Carton || sendCartontoZebra)
+                    return this.BatchCartonNo;
+                else
+                    if (barcodeName == GlobalVariables.BarcodeName.Pallet)
+                        return this.BatchPalletNo;
+                    else
+                        return "XXXXXX"; //THIS return value WILL RAISE ERROR TO THE CALLER FUNCTION, BUCAUSE IT DON'T HAVE A CORRECT FORMAT
+
+        }
+
+
+
+        private void feedbackBatchNo(GlobalVariables.BarcodeName barcodeName, string batchNo)
+        {
+            this.feedbackBatchNo(barcodeName, batchNo, "");
+        }
+
+        private void feedbackBatchNo(GlobalVariables.BarcodeName barcodeName, string batchNo, string receivedFeedback)
+        {
+            this.feedbackBatchNo(barcodeName, batchNo, receivedFeedback, false);
+        }
+
+        private void feedbackBatchNo(GlobalVariables.BarcodeName barcodeName, string batchNo, string receivedFeedback, bool sendCartontoZebra)
+        {
+            if (batchNo == "" && receivedFeedback.Length > 12)
+            {
+                int serialNumber = 0;
+                if (int.TryParse(receivedFeedback.Substring(6, 6), out serialNumber))
+                    batchNo = serialNumber.ToString("0000000").Substring(1);//SHOULD OR NOT: Increase serialNumber by 1 (BECAUSE: batchNo MUST GO AHEAD BY 1??): TEST AT DATMY: FOR AX350: NO NEED, BUCAUSE: AX350 RETURN THE NEXT VALUE. BUT FOR A200+: RETURN THE PRINTED VALUE
+            }
+
+            if (batchNo != "")
+            {
+                if (barcodeName == GlobalVariables.BarcodeName.Digit)
+                    this.BatchDigitNo = batchNo;
+                else
+                    if (barcodeName == GlobalVariables.BarcodeName.Pack)
+                        this.BatchPackNo = batchNo;
+                    else
+                        if (barcodeName == GlobalVariables.BarcodeName.Carton || sendCartontoZebra)
+                            this.BatchCartonNo = batchNo;
+                        else
+                            if (barcodeName == GlobalVariables.BarcodeName.Pallet)
+                                this.BatchPalletNo = batchNo;
+
+                lock (this.batchService) //ALL PrinterController MUST SHARE THE SAME IBatchService, BECAUSE WE NEED TO LOCK IBatchService IN ORDER TO CORRECTED UPDATE DATA BY IBatchService
+                {
+                    if (!this.batchService.ExtendedUpdate(this.FillingData.BatchID, barcodeName == GlobalVariables.BarcodeName.Pack || (GlobalEnums.DrumWithDigit && barcodeName == GlobalVariables.BarcodeName.Digit) ? batchNo : "", barcodeName == GlobalVariables.BarcodeName.Carton || sendCartontoZebra ? batchNo : "", barcodeName == GlobalVariables.BarcodeName.Pallet && !sendCartontoZebra ? batchNo : ""))
+                        this.MainStatus = this.batchService.ServiceTag;
+                }
+            }
+        }
+
         #endregion Public Properties
 
 
@@ -449,8 +580,8 @@ namespace TotalSmartCoding.Controllers.Productions
             {
                 this.MainStatus = "Đã ngắt kết nối ...";
 
-                this.ionetSocketPack.Disconnect();               
-                
+                this.ionetSocketPack.Disconnect();
+
                 this.ionetSocketPallet.Disconnect();
 
 
@@ -542,6 +673,8 @@ namespace TotalSmartCoding.Controllers.Productions
         /// </summary>
         public void ThreadRoutine()
         {
+            this.privateFillingData = this.FillingData.ShallowClone();
+
             string stringReceived = ""; bool packQueueChanged = false; bool packsetQueueChanged = false; bool cartonPendingQueueChanged = false; bool cartonQueueChanged = false; bool cartonsetQueueChanged = false; bool palletQueueChanged = false;
 
             this.LoopRoutine = true; this.StopScanner();
@@ -663,12 +796,14 @@ namespace TotalSmartCoding.Controllers.Productions
                 {
                     lock (this.packQueue)
                     {
-                        PackDTO messageData = this.addPack(receivedBarcode, this.packQueue.NextQueueID);
+                        PackDTO messageData = this.addPack(receivedBarcode + (GlobalEnums.CBPP ? " " + this.getBatchNo(GlobalVariables.BarcodeName.Pack) : ""), this.packQueue.NextQueueID);
                         if (messageData != null)
                         {
                             this.packQueue.Enqueue(messageData);
                             barcodeReceived = true;
                         }
+
+                        if (GlobalEnums.CBPP) this.feedbackBatchNo(GlobalVariables.BarcodeName.Pack, CommonExpressions.IncrementSerialNo(this.getBatchNo(GlobalVariables.BarcodeName.Pack)));
                     }
                 }
                 else
@@ -797,7 +932,7 @@ namespace TotalSmartCoding.Controllers.Productions
         /// </summary>
         /// <param name="stringReceived"></param>
         /// <returns></returns>
-        
+
         private bool ReceiveCarton(string stringReceived) { return this.ReceiveCarton(stringReceived, true); }
         private bool ReceiveCarton(string stringReceived, bool codeVslabel)
         {
@@ -812,10 +947,12 @@ namespace TotalSmartCoding.Controllers.Productions
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
                 if (receivedBarcode != "")
                 {
-                    if (this.matchPacktoCarton(codeVslabel ? receivedBarcode : "", codeVslabel ? "" : receivedBarcode))                                           
-                        barcodeReceived = true;                    
+                    if (this.matchPacktoCarton((codeVslabel ? receivedBarcode + (GlobalEnums.CBPP ? " " + this.getBatchNo(GlobalVariables.BarcodeName.Carton) : "") : ""), (codeVslabel ? "" : receivedBarcode)))
+                        barcodeReceived = true;
                     else
                         this.CartonIgnoreCount++;
+
+                    if (GlobalEnums.CBPP && codeVslabel) this.feedbackBatchNo(GlobalVariables.BarcodeName.Carton, CommonExpressions.IncrementSerialNo(this.getBatchNo(GlobalVariables.BarcodeName.Carton)));
                 }
             }
             return barcodeReceived;

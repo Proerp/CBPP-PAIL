@@ -725,7 +725,7 @@ namespace TotalSmartCoding.Controllers.Productions
                     if (!this.FillingData.AutoCarton) this.ioserialPort.WritetoSerial(this.wholeMessageLine(true));
                     lock (this.FillingData.CartontoZebraQueue) { this.FillingData.CartontoZebraQueue.Enqueue(cartonDTO); }
 
-                    this.feedbackNextNo((int.Parse(this.getNextNo(true)) + 1).ToString("0000000").Substring(1), "", true);
+                    this.feedbackNextNo(CommonExpressions.IncrementSerialNo(this.getNextNo(true)), "", true);
                     this.nthCartontoZebra--;
                 }
             }
@@ -767,7 +767,7 @@ namespace TotalSmartCoding.Controllers.Productions
                 string stringReadFrom = "";
                 if (true || this.ioserialPort.ReadoutSerial(true, ref stringReadFrom)) //NOW: THE ZEBRA USING IN THIS CHEVRON PROJECT DOES NOT SUPPORT: "Error Detection Protocol" => WE CAN NOT USING TRANSACTION TO GET RESPOND FROM ZEBRA PRINTER
                 {
-                    this.feedbackNextNo(this.FillingData.CartonsetQueueZebraStatus >= GlobalVariables.ZebraStatus.Printing1 ? (int.Parse(this.getNextNo()) + 1).ToString("0000000").Substring(1) : this.getNextNo());
+                    this.feedbackNextNo(this.FillingData.CartonsetQueueZebraStatus >= GlobalVariables.ZebraStatus.Printing1 ? CommonExpressions.IncrementSerialNo(this.getNextNo()) : this.getNextNo());
                     this.FillingData.CartonsetQueueZebraStatus = GlobalVariables.ZebraStatus.Printed;
                 }
                 else
@@ -887,7 +887,7 @@ namespace TotalSmartCoding.Controllers.Productions
             this.LoopRoutine = true; this.StopPrint();
 
 
-            //if (GlobalEnums.OnTestPrinter && this.printerName != GlobalVariables.PrinterName.DigitInkjet) this.feedbackNextNo((int.Parse(this.getNextNo()) + 1).ToString("0000000").Substring(1));
+            //if (GlobalEnums.OnTestPrinter && this.printerName != GlobalVariables.PrinterName.DigitInkjet) this.feedbackNextNo(CommonExpressions.IncrementSerialNo(this.getNextNo()));
 
             //This command line is specific to: PalletLabel ON FillingLine.Drum || CartonInkjet ON FillingLine.Pail (Just here only for this specific)
             if ((!GlobalEnums.OnTestPrinter && GlobalEnums.CBPP && this.printerName == GlobalVariables.PrinterName.PalletLabel)
@@ -1050,7 +1050,7 @@ namespace TotalSmartCoding.Controllers.Productions
                             if (this.NextAutoBarcodeCode == "" && (this.printerName != GlobalVariables.PrinterName.CartonInkjet || int.Parse(this.getNextNo()) <= int.Parse(this.FillingData.FinalCartonNo)))
                             {
                                 this.NextAutoBarcodeCode = this.wholeBarcode(this.printerName != GlobalVariables.PrinterName.PalletLabel ? 2 : 0);
-                                this.feedbackNextNo((int.Parse(this.getNextNo()) + 1).ToString("0000000").Substring(1));
+                                this.feedbackNextNo(CommonExpressions.IncrementSerialNo(this.getNextNo()));
                             }
                             this.MainStatus = "Đang chạy máy in ảo ...";
                         }

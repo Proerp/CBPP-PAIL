@@ -46,6 +46,10 @@ namespace TotalBase
             return (((DateTime)dateTime).Year - 2013) * 12 + ((DateTime)dateTime).Month - 5;
         }
 
+        public static string IncrementSerialNo(string serialNo) //serialNo is a string with 6 digits
+        {//Format 7 digit, then cut 6 right digit: This will reset a 0 when reach the limit of 6 digits
+            return (int.Parse(serialNo) + 1).ToString("0000000").Substring(1); 
+        }
     }
 
     public class OptionBool

@@ -81,7 +81,7 @@ namespace TotalSmartCoding.Views.Productions
                 cartonController = new PrinterController(batchService, this.fillingData, GlobalVariables.PrinterName.CartonInkjet);
                 palletController = new PrinterController(batchService, this.fillingData, GlobalVariables.PrinterName.PalletLabel);
 
-                this.scannerController = new ScannerController(this.fillingData);
+                this.scannerController = new ScannerController(batchService, this.fillingData);
 
                 digitController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
                 packController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);

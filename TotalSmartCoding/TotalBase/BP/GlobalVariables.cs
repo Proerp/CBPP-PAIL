@@ -83,7 +83,13 @@ namespace TotalBase
             LabelScanner = 8
         }
 
-
+        public enum BarcodeName
+        {
+            Digit = 1,
+            Pack = 2,
+            Carton = 3,
+            Pallet = 6
+        }
 
         public enum BarcodeStatus
         {
