@@ -2417,6 +2417,7 @@
             this.Text = "Printing & Scanning";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SmartCoding_FormClosing);
             this.Load += new System.EventHandler(this.SmartCoding_Load);
+            this.Shown += SmartCoding_Shown;
             ((System.ComponentModel.ISupportInitialize)(this.dgvPackQueue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPacksetQueue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCartonQueue)).EndInit();

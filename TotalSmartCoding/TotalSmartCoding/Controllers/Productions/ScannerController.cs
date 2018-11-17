@@ -166,7 +166,7 @@ namespace TotalSmartCoding.Controllers.Productions
                     this.NotifyPropertyChanged("CartonPendingQueue");
                 }
 
-                if (!GlobalEnums.OnTestPalletReceivedNow) this.InitializePallet();
+                this.InitializePallet(); //if (!GlobalEnums.OnTestPalletReceivedNow) this.InitializePallet();
             }
             catch (Exception exception)
             {
