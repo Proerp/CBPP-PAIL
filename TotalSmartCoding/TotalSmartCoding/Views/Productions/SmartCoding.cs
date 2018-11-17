@@ -583,10 +583,12 @@ namespace TotalSmartCoding.Views.Productions
                         this.labelLEDCarton.Text = this.scannerController.CartonQueueCount.ToString("N0");
                     }
 
-                    if (e.PropertyName == "CartonsetQueue") {
+                    if (e.PropertyName == "CartonsetQueue") {                        
+                        this.dgvCartonsetQueue.DataSource = this.scannerController.GetCartonsetQueue();
+
                         if (this.dgvCartonsetQueue.Rows.Count >= 2) { this.dgvCartonsetQueue.Rows[0].Height = 80; }
 
-                        this.dgvCartonsetQueue.DataSource = this.scannerController.GetCartonsetQueue(); this.buttonCartonsetQueueCount.Text = "[" + this.scannerController.CartonsetQueueCount.ToString("N0") + "]"; 
+                        this.buttonCartonsetQueueCount.Text = "[" + this.scannerController.CartonsetQueueCount.ToString("N0") + "]"; 
                     }
 
                     if (e.PropertyName == "PalletQueue")
