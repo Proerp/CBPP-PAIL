@@ -384,6 +384,27 @@ namespace TotalSmartCoding.Controllers.Productions
             return this.firstLine(false, sendCartontoZebra) + this.secondLine(false) + this.thirdLine(false, serialIndentity, sendCartontoZebra);
         }
 
+        #region CBPP
+        private string FirstMessageLine(bool isReadableText) //Only DominoPrinterName.CartonInkjet: HAS SERIAL NUMBER (BUT WILL BE UPDATE MANUAL FOR EACH CARTON - BECAUSE: [EAN BARCODE] DOES NOT ALLOW INSERT SERIAL NUMBER) ===> FOR THIS: BatchSerialNumber FOR EVERY PACK: NEVER USE
+        {
+            return ((this.printerName == GlobalVariables.PrinterName.PackInkjet || this.printerName == GlobalVariables.PrinterName.CartonInkjet) && isReadableText ? this.privateFillingData.EntryMonthID.ToString("00") + " " : "") + this.privateFillingData.BatchCode;
+        }
+
+        private string SecondMessageLine(bool isReadableText)
+        {
+            return (isReadableText ? this.privateFillingData.Shelflife.ToString("00") : "") + (!isReadableText ? this.privateFillingData.CommodityCode + " " : "NSX") + this.FillingData.SettingDate.ToString("dd/MM/yy");
+            //return "NSX " + GlobalVariables.charESC + "/n/1/A/" + GlobalVariables.charESC + "/n/1/F/" + GlobalVariables.charESC + "/n/1/D/";
+        }
+
+        private string ThirdMessageLine(int serialNumberIndentity, bool isReadableText) //serialNumberIndentity = 1 when print as text on first line, 2 when insert into 2D Barcode
+        {
+            string serialNumberFormat = ""; //Numeric Serial Only, No Alpha Serial, Zero Leading, 6 Digit: 000001 -> 999999, Step 1, Start this.privateFillingData.MonthSerialNumber, Repeat: 0
+            serialNumberFormat = GlobalVariables.charESC + "/j/" + serialNumberIndentity.ToString() + "/N/06/000001/999999/000001/Y/N/0/000000/00000/N/"; //WITH START VALUE = 1 ---> NEED TO UPDATE serial number
+
+            return ((this.printerName != GlobalVariables.PrinterName.PackInkjet && this.printerName != GlobalVariables.PrinterName.CartonInkjet) || isReadableText ? this.privateFillingData.CommodityCode : "") + ((this.printerName != GlobalVariables.PrinterName.PackInkjet && this.printerName != GlobalVariables.PrinterName.CartonInkjet) || !isReadableText ? this.privateFillingData.EntryMonthID.ToString("00") : "") + "/" + this.privateFillingData.FillingLineCode + (isReadableText ? " " : "") + "/" + serialNumberFormat;
+        }
+        #endregion
+
         private string EANInitialize(string twelveDigitCode)
         {
 
@@ -465,63 +486,80 @@ namespace TotalSmartCoding.Controllers.Productions
         private string wholeMessageLine(bool sendCartontoZebra)
         {//THE FUNCTION laserDigitMessage totally base on this.wholeMessageLine. Later, if there is any thing change in this.wholeMessageLine, THE FUNCTION laserDigitMessage should be considered
             if (this.printerName == GlobalVariables.PrinterName.DigitInkjet)
+            {
+                return GlobalVariables.charESC + "u/1/ " + GlobalVariables.charESC + "/r/" + GlobalVariables.charESC + "u/1/" + this.ThirdMessageLine(1, true);
+
                 return ".              . " + this.firstLineA2(true) + " " + this.thirdLine(true, 1) + " .              ."; //GlobalVariables.charESC + "u/1/" + 
+            }
             else if (this.printerName == GlobalVariables.PrinterName.PackInkjet || this.printerName == GlobalVariables.PrinterName.CartonInkjet)
             {
+                return GlobalVariables.charESC + "u/3/" + GlobalVariables.charESC + "/z/1/0/26/20/20/1/0/0/0/" + this.FirstMessageLine(false) + " " + this.SecondMessageLine(false) + " " + this.ThirdMessageLine(2, false) + "/" + GlobalVariables.charESC + "/z/0" + //2D Barcode
+                       GlobalVariables.charESC + "u/1/" + this.FirstMessageLine(true) + "/" +  //First Line
+                       GlobalVariables.charESC + "/r/" + GlobalVariables.charESC + "u/1/" + this.ThirdMessageLine(1, true) +   //Second Line
+                       GlobalVariables.charESC + "/r/" + GlobalVariables.charESC + "u/1/" + this.SecondMessageLine(true);     //Third Line   
+
+
                 return GlobalVariables.charESC + "u/3/" + GlobalVariables.charESC + "/z/1/0/26/20/20/1/0/0/0/" + this.wholeBarcode(2) + "/" + GlobalVariables.charESC + "/z/0" + //2D DATA MATRIX Barcode
                        GlobalVariables.charESC + "u/1/" + " " + this.firstLineA1(true) + this.firstLine(true) + "/" +
                        GlobalVariables.charESC + "/r/" + " " + GlobalVariables.charESC + "u/1/" + this.secondLine(true) + this.secondLineA2(true) +
                        GlobalVariables.charESC + "/r/" + " " + GlobalVariables.charESC + "u/1/" + this.thirdLine(true, 1);
             }
-            else //this.printerName == GlobalVariables.PrinterName.PalletLabel
-            {
-                string stringMessage = ""; string stringMessageBegin = ""; string stringMessageEnd = ""; string stringMessageText = "";
-
-                stringMessageBegin = stringMessageBegin + "^XA"; //[^XA - Indicates start of label format.]
-                stringMessageBegin = stringMessageBegin + "^LH60,20"; //[^LH - Sets label home position 80 dots to the right and 30 dots down from top edge of label.]
-
-
-                if (sendCartontoZebra)
+            else
+                if (this.printerName == GlobalVariables.PrinterName.PalletLabel)
                 {
-                    stringMessageText = stringMessageText + "^FO500,70 ^AV ^FD" + this.firstLineA1(true) + this.firstLine(true, sendCartontoZebra) + "^FS";//[^FO0,330 - Set field origin 10 dots to the right and 330 dots down from the home position defined by the ^LH instruction.] [^AG - Select font “G.”] [^FD - Start of field data.] [ZEBRA - Actual field data.] [^FS - End of field data.]
-                    stringMessageText = stringMessageText + "^FO500,171 ^AV ^FD" + this.secondLine(true) + this.secondLineA2(true) + "^FS";
-                    stringMessageText = stringMessageText + "^FO500,270 ^AV ^FD" + this.thirdLine(true, 0, sendCartontoZebra) + "^FS";
-                }
-                else
-                {
-                    stringMessageText = stringMessageText + "^FO785,10 ^AV ^FD" + this.firstLineA1(true) + "^FS";//[^FO0,330 - Set field origin 10 dots to the right and 330 dots down from the home position defined by the ^LH instruction.] [^AG - Select font “G.”] [^FD - Start of field data.] [ZEBRA - Actual field data.] [^FS - End of field data.]
-                    stringMessageText = stringMessageText + "^FO785,68 ^AV ^FD" + this.firstLineA2(true) + "^FS";
-                    stringMessageText = stringMessageText + "^FO785,131 ^AV ^FD" + this.secondLineA1(true) + "^FS";
-                    stringMessageText = stringMessageText + "^FO785,194 ^AV ^FD" + this.secondLineA2(true) + "^FS";
-                    stringMessageText = stringMessageText + "^FO785,257 ^AV ^FD" + this.thirdLineA1(true) + "^FS";
-                    stringMessageText = stringMessageText + "^FO785,320 ^AV ^FD" + this.thirdLineA2(true, 0) + "^FS";
-                }
+                    string stringMessage = ""; string stringMessageBegin = ""; string stringMessageEnd = ""; string stringMessageText = "";
 
-                stringMessageEnd = stringMessageEnd + "^XZ"; //[^XZ - Indicates end of label format.]
+                    stringMessageBegin = stringMessageBegin + "^XA"; //[^XA - Indicates start of label format.]
+                    stringMessageBegin = stringMessageBegin + "^LH60,20"; //[^LH - Sets label home position 80 dots to the right and 30 dots down from top edge of label.]
 
-                if (this.OnPrinting)
-                {
-                    stringMessage = stringMessage + stringMessageBegin;
 
                     if (sendCartontoZebra)
-                        stringMessage = stringMessage + "^FO50,50  ^BXN,16,200  ^FD" + this.wholeBarcode(0, sendCartontoZebra) + "^FS";// [^FO0,10 - Set field origin 10 dots to the right and 10 dots down from the home position defined by the ^LH instruction.] [^BC - Select Code 128 bar code.] [^FD - Start of field data for the bar code.] [AAA001 - Actual field data.] [^FS - End of field data.]
+                    {
+                        stringMessageText = stringMessageText + "^FO500,70 ^AV ^FD" + this.firstLineA1(true) + this.firstLine(true, sendCartontoZebra) + "^FS";//[^FO0,330 - Set field origin 10 dots to the right and 330 dots down from the home position defined by the ^LH instruction.] [^AG - Select font “G.”] [^FD - Start of field data.] [ZEBRA - Actual field data.] [^FS - End of field data.]
+                        stringMessageText = stringMessageText + "^FO500,171 ^AV ^FD" + this.secondLine(true) + this.secondLineA2(true) + "^FS";
+                        stringMessageText = stringMessageText + "^FO500,270 ^AV ^FD" + this.thirdLine(true, 0, sendCartontoZebra) + "^FS";
+                    }
                     else
-                        stringMessage = stringMessage + "^FO0,20  ^BC,360,N  ^FD" + this.wholeBarcode(0) + "^FS";// [^FO0,10 - Set field origin 10 dots to the right and 10 dots down from the home position defined by the ^LH instruction.] [^BC - Select Code 128 bar code.] [^FD - Start of field data for the bar code.] [AAA001 - Actual field data.] [^FS - End of field data.]
+                    {
+                        stringMessageText = stringMessageText + "^FO785,10 ^AV ^FD" + this.firstLineA1(true) + "^FS";//[^FO0,330 - Set field origin 10 dots to the right and 330 dots down from the home position defined by the ^LH instruction.] [^AG - Select font “G.”] [^FD - Start of field data.] [ZEBRA - Actual field data.] [^FS - End of field data.]
+                        stringMessageText = stringMessageText + "^FO785,68 ^AV ^FD" + this.firstLineA2(true) + "^FS";
+                        stringMessageText = stringMessageText + "^FO785,131 ^AV ^FD" + this.secondLineA1(true) + "^FS";
+                        stringMessageText = stringMessageText + "^FO785,194 ^AV ^FD" + this.secondLineA2(true) + "^FS";
+                        stringMessageText = stringMessageText + "^FO785,257 ^AV ^FD" + this.thirdLineA1(true) + "^FS";
+                        stringMessageText = stringMessageText + "^FO785,320 ^AV ^FD" + this.thirdLineA2(true, 0) + "^FS";
+                    }
 
-                    stringMessage = stringMessage + stringMessageText;
-                    stringMessage = stringMessage + stringMessageEnd;
-                }
-                else //TEST PAGE ONLY
-                {
-                    stringMessage = stringMessage + stringMessageBegin;
-                    stringMessage = stringMessage + "^FO0,30 ^AS ^FD" + "If you can read this, your printer is ready" + "^FS";
-                    stringMessage = stringMessage + "^FO0,80 ^AS ^FD" + "**PLEASE PRESS THE START BUTTON TO BEGIN**" + "^FS";
-                    stringMessage = stringMessage + stringMessageText;
-                    stringMessage = stringMessage + stringMessageEnd;
-                }
+                    stringMessageEnd = stringMessageEnd + "^XZ"; //[^XZ - Indicates end of label format.]
 
-                return stringMessage;
-            }
+                    if (this.OnPrinting)
+                    {
+                        stringMessage = stringMessage + stringMessageBegin;
+
+                        if (sendCartontoZebra)
+                            stringMessage = stringMessage + "^FO50,50  ^BXN,16,200  ^FD" + this.wholeBarcode(0, sendCartontoZebra) + "^FS";// [^FO0,10 - Set field origin 10 dots to the right and 10 dots down from the home position defined by the ^LH instruction.] [^BC - Select Code 128 bar code.] [^FD - Start of field data for the bar code.] [AAA001 - Actual field data.] [^FS - End of field data.]
+                        else
+                            stringMessage = stringMessage + "^FO0,20  ^BC,360,N  ^FD" + this.wholeBarcode(0) + "^FS";// [^FO0,10 - Set field origin 10 dots to the right and 10 dots down from the home position defined by the ^LH instruction.] [^BC - Select Code 128 bar code.] [^FD - Start of field data for the bar code.] [AAA001 - Actual field data.] [^FS - End of field data.]
+
+                        stringMessage = stringMessage + stringMessageText;
+                        stringMessage = stringMessage + stringMessageEnd;
+                    }
+                    else //TEST PAGE ONLY
+                    {
+                        stringMessage = stringMessage + stringMessageBegin;
+                        stringMessage = stringMessage + "^FO0,30 ^AS ^FD" + "If you can read this, your printer is ready" + "^FS";
+                        stringMessage = stringMessage + "^FO0,80 ^AS ^FD" + "**PLEASE PRESS THE START BUTTON TO BEGIN**" + "^FS";
+                        stringMessage = stringMessage + stringMessageText;
+                        stringMessage = stringMessage + stringMessageEnd;
+                    }
+
+                    return stringMessage;
+                }
+                else
+                { //1D BARCODE: THIS IS JUST FOR BACKUP ONLY (CBPP OLD VERSION FOR CARTON)
+                    return GlobalVariables.charESC + "u/2/" + GlobalVariables.charESC + "/q/6/" + this.ThirdMessageLine(1, false) + "/" + this.privateFillingData.BatchCartonNo.Substring(2) + GlobalVariables.charESC + "/q/0" +
+                           GlobalVariables.charESC + "u/1/  " + this.FirstMessageLine(true) + "/ " + this.privateFillingData.Shelflife.ToString("00") + "/" + //First Line
+                           GlobalVariables.charESC + "/r/  " + GlobalVariables.charESC + "u/1/" + this.ThirdMessageLine(1, true) + "/ " + this.FillingData.SettingDate.ToString("dd/MM/yy");
+                }
         }
 
         private string laserDigitMessage(bool isSerialNumber)
@@ -529,7 +567,7 @@ namespace TotalSmartCoding.Controllers.Productions
             if (isSerialNumber)
                 return this.getNextNo();
             else
-                return this.firstLineA2(true) + " " + this.thirdLine(true, -1); //THIS IS AS THE SAME AS wholeMessageLine.GlobalVariables.PrinterName.DigitInkjet
+                return this.privateFillingData.CommodityCode + this.privateFillingData.EntryMonthID.ToString("00") + this.privateFillingData.FillingLineCode;
         }//NOTE: NEVER CHANGE THIS FUNCTION WITHOUT HAVE A LOOK AT this.wholeMessageLine
 
         #endregion Message Configuration
