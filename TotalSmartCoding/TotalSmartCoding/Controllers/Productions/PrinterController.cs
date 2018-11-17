@@ -381,6 +381,8 @@ namespace TotalSmartCoding.Controllers.Productions
 
         private string wholeBarcode(int serialIndentity, bool sendCartontoZebra)
         {
+            return this.FirstMessageLine(false) + " " + this.SecondMessageLine(false) + " " + this.ThirdMessageLine(serialIndentity, false);
+
             return this.firstLine(false, sendCartontoZebra) + this.secondLine(false) + this.thirdLine(false, serialIndentity, sendCartontoZebra);
         }
 
@@ -392,7 +394,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
         private string SecondMessageLine(bool isReadableText)
         {
-            return (isReadableText ? this.privateFillingData.Shelflife.ToString("00") : "") + (!isReadableText ? this.privateFillingData.CommodityCode + " " : "NSX") + this.FillingData.SettingDate.ToString("dd/MM/yy");
+            return (isReadableText ? this.privateFillingData.Shelflife.ToString("00") : "") + (!isReadableText ? this.privateFillingData.CommodityCode + " " : "NSX") + this.FillingData.SettingDate.ToString("ddMMyy");
             //return "NSX " + GlobalVariables.charESC + "/n/1/A/" + GlobalVariables.charESC + "/n/1/F/" + GlobalVariables.charESC + "/n/1/D/";
         }
 
@@ -401,7 +403,7 @@ namespace TotalSmartCoding.Controllers.Productions
             string serialNumberFormat = ""; //Numeric Serial Only, No Alpha Serial, Zero Leading, 6 Digit: 000001 -> 999999, Step 1, Start this.privateFillingData.MonthSerialNumber, Repeat: 0
             serialNumberFormat = GlobalVariables.charESC + "/j/" + serialNumberIndentity.ToString() + "/N/06/000001/999999/000001/Y/N/0/000000/00000/N/"; //WITH START VALUE = 1 ---> NEED TO UPDATE serial number
 
-            return ((this.printerName != GlobalVariables.PrinterName.PackInkjet && this.printerName != GlobalVariables.PrinterName.CartonInkjet) || isReadableText ? this.privateFillingData.CommodityCode : "") + ((this.printerName != GlobalVariables.PrinterName.PackInkjet && this.printerName != GlobalVariables.PrinterName.CartonInkjet) || !isReadableText ? this.privateFillingData.EntryMonthID.ToString("00") : "") + "/" + this.privateFillingData.FillingLineCode + (isReadableText ? " " : "") + "/" + serialNumberFormat;
+            return ((this.printerName != GlobalVariables.PrinterName.PackInkjet && this.printerName != GlobalVariables.PrinterName.CartonInkjet) || isReadableText ? this.privateFillingData.CommodityCode : "") + ((this.printerName != GlobalVariables.PrinterName.PackInkjet && this.printerName != GlobalVariables.PrinterName.CartonInkjet) || !isReadableText ? this.privateFillingData.EntryMonthID.ToString("00") : "") + this.privateFillingData.FillingLineCode + (isReadableText ? " " : "") + (GlobalEnums.OnTestPrinter ? this.getNextNo() : serialNumberFormat);
         }
         #endregion
 
@@ -888,8 +890,7 @@ namespace TotalSmartCoding.Controllers.Productions
             //if (GlobalEnums.OnTestPrinter && this.printerName != GlobalVariables.PrinterName.DigitInkjet) this.feedbackNextNo((int.Parse(this.getNextNo()) + 1).ToString("0000000").Substring(1));
 
             //This command line is specific to: PalletLabel ON FillingLine.Drum || CartonInkjet ON FillingLine.Pail (Just here only for this specific)
-            if (GlobalEnums.NMVNOnly
-                || (GlobalEnums.CBPP && this.printerName == GlobalVariables.PrinterName.PalletLabel)
+            if ((!GlobalEnums.OnTestPrinter && GlobalEnums.CBPP && this.printerName == GlobalVariables.PrinterName.PalletLabel)
                 || (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Drum && !(this.printerName == GlobalVariables.PrinterName.PalletLabel || (GlobalEnums.DrumWithDigit && this.printerName == GlobalVariables.PrinterName.DigitInkjet)))
                 || (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Pail && this.printerName == GlobalVariables.PrinterName.PackInkjet)
                 || (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Medium4L && (this.printerName == GlobalVariables.PrinterName.DigitInkjet || this.printerName == GlobalVariables.PrinterName.PackInkjet))

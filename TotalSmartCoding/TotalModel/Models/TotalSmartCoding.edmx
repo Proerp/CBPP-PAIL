@@ -5477,6 +5477,7 @@
           <Property Type="String" Name="BatchPackNo" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="BatchCartonNo" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="BatchPalletNo" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="EntryMonthID" Nullable="false" />
         </ComplexType>
         <ComplexType Name="CommodityIndex">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
@@ -9374,6 +9375,7 @@
                 <ScalarProperty Name="BatchPackNo" ColumnName="BatchPackNo" />
                 <ScalarProperty Name="BatchCartonNo" ColumnName="BatchCartonNo" />
                 <ScalarProperty Name="BatchPalletNo" ColumnName="BatchPalletNo" />
+                <ScalarProperty Name="EntryMonthID" ColumnName="EntryMonthID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -165,7 +165,7 @@
             this.layoutMaster.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layoutMaster.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layoutMaster.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.layoutMaster.Size = new System.Drawing.Size(274, 941);
+            this.layoutMaster.Size = new System.Drawing.Size(274, 902);
             this.layoutMaster.TabIndex = 62;
             // 
             // labelBatchPackNo
@@ -577,11 +577,15 @@
             // 
             // iconNewMonth
             // 
+            this.iconNewMonth.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.iconNewMonth.ForeColor = System.Drawing.Color.DarkRed;
             this.iconNewMonth.Image = global::TotalSmartCoding.Properties.Resources.Martz90_Circle_Addon2_Warning;
+            this.iconNewMonth.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.iconNewMonth.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.iconNewMonth.Name = "iconNewMonth";
-            this.iconNewMonth.Size = new System.Drawing.Size(97, 36);
+            this.iconNewMonth.Size = new System.Drawing.Size(113, 36);
             this.iconNewMonth.Text = "New month!";
+            this.iconNewMonth.Visible = false;
             // 
             // naviBarMaster
             // 
@@ -591,14 +595,14 @@
             this.naviBarMaster.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.naviBarMaster.HeaderHeight = 0;
             this.naviBarMaster.LayoutStyle = Guifreaks.Navisuite.NaviLayoutStyle.Office2010Blue;
-            this.naviBarMaster.Location = new System.Drawing.Point(681, 0);
+            this.naviBarMaster.Location = new System.Drawing.Point(681, 39);
             this.naviBarMaster.Margin = new System.Windows.Forms.Padding(2);
             this.naviBarMaster.Name = "naviBarMaster";
             this.naviBarMaster.PopupMinWidth = 10;
             this.naviBarMaster.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.naviBarMaster.ShowCollapseButton = false;
             this.naviBarMaster.ShowMoreOptionsButton = false;
-            this.naviBarMaster.Size = new System.Drawing.Size(276, 979);
+            this.naviBarMaster.Size = new System.Drawing.Size(276, 940);
             this.naviBarMaster.TabIndex = 66;
             // 
             // naviBand1
@@ -611,14 +615,14 @@
             this.naviBand1.ClientArea.Location = new System.Drawing.Point(0, 0);
             this.naviBand1.ClientArea.Margin = new System.Windows.Forms.Padding(2);
             this.naviBand1.ClientArea.Name = "ClientArea";
-            this.naviBand1.ClientArea.Size = new System.Drawing.Size(274, 941);
+            this.naviBand1.ClientArea.Size = new System.Drawing.Size(274, 902);
             this.naviBand1.ClientArea.TabIndex = 0;
             this.naviBand1.LargeImageIndex = 0;
             this.naviBand1.LayoutStyle = Guifreaks.Navisuite.NaviLayoutStyle.StyleFromOwner;
             this.naviBand1.Location = new System.Drawing.Point(1, 0);
             this.naviBand1.Margin = new System.Windows.Forms.Padding(2);
             this.naviBand1.Name = "naviBand1";
-            this.naviBand1.Size = new System.Drawing.Size(274, 941);
+            this.naviBand1.Size = new System.Drawing.Size(274, 902);
             this.naviBand1.SmallImageIndex = 0;
             this.naviBand1.TabIndex = 70;
             // 
@@ -654,12 +658,12 @@
             this.fastBatchIndex.FullRowSelect = true;
             this.fastBatchIndex.HideSelection = false;
             this.fastBatchIndex.HighlightBackgroundColor = System.Drawing.SystemColors.Highlight;
-            this.fastBatchIndex.Location = new System.Drawing.Point(0, 0);
+            this.fastBatchIndex.Location = new System.Drawing.Point(0, 39);
             this.fastBatchIndex.Margin = new System.Windows.Forms.Padding(2);
             this.fastBatchIndex.Name = "fastBatchIndex";
             this.fastBatchIndex.OwnerDraw = true;
             this.fastBatchIndex.ShowGroups = false;
-            this.fastBatchIndex.Size = new System.Drawing.Size(681, 979);
+            this.fastBatchIndex.Size = new System.Drawing.Size(681, 940);
             this.fastBatchIndex.TabIndex = 67;
             this.fastBatchIndex.UnfocusedHighlightBackgroundColor = System.Drawing.SystemColors.Highlight;
             this.fastBatchIndex.UseCompatibleStateImageBehavior = false;

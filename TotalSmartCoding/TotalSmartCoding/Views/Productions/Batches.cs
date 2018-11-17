@@ -218,7 +218,7 @@ namespace TotalSmartCoding.Views.Productions
         protected override void invokeEdit(int? id)
         {
             base.invokeEdit(id);
-            
+
             this.textexNextPackNo.BackColor = textexCommodityAPICode.BackColor;
             this.textexNextCartonNo.BackColor = textexCommodityAPICode.BackColor;
             this.textexNextPalletNo.BackColor = textexCommodityAPICode.BackColor;
@@ -260,7 +260,7 @@ namespace TotalSmartCoding.Views.Productions
                 if (batchMaxNoes.Count > 0 && batchMaxNoes[0].BatchPackNo != null)
                 { this.batchViewModel.BatchPackNo = batchMaxNoes[0].BatchPackNo; this.batchViewModel.BatchCartonNo = batchMaxNoes[0].BatchCartonNo; this.batchViewModel.BatchPalletNo = batchMaxNoes[0].BatchPalletNo; }
                 else
-                { this.batchViewModel.BatchPackNo = "000001"; this.batchViewModel.BatchCartonNo = "900001"; this.batchViewModel.BatchPalletNo = "900001"; }
+                { this.batchViewModel.BatchPackNo = "000001"; this.batchViewModel.BatchCartonNo = (this.batchViewModel.FillingLineID == (int)GlobalVariables.FillingLine.Pail ? "000001" : "900001"); this.batchViewModel.BatchPalletNo = "900001"; }
             }
             if (entryMonthID != null)
             {
@@ -268,7 +268,7 @@ namespace TotalSmartCoding.Views.Productions
                 if (batchMaxNoes.Count > 0 && batchMaxNoes[0].NextPackNo != null)
                 { this.batchViewModel.NextPackNo = batchMaxNoes[0].NextPackNo; this.batchViewModel.NextCartonNo = batchMaxNoes[0].NextCartonNo; this.batchViewModel.NextPalletNo = batchMaxNoes[0].NextPalletNo; }
                 else
-                { this.batchViewModel.NextPackNo = "000001"; this.batchViewModel.NextCartonNo = "900001"; this.batchViewModel.NextPalletNo = "900001"; }
+                { this.batchViewModel.NextPackNo = "000001"; this.batchViewModel.NextCartonNo = (this.batchViewModel.FillingLineID == (int)GlobalVariables.FillingLine.Pail ? "000001" : "900001"); this.batchViewModel.NextPalletNo = "900001"; }
             }
         }
 
@@ -306,9 +306,9 @@ namespace TotalSmartCoding.Views.Productions
 
         private void timerEverySecond_Tick(object sender, EventArgs e)
         {
-            if (this.batchViewModel != null)
+            if (this.smartCoding.fillingData != null)
             {
-                if (this.batchViewModel.EntryMonthID != CommonExpressions.GetEntryMonthID())
+                if (this.smartCoding.fillingData.EntryMonthID != CommonExpressions.GetEntryMonthID())
                     this.iconNewMonth.Visible = !this.iconNewMonth.Visible;
                 else
                     this.iconNewMonth.Visible = false;

@@ -611,9 +611,9 @@ namespace TotalSmartCoding.Controllers.Productions
                     if (this.OnScanning && this.FillingData.HasCarton && this.FillingData.HasCartonLabel && !this.FillingData.PalletCameraOnly)
                         this.cartonQueue.FindNullInValid();
 
-                    if (this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly && GlobalEnums.IOAlarm)
+                    if (!GlobalEnums.OnTestScanner && this.FillingData.HasCarton && !this.FillingData.PalletCameraOnly && GlobalEnums.IOAlarm)
                         this.ionetSocketCarton.WritetoStream("||>SET OUTPUT.ACTION 1 0\r\n"); //SET IO TO ACTIVE ALARM
-                    if (this.FillingData.HasCartonLabel && !this.FillingData.PalletCameraOnly && GlobalEnums.IOAlarm)
+                    if (!GlobalEnums.OnTestScanner && this.FillingData.HasCartonLabel && !this.FillingData.PalletCameraOnly && GlobalEnums.IOAlarm)
                         this.ionetSocketLabel.WritetoStream("||>SET OUTPUT.ACTION 1 0\r\n"); //SET IO TO ACTIVE ALARM
 
                     Thread.Sleep(100);
@@ -648,7 +648,7 @@ namespace TotalSmartCoding.Controllers.Productions
             else
                 stringReceived = this.ionetSocketPack.ReadoutStream().Trim();
 
-            return stringReceived != "";
+            return stringReceived != null && stringReceived != "";
         }
 
         private bool ReceivePack(string stringReceived)
@@ -756,7 +756,7 @@ namespace TotalSmartCoding.Controllers.Productions
                 else
                     stringReceived = this.ionetSocketLabel.ReadoutStream().Trim();
 
-            return stringReceived != "";
+            return stringReceived != null && stringReceived != "";
         }
 
 
@@ -783,7 +783,7 @@ namespace TotalSmartCoding.Controllers.Productions
                 else
                     stringReceived = this.ionetSocketCarton.ReadoutStream().Trim();
 
-            return stringReceived != "";
+            return stringReceived != null && stringReceived != "";
         }
 
         /// <summary>
@@ -927,9 +927,9 @@ namespace TotalSmartCoding.Controllers.Productions
             else
                 stringReceived = this.ionetSocketPallet.ReadoutStream().Trim();
 
-            if (GlobalEnums.ShowStringReceived && stringReceived != "") { this.MainStatus = ""; this.MainStatus = stringReceived; }
+            if (GlobalEnums.ShowStringReceived && stringReceived != null && stringReceived != "") { this.MainStatus = ""; this.MainStatus = stringReceived; }
 
-            return stringReceived != "";
+            return stringReceived != null && stringReceived != "";
         }
 
         /// <summary>
