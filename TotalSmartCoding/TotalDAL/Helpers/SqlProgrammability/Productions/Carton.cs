@@ -23,7 +23,10 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             this.CartonEditable();
 
             this.GetCartons();
+            this.GetCartonAttributes();
+
             this.CartonUpdateEntryStatus();
+            this.CartonUpdateSubmitStatus();
 
             this.SearchCartons();
         }
@@ -105,6 +108,36 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             this.totalSmartCodingEntities.CreateStoredProcedure("GetCartons", queryString);
         }
 
+        private void GetCartonAttributes()
+        {
+            string sqlSelect = "            SELECT  Cartons.CartonID, Cartons.EntryDate, Cartons.FillingLineID, FillingLines.Code AS FillingLineCode, FillingLines.Name AS FillingLineName, Cartons.BatchID, Batches.EntryDate AS BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
+            sqlSelect = sqlSelect + "               Cartons.LocationID, Cartons.CommodityID, Commodities.Code AS CommodityCode, Commodities.OfficialCode, Commodities.Name AS CommodityName, Cartons.PalletID, Cartons.Code, Cartons.Label, Cartons.Quantity, Cartons.LineVolume, Cartons.PackCounts, Cartons.EntryStatusID, Cartons.SubmitStatusID " + "\r\n";
+            sqlSelect = sqlSelect + "       FROM    Cartons " + "\r\n";
+            sqlSelect = sqlSelect + "               INNER JOIN Batches ON Cartons.BatchID = Batches.BatchID " + "\r\n";
+            sqlSelect = sqlSelect + "               INNER JOIN FillingLines ON Cartons.FillingLineID = FillingLines.FillingLineID " + "\r\n";
+            sqlSelect = sqlSelect + "               INNER JOIN Commodities ON Cartons.CommodityID = Commodities.CommodityID " + "\r\n";
+
+            string sqlWhere = "             WHERE Cartons.FillingLineID = @FillingLineID AND Cartons.SubmitStatusID IN (SELECT Id FROM dbo.SplitToIntList (@SubmitStatusIDs)) " + "\r\n";
+
+            string queryString = " @FillingLineID int, @SubmitStatusIDs varchar(3999), @PalletID int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "   IF ((@FillingLineID IS NULL OR @FillingLineID = 0) AND @SubmitStatusIDs IS NULL AND @PalletID IS NOT NULL) " + "\r\n";
+            queryString = queryString + "       BEGIN " + "\r\n";
+            queryString = queryString + "           " + sqlSelect + " WHERE PalletID = @PalletID " + "\r\n";
+            queryString = queryString + "       END " + "\r\n";
+            queryString = queryString + "   ELSE " + "\r\n";
+            queryString = queryString + "       BEGIN " + "\r\n";
+            queryString = queryString + "           IF (@PalletID IS NULL) " + "\r\n";
+            queryString = queryString + "               " + sqlSelect + sqlWhere + "\r\n";
+            queryString = queryString + "           ELSE " + "\r\n";
+            queryString = queryString + "               " + sqlSelect + sqlWhere + " AND PalletID = @PalletID " + "\r\n";
+            queryString = queryString + "       END " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("GetCartonAttributes", queryString);
+        }
+
         private void CartonUpdateEntryStatus()
         {
             //BE CAREFULL WHEN SAVE: NEED TO SET @CartonIDs (FOR BOTH WHEN SAVE - Update AND DELETE - Undo
@@ -123,6 +156,27 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
 
             this.totalSmartCodingEntities.CreateStoredProcedure("CartonUpdateEntryStatus", queryString);
+        }
+
+
+        private void CartonUpdateSubmitStatus()
+        {
+            //BE CAREFULL WHEN SAVE: NEED TO SET @CartonIDs (FOR BOTH WHEN SAVE - Update AND DELETE - Undo
+            string queryString = " @CartonIDs varchar(3999), @SubmitStatusID int " + "\r\n"; //SaveRelativeOption: 1: Update, -1:Undo
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "       UPDATE      Cartons" + "\r\n";
+            queryString = queryString + "       SET         SubmitStatusID = @SubmitStatusID " + "\r\n";
+            queryString = queryString + "       WHERE       CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs)) " + "\r\n";
+
+            queryString = queryString + "       IF @@ROWCOUNT <> ((SELECT (LEN(@CartonIDs) - LEN(REPLACE(@CartonIDs, ',', '')))) + 1) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'System Error: Some carton does not exist!' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("CartonUpdateSubmitStatus", queryString);
         }
 
 

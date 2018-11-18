@@ -44,6 +44,11 @@ namespace TotalService.Productions
             return this.cartonRepository.GetCartons(fillingLineID, entryStatusIDs, palletID);
         }
 
+        public IList<CartonAttribute> GetCartonAttributes(GlobalVariables.FillingLine fillingLineID, string submitStatusIDs, int? palletID)
+        {
+            return this.cartonRepository.GetCartonAttributes(fillingLineID, submitStatusIDs, palletID);
+        }
+
         public bool UpdateEntryStatus(string cartonIDs, GlobalVariables.BarcodeStatus barcodeStatus)
         {
             try

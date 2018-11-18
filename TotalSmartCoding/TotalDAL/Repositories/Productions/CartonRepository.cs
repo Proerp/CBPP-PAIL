@@ -20,6 +20,11 @@ namespace TotalDAL.Repositories.Productions
             return this.TotalSmartCodingEntities.GetCartons((int)fillingLineID, entryStatusIDs, palletID).ToList();
         }
 
+        public IList<CartonAttribute> GetCartonAttributes(GlobalVariables.FillingLine fillingLineID, string submitStatusIDs, int? palletID)
+        {
+            return this.TotalSmartCodingEntities.GetCartonAttributes((int)fillingLineID, submitStatusIDs, palletID).ToList();
+        }
+
         public IList<Carton> SearchCartons(string barcode)
         {
             return this.TotalSmartCodingEntities.SearchCartons(barcode).ToList();

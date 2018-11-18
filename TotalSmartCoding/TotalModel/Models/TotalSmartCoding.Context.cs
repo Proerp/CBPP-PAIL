@@ -3428,5 +3428,35 @@ namespace TotalModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchMaxNo>("GetBatchMaxNoByEntryMonthID", fillingLineIDParameter, commodityIDParameter, entryMonthIDParameter);
         }
+    
+        public virtual ObjectResult<CartonAttribute> GetCartonAttributes(Nullable<int> fillingLineID, string submitStatusIDs, Nullable<int> palletID)
+        {
+            var fillingLineIDParameter = fillingLineID.HasValue ?
+                new ObjectParameter("FillingLineID", fillingLineID) :
+                new ObjectParameter("FillingLineID", typeof(int));
+    
+            var submitStatusIDsParameter = submitStatusIDs != null ?
+                new ObjectParameter("SubmitStatusIDs", submitStatusIDs) :
+                new ObjectParameter("SubmitStatusIDs", typeof(string));
+    
+            var palletIDParameter = palletID.HasValue ?
+                new ObjectParameter("PalletID", palletID) :
+                new ObjectParameter("PalletID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CartonAttribute>("GetCartonAttributes", fillingLineIDParameter, submitStatusIDsParameter, palletIDParameter);
+        }
+    
+        public virtual int CartonUpdateSubmitStatus(string cartonIDs, Nullable<int> submitStatusID)
+        {
+            var cartonIDsParameter = cartonIDs != null ?
+                new ObjectParameter("CartonIDs", cartonIDs) :
+                new ObjectParameter("CartonIDs", typeof(string));
+    
+            var submitStatusIDParameter = submitStatusID.HasValue ?
+                new ObjectParameter("SubmitStatusID", submitStatusID) :
+                new ObjectParameter("SubmitStatusID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CartonUpdateSubmitStatus", cartonIDsParameter, submitStatusIDParameter);
+        }
     }
 }

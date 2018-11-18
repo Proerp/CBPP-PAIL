@@ -109,6 +109,14 @@ namespace TotalBase
             Deleted = 199
         }
 
+        public enum SubmitStatusID
+        {
+            Freshnew = 0,
+            Created = 201,
+            Failed = 100,
+            Deleted = -1
+        }
+
         public enum ZebraStatus
         {
             Freshnew = 0,

@@ -7,35 +7,50 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web.Http;
 
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
 using TotalBase;
+using TotalCore.Services.Productions;
+using TotalModel.Helpers;
+using TotalModel.Models;
 
 
 namespace TotalSmartCoding.Controllers.Generals
 {
-    public class DataServerController
+    public class DataServerController : NotifyPropertyChangeObject
     {
+        public ICartonService cartonService;
+
+        public DataServerController(ICartonService cartonService)
+        {
+            this.cartonService = cartonService;
+        }
+
+
         public void Upload()
         {
             TsaBarcode tsaBarcode = new TsaBarcode();
 
             tsaBarcode.ConsumerKey = "ST27FPpHyqCK942bcfMY8aRB8uS7MpVAaBGj5nZTXefT32557cmb";
             tsaBarcode.ConsumerSecret = "GvmFcdt7bfQSqRPdTCytcUN2bfmrHZSK";
-            tsaBarcode.Q_id1 = "C4STR0L001";
 
-            tsaBarcode.TsaLabel = new TsaLabel();
+            IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatusID.Freshnew + "," + (int)GlobalVariables.SubmitStatusID.Failed, null);
+            foreach (CartonAttribute cartonAttribute in cartonAttributes)
+            {
+                tsaBarcode.Q_id1 = cartonAttribute.Label.Substring(cartonAttribute.Label.Length - 10, 10);// "C4STR0L001";
 
-            HttpStatusCode httpStatusCode = HttpOAuth.TsaUpdate(tsaBarcode);
+                tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = cartonAttribute.OfficialCode } };
+                tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = cartonAttribute.BatchCode } };
+                tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = cartonAttribute.FillingLineName } };
+                tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyyMMdd") } };
+                tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code } };
 
-            //if (httpStatusCode == HttpStatusCode.OK)
-            //{
-            //    var a = await httpStatusCode.Content.ReadAsStringAsync();
-            //    Console.WriteLine("\r\n" + "\r\n" + "\r\n" + "TSA: " + a);
-            //}
+                HttpResponseMessage httpResponseMessage = HttpOAuth.TsaUpdate(tsaBarcode);
 
+            }
         }
 
         //public void UpLoadDataMaster()
@@ -99,7 +114,7 @@ namespace TotalSmartCoding.Controllers.Generals
         static HttpClient client = new HttpClient();
 
 
-        public static HttpStatusCode TsaUpdate(TsaBarcode tsaBarcode)
+        public static HttpResponseMessage TsaUpdate(TsaBarcode tsaBarcode)
         {
             try
             {
@@ -107,11 +122,11 @@ namespace TotalSmartCoding.Controllers.Generals
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = e.Message };
             }
         }
 
-        private static async Task<HttpStatusCode> RunAsync(TsaBarcode tsaBarcode)
+        private static async Task<HttpResponseMessage> RunAsync(TsaBarcode tsaBarcode)
         {
             try
             {
@@ -122,12 +137,12 @@ namespace TotalSmartCoding.Controllers.Generals
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = e.Message };
             }
         }
 
 
-        private static async Task<HttpStatusCode> PutAsync(TsaBarcode tsaBarcode)
+        private static async Task<HttpResponseMessage> PutAsync(TsaBarcode tsaBarcode)
         {
             List<string> parameters = new List<string>() { "q_id1=" + tsaBarcode.Q_id1 };
             OAuth_CSharp oauth_CSharp = new OAuth_CSharp(tsaBarcode.ConsumerKey, tsaBarcode.ConsumerSecret);
@@ -145,7 +160,7 @@ namespace TotalSmartCoding.Controllers.Generals
                 Console.WriteLine("\r\n" + "\r\n" + "\r\n" + "TSA: " + a);
             }
 
-            return httpResponseMessage.StatusCode;
+            return httpResponseMessage;
         }
 
     }
@@ -196,11 +211,7 @@ namespace TotalSmartCoding.Controllers.Generals
         {
             this.attributes = new Attributes();
 
-            this.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = "CBPP02-001-8888" } };
-            this.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = "PAIL181118" } };
-            this.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = "18112018" } };
-            this.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = "FT03" } };
-            this.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = "ITEM03" } };
+
         }
     }
 
@@ -216,6 +227,11 @@ namespace TotalSmartCoding.Controllers.Generals
         public string Q_id1 { get; set; }
 
         public TsaLabel TsaLabel { get; set; }
+
+        public TsaBarcode()
+        {
+            this.TsaLabel = new TsaLabel();
+        }
     }
 
     #endregion

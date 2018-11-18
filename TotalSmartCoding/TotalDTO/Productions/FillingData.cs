@@ -187,9 +187,17 @@ namespace TotalDTO.Productions
         }
 
 
+        private DateTime entryDate;
+        public virtual DateTime EntryDate
+        {
+            get { return this.entryDate; }
+            set { ApplyPropertyChange<FillingData, DateTime>(ref this.entryDate, o => o.EntryDate, value); }
+        }
+
+
         public DateTime SettingDate
         {
-            get { return this.settingDate; }
+            get { return this.EntryDate; } //LẤY BATCH DATE LÀM NGÀY SẢN XUẤT ==> WILL BE PRINT BY THIS //get { return this.settingDate; }
             set
             {
                 if (this.settingDate != value)
@@ -200,7 +208,7 @@ namespace TotalDTO.Productions
             }
         }
 
-        public string SettingDateShortDateFormat { get { return this.settingDate.ToShortDateString(); } }
+        public string SettingDateShortDateFormat { get { return this.SettingDate.ToShortDateString(); } }
 
 
         private int entryMonthID;
