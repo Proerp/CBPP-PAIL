@@ -1066,6 +1066,7 @@
             this.buttonCartonsetQueueCount.Size = new System.Drawing.Size(63, 52);
             this.buttonCartonsetQueueCount.Text = "[0]";
             this.buttonCartonsetQueueCount.ToolTipText = "Số lượng carton đang chuẩn bị đóng pallet";
+            this.buttonCartonsetQueueCount.Click += new System.EventHandler(this.buttonCartonsetQueueCount_Click);
             // 
             // toolStripButton14
             // 

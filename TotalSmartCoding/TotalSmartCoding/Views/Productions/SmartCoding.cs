@@ -986,6 +986,20 @@ namespace TotalSmartCoding.Views.Productions
             }
         }
 
+
+        private void buttonCartonsetQueueCount_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.scannerController.CartonsetQueueCount > 0 && CustomMsgBox.Show(this, "Đóng pallet ngay bây giờ.\r\n\r\nVui lòng chọn Yes để tiếp tục, hoặc chọn No để bỏ qua?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+                    GlobalEnums.OnTestPalletReceivedImmediately = true;
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
+        }
+
         #endregion Exception Handler
 
 

@@ -37,6 +37,7 @@
         public static bool OnTestCartonNoreadNowVisible = false;
         public static bool OnTestCartonNoreadNow = false;
         public static bool OnTestPalletReceivedNow = false;
+        public static bool OnTestPalletReceivedImmediately = false; //AT CBPP, THERE IS NO PALLET BARCODE => HERE WE SET AUTO PALLET, WITH A CONDITION: this.cartonQueue.Count + 2 > this.FillingData.CartonPerPallet. WE USE OnTestPalletReceivedImmediately: TO RECEIVE PALLET Immediately
 
 
         public static OptionSetting GlobalOptionSetting = new OptionSetting();

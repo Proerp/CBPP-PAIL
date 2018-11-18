@@ -1063,7 +1063,7 @@ namespace TotalSmartCoding.Controllers.Productions
         private bool waitforPallet(ref string stringReceived)
         {
             if (GlobalEnums.CBPP || GlobalEnums.OnTestScanner || GlobalEnums.OnTestPalletScanner)
-                if ((GlobalEnums.OnTestPalletReceivedNow) && ((DateTime.Now.Second % 10) == 0 || GlobalEnums.OnTestPalletReceivedNow) && this.FillingData.NextAutoPalletCode != "" && ((this.cartonsetQueue.Count > 0 && this.cartonQueue.Count + 2 > this.FillingData.CartonPerPallet) || !this.FillingData.HasCarton)) { stringReceived = this.FillingData.NextAutoPalletCode; this.FillingData.NextAutoPalletCode = ""; GlobalEnums.OnTestPalletReceivedNow = (GlobalEnums.NoPallet ? GlobalEnums.OnTestPalletReceivedNow : false); } else stringReceived = "";
+                if ((GlobalEnums.OnTestPalletReceivedNow) && ((DateTime.Now.Second % 10) == 0 || GlobalEnums.OnTestPalletReceivedNow) && this.FillingData.NextAutoPalletCode != "" && ((this.cartonsetQueue.Count > 0 && (this.cartonQueue.Count + 2 > this.FillingData.CartonPerPallet || GlobalEnums.OnTestPalletReceivedImmediately)) || !this.FillingData.HasCarton)) { stringReceived = this.FillingData.NextAutoPalletCode; this.FillingData.NextAutoPalletCode = ""; GlobalEnums.OnTestPalletReceivedNow = (GlobalEnums.NoPallet ? GlobalEnums.OnTestPalletReceivedNow : false); GlobalEnums.OnTestPalletReceivedImmediately = false; } else stringReceived = "";
             else
                 stringReceived = this.ionetSocketPallet.ReadoutStream().Trim();
 
