@@ -117,7 +117,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             sqlSelect = sqlSelect + "               INNER JOIN FillingLines ON Cartons.FillingLineID = FillingLines.FillingLineID " + "\r\n";
             sqlSelect = sqlSelect + "               INNER JOIN Commodities ON Cartons.CommodityID = Commodities.CommodityID " + "\r\n";
 
-            string sqlWhere = "             WHERE Cartons.FillingLineID = @FillingLineID AND Cartons.SubmitStatusID IN (SELECT Id FROM dbo.SplitToIntList (@SubmitStatusIDs)) " + "\r\n";
+            string sqlWhere = "             WHERE   Cartons.FillingLineID = @FillingLineID AND Cartons.PalletID IS NULL AND Cartons.SubmitStatusID IN (SELECT Id FROM dbo.SplitToIntList (@SubmitStatusIDs)) " + "\r\n";
 
             string queryString = " @FillingLineID int, @SubmitStatusIDs varchar(3999), @PalletID int " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
@@ -189,7 +189,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
-            queryString = queryString + "       SELECT TOP (200) * FROM Cartons WHERE Code LIKE '%' + @Barcode+ '%' ORDER BY EntryDate DESC " + "\r\n";
+            queryString = queryString + "       SELECT TOP (200) * FROM Cartons WHERE Code LIKE '%' + @Barcode + '%' OR Label LIKE '%' + @Barcode + '%' ORDER BY EntryDate DESC " + "\r\n";
             queryString = queryString + "    END " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("SearchCartons", queryString);
