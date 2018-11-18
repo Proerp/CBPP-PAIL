@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+
 using TotalBase;
 
 
@@ -99,15 +101,29 @@ namespace TotalSmartCoding.Controllers.Generals
 
         public static HttpStatusCode TsaUpdate(TsaBarcode tsaBarcode)
         {
-            return RunAsync(tsaBarcode).GetAwaiter().GetResult();
+            try
+            {
+                return RunAsync(tsaBarcode).GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         private static async Task<HttpStatusCode> RunAsync(TsaBarcode tsaBarcode)
         {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            try
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            return await PutAsync(tsaBarcode);
+                return await PutAsync(tsaBarcode);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
 
@@ -134,7 +150,7 @@ namespace TotalSmartCoding.Controllers.Generals
 
     }
     #endregion
-    
+
 
 
     #region TSA LABEL MODEL
@@ -180,9 +196,9 @@ namespace TotalSmartCoding.Controllers.Generals
         {
             this.attributes = new Attributes();
 
-            this.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = "CBPP02-001" } };
-            this.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = "PAIL01" } };
-            this.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = "02112018" } };
+            this.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = "CBPP02-001-8888" } };
+            this.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = "PAIL181118" } };
+            this.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = "18112018" } };
             this.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = "FT03" } };
             this.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = "ITEM03" } };
         }

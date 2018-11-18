@@ -36,6 +36,7 @@ namespace TotalModel.Models
         public int PackCounts { get; set; }
         public int EntryStatusID { get; set; }
         public string Label { get; set; }
+        public int SubmitStatusID { get; set; }
     
         public virtual FillingLine FillingLine { get; set; }
         public virtual Pallet Pallet { get; set; }

@@ -69,6 +69,7 @@
           <Property Name="LineVolume" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="PackCounts" Type="int" Nullable="false" />
           <Property Name="EntryStatusID" Type="int" Nullable="false" />
+          <Property Name="SubmitStatusID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ColumnMappings">
           <Key>
@@ -6238,6 +6239,7 @@
           <NavigationProperty Name="GoodsReceiptDetails" Relationship="TotalSmartCodingModel.FK_GoodsReceiptDetails_Cartons" FromRole="Carton" ToRole="GoodsReceiptDetail" />
           <NavigationProperty Name="WarehouseAdjustmentDetails" Relationship="TotalSmartCodingModel.FK_WarehouseAdjustmentDetails_Cartons" FromRole="Carton" ToRole="WarehouseAdjustmentDetail" />
           <Property Name="Label" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SubmitStatusID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Pack">
           <Key>
@@ -10218,6 +10220,7 @@
           <EntitySetMapping Name="Cartons">
             <EntityTypeMapping TypeName="TotalSmartCodingModel.Carton">
               <MappingFragment StoreEntitySet="Cartons">
+                <ScalarProperty Name="SubmitStatusID" ColumnName="SubmitStatusID" />
                 <ScalarProperty Name="Label" ColumnName="Label" />
                 <ScalarProperty Name="EntryStatusID" ColumnName="EntryStatusID" />
                 <ScalarProperty Name="PackCounts" ColumnName="PackCounts" />
