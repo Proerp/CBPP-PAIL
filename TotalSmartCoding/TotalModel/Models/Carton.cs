@@ -37,6 +37,7 @@ namespace TotalModel.Models
         public int EntryStatusID { get; set; }
         public string Label { get; set; }
         public int SubmitStatusID { get; set; }
+        public string Remarks { get; set; }
     
         public virtual FillingLine FillingLine { get; set; }
         public virtual Pallet Pallet { get; set; }

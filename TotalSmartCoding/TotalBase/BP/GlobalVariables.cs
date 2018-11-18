@@ -109,7 +109,7 @@ namespace TotalBase
             Deleted = 199
         }
 
-        public enum SubmitStatusID
+        public enum SubmitStatus
         {
             Freshnew = 0,
             Created = 201,

@@ -162,11 +162,11 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
         private void CartonUpdateSubmitStatus()
         {
             //BE CAREFULL WHEN SAVE: NEED TO SET @CartonIDs (FOR BOTH WHEN SAVE - Update AND DELETE - Undo
-            string queryString = " @CartonIDs varchar(3999), @SubmitStatusID int " + "\r\n"; //SaveRelativeOption: 1: Update, -1:Undo
+            string queryString = " @CartonIDs varchar(3999), @SubmitStatusID int, @Remarks nvarchar(100) " + "\r\n"; //SaveRelativeOption: 1: Update, -1:Undo
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "       UPDATE      Cartons" + "\r\n";
-            queryString = queryString + "       SET         SubmitStatusID = @SubmitStatusID " + "\r\n";
+            queryString = queryString + "       SET         SubmitStatusID = @SubmitStatusID, Remarks = @Remarks " + "\r\n";
             queryString = queryString + "       WHERE       CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs)) " + "\r\n";
 
             queryString = queryString + "       IF @@ROWCOUNT <> ((SELECT (LEN(@CartonIDs) - LEN(REPLACE(@CartonIDs, ',', '')))) + 1) " + "\r\n";

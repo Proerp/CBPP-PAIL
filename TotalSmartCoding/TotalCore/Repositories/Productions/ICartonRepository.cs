@@ -12,5 +12,6 @@ namespace TotalCore.Repositories.Productions
         IList<Carton> SearchCartons(string barcode);
 
         void UpdateEntryStatus(string cartonIDs, GlobalVariables.BarcodeStatus barcodeStatus);
+        void UpdateSubmitStatus(string cartonIDs, GlobalVariables.SubmitStatus submitStatus, string remarks);
     }
 }

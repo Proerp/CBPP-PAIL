@@ -21,6 +21,7 @@ using TotalSmartCoding.ViewModels.Productions;
 using TotalSmartCoding.Controllers.Productions;
 using AutoMapper;
 using TotalSmartCoding.Controllers.APIs.Productions;
+using TotalSmartCoding.Controllers.Generals;
 
 
 namespace TotalSmartCoding.Controllers.Productions
@@ -679,6 +680,8 @@ namespace TotalSmartCoding.Controllers.Productions
 
             this.LoopRoutine = true; this.StopScanner();
 
+            DataServerController a = new DataServerController(CommonNinject.Kernel.Get<ICartonService>());
+            a.Upload();
 
             try
             {

@@ -70,6 +70,7 @@
           <Property Name="PackCounts" Type="int" Nullable="false" />
           <Property Name="EntryStatusID" Type="int" Nullable="false" />
           <Property Name="SubmitStatusID" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ColumnMappings">
           <Key>
@@ -2441,6 +2442,7 @@
         <Function Name="CartonUpdateSubmitStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CartonIDs" Type="varchar" Mode="In" />
           <Parameter Name="SubmitStatusID" Type="int" Mode="In" />
+          <Parameter Name="Remarks" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="CommodityCategoryDeletable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
@@ -5362,6 +5364,7 @@
           <FunctionImport Name="CartonUpdateSubmitStatus">
             <Parameter Name="CartonIDs" Mode="In" Type="String" />
             <Parameter Name="SubmitStatusID" Mode="In" Type="Int32" />
+            <Parameter Name="Remarks" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PendingPickupDetail">
@@ -6258,6 +6261,7 @@
           <NavigationProperty Name="WarehouseAdjustmentDetails" Relationship="TotalSmartCodingModel.FK_WarehouseAdjustmentDetails_Cartons" FromRole="Carton" ToRole="WarehouseAdjustmentDetail" />
           <Property Name="Label" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SubmitStatusID" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Pack">
           <Key>
@@ -10261,6 +10265,7 @@
           <EntitySetMapping Name="Cartons">
             <EntityTypeMapping TypeName="TotalSmartCodingModel.Carton">
               <MappingFragment StoreEntitySet="Cartons">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="SubmitStatusID" ColumnName="SubmitStatusID" />
                 <ScalarProperty Name="Label" ColumnName="Label" />
                 <ScalarProperty Name="EntryStatusID" ColumnName="EntryStatusID" />

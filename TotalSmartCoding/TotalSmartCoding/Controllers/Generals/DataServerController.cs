@@ -32,74 +32,38 @@ namespace TotalSmartCoding.Controllers.Generals
 
         public void Upload()
         {
-            TsaBarcode tsaBarcode = new TsaBarcode();
-
-            tsaBarcode.ConsumerKey = "ST27FPpHyqCK942bcfMY8aRB8uS7MpVAaBGj5nZTXefT32557cmb";
-            tsaBarcode.ConsumerSecret = "GvmFcdt7bfQSqRPdTCytcUN2bfmrHZSK";
-
-            IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatusID.Freshnew + "," + (int)GlobalVariables.SubmitStatusID.Failed, null);
-            foreach (CartonAttribute cartonAttribute in cartonAttributes)
+            try
             {
-                tsaBarcode.Q_id1 = cartonAttribute.Label.Substring(cartonAttribute.Label.Length - 10, 10);// "C4STR0L001";
+                TsaBarcode tsaBarcode = new TsaBarcode();
 
-                tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = cartonAttribute.OfficialCode } };
-                tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = cartonAttribute.BatchCode } };
-                tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = cartonAttribute.FillingLineName } };
-                tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyyMMdd") } };
-                tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code } };
+                tsaBarcode.ConsumerKey = "ST27FPpHyqCK942bcfMY8aRB8uS7MpVAaBGj5nZTXefT32557cmb";
+                tsaBarcode.ConsumerSecret = "GvmFcdt7bfQSqRPdTCytcUN2bfmrHZSK";
 
-                HttpResponseMessage httpResponseMessage = HttpOAuth.TsaUpdate(tsaBarcode);
+                IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
 
+                int i = 1;
+                foreach (CartonAttribute cartonAttribute in cartonAttributes)
+                {
+
+                    tsaBarcode.Q_id1 = "C4STR0L" + (i++).ToString("000"); if (i >= 10) i = 0;
+                    //tsaBarcode.Q_id1 = cartonAttribute.Label.Substring(cartonAttribute.Label.Length - 10, 10);// "C4STR0L001";                    
+
+                    tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = cartonAttribute.OfficialCode } };
+                    tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = cartonAttribute.BatchCode } };
+                    tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = cartonAttribute.FillingLineName } };
+                    tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyyMMdd") } };
+                    tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code } };
+
+                    HttpResponseMessage httpResponseMessage = HttpOAuth.TsaUpdate(tsaBarcode);
+
+                    this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, httpResponseMessage.IsSuccessStatusCode ? GlobalVariables.SubmitStatus.Created : GlobalVariables.SubmitStatus.Failed, "[" + (int)httpResponseMessage.StatusCode + "] " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
             }
         }
-
-        //public void UpLoadDataMaster()
-        //{
-        //    try
-        //    {
-        //        this.UpLoadLogEventChange = false;
-
-        //        int rowEffected = 0; string exceptionMessage = ""; int fileTimes = 0;
-
-        //        #region UpLoadData
-
-        //        DataDetail.UpLoadLogEventDataTable notIsSuccessfullSentDataTabe = this.UpLoadLogEventTableAdapter.GetDataByIsSuccessful(false);
-        //        if (notIsSuccessfullSentDataTabe.Rows.Count > 0)
-        //        {
-        //            foreach (DataDetail.UpLoadLogEventRow notIsSuccessfullSentRow in notIsSuccessfullSentDataTabe)
-        //            {
-        //                FtpStatusCode ftpStatusCode = this.UpLoadTextFile(notIsSuccessfullSentRow.FileName, out exceptionMessage);
-        //                notIsSuccessfullSentRow.IsSuccessful = ftpStatusCode == FtpStatusCode.ClosingData && exceptionMessage == "226 Transfer complete.\r\n" ? true : false;
-        //                notIsSuccessfullSentRow.Remarks = notIsSuccessfullSentRow.Description;
-        //                notIsSuccessfullSentRow.Description = exceptionMessage;
-        //            }
-        //            this.UpLoadLogEventTableAdapter.Update(notIsSuccessfullSentDataTabe);
-        //            this.UpLoadLogEventChange = true;
-        //        }
-        //        #endregion UpLoadData
-
-        //    }
-        //    catch (System.Exception exception)
-        //    {
-        //        throw exception;
-        //    }
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -118,6 +82,9 @@ namespace TotalSmartCoding.Controllers.Generals
         {
             try
             {
+                return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = "Error!" };
+
+
                 return RunAsync(tsaBarcode).GetAwaiter().GetResult();
             }
             catch (Exception e)

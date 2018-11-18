@@ -3446,7 +3446,7 @@ namespace TotalModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CartonAttribute>("GetCartonAttributes", fillingLineIDParameter, submitStatusIDsParameter, palletIDParameter);
         }
     
-        public virtual int CartonUpdateSubmitStatus(string cartonIDs, Nullable<int> submitStatusID)
+        public virtual int CartonUpdateSubmitStatus(string cartonIDs, Nullable<int> submitStatusID, string remarks)
         {
             var cartonIDsParameter = cartonIDs != null ?
                 new ObjectParameter("CartonIDs", cartonIDs) :
@@ -3456,7 +3456,11 @@ namespace TotalModel.Models
                 new ObjectParameter("SubmitStatusID", submitStatusID) :
                 new ObjectParameter("SubmitStatusID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CartonUpdateSubmitStatus", cartonIDsParameter, submitStatusIDParameter);
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("Remarks", remarks) :
+                new ObjectParameter("Remarks", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CartonUpdateSubmitStatus", cartonIDsParameter, submitStatusIDParameter, remarksParameter);
         }
     }
 }

@@ -34,5 +34,10 @@ namespace TotalDAL.Repositories.Productions
         {
             this.TotalSmartCodingEntities.CartonUpdateEntryStatus(cartonIDs, (int)barcodeStatus);
         }
+
+        public void UpdateSubmitStatus(string cartonIDs, GlobalVariables.SubmitStatus submitStatus, string remarks)
+        {
+            this.TotalSmartCodingEntities.CartonUpdateSubmitStatus(cartonIDs, (int)submitStatus, remarks);
+        }
     }
 }

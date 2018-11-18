@@ -62,5 +62,20 @@ namespace TotalService.Productions
                 return false;
             }
         }
+
+        public bool UpdateSubmitStatus(string cartonIDs, GlobalVariables.SubmitStatus submitStatus, string remarks)
+        {
+            try
+            {
+                this.cartonRepository.UpdateSubmitStatus(cartonIDs, submitStatus, remarks);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                this.ServiceTag = ex.Message;
+                return false;
+            }
+        }
+
     }
 }

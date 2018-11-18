@@ -13,5 +13,6 @@ namespace TotalCore.Services.Productions
         IList<CartonAttribute> GetCartonAttributes(GlobalVariables.FillingLine fillingLineID, string submitStatusIDs, int? palletID);
 
         bool UpdateEntryStatus(string cartonIDs, GlobalVariables.BarcodeStatus barcodeStatus);
+        bool UpdateSubmitStatus(string cartonIDs, GlobalVariables.SubmitStatus submitStatus, string remarks);
     }
 }
