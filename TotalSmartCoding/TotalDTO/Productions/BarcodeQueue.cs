@@ -299,7 +299,7 @@ namespace TotalDTO.Productions
                 {
                     int nullIndex = this.FindNullIndex(subQueue);
                     //There is not enough element in this sub queue to dequeue. //IF LastsetProcessing: TO ALLOW TO MAKE A PARTILAL SET. IT MEANS: THE PENDING Item IS LESS THAN THE ItemPerSet, OTHERWISE: return empty
-                    if (this.LastsetProcessing && nullIndex != -1) return barcodesetQueue;  //LastsetProcessing: MUST HAVE NO NULL Code OR LABEL
+                    if (this.LastsetProcessing && nullIndex != -1) { this.LastsetProcessing = false; return barcodesetQueue; } //LastsetProcessing: MUST HAVE NO NULL Code OR LABEL
                     if (!this.LastsetProcessing && (barcodesetQueue.itemPerSubQueue > subQueue.Count || (nullIndex != -1 && barcodesetQueue.itemPerSubQueue > nullIndex))) return barcodesetQueue;
                 }
 
