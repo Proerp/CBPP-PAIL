@@ -177,6 +177,7 @@ namespace TotalSmartCoding.Views.Mains
                     this.buttonDownload.Visible = true;
                     this.buttonLoginRestore.Visible = activeUsers[0].IsDatabaseAdmin;
                     this.buttonConnectServer.Visible = activeUsers[0].IsDatabaseAdmin;
+                    this.buttonWebapi.Visible = activeUsers[0].IsDatabaseAdmin;
                     this.buttonApplicationRoleIgnored.Visible = activeUsers[0].IsDatabaseAdmin;
                     this.separatorResetApplicationRole.Visible = activeUsers[0].IsDatabaseAdmin;
                 }
@@ -421,6 +422,13 @@ namespace TotalSmartCoding.Views.Mains
                 }
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+
+        private void buttonWebapi_Click(object sender, EventArgs e)
+        {
+            Webapi webapi = new Webapi();
+            DialogResult dialogResult = webapi.ShowDialog(); webapi.Dispose();
+            if (dialogResult == System.Windows.Forms.DialogResult.OK) { CustomMsgBox.Show(this, "Please open your program again in order to take new effect.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); this.DialogResult = DialogResult.Cancel; }
         }
 
 

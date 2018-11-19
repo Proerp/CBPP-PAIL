@@ -1549,6 +1549,8 @@
     <None Include="Resources\cloud-upload.png" />
     <None Include="Resources\cloud-computing.png" />
     <None Include="Resources\Designbolts-Upload.ico" />
+    <None Include="Resources\cloud-size24.png" />
+    <None Include="Resources\cloud-size24-circle.png" />
     <Content Include="SmartCodingSolution.ico" />
     <None Include="Resources\Yellow-cross.ico" />
     <None Include="Resources\White-Pallet.ico" />

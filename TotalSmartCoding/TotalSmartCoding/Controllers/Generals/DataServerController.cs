@@ -48,9 +48,9 @@ namespace TotalSmartCoding.Controllers.Generals
             {
                 TsaBarcode tsaBarcode = new TsaBarcode();
 
-                tsaBarcode.Url = "https://tcnc.eu/3PQ6/api/v3/label/";
-                tsaBarcode.ConsumerKey = "ST27FPpHyqCK942bcfMY8aRB8uS7MpVAaBGj5nZTXefT32557cmb";
-                tsaBarcode.ConsumerSecret = "GvmFcdt7bfQSqRPdTCytcUN2bfmrHZSK";
+                tsaBarcode.BaseUri = Webapis.BaseUri; //"https://tcnc.eu/3PQ6/api/v3/label/";
+                tsaBarcode.ConsumerKey = Webapis.ConsumerKey; //"ST27FPpHyqCK942bcfMY8aRB8uS7MpVAaBGj5nZTXefT32557cmb";
+                tsaBarcode.ConsumerSecret = Webapis.ConsumerSecret; //"GvmFcdt7bfQSqRPdTCytcUN2bfmrHZSK";
 
                 while (this.LoopRoutine)
                 {
@@ -155,7 +155,7 @@ namespace TotalSmartCoding.Controllers.Generals
         {
             List<string> parameters = new List<string>() { "q_id1=" + tsaBarcode.Q_id1 };
             OAuth_CSharp oauth_CSharp = new OAuth_CSharp(tsaBarcode.ConsumerKey, tsaBarcode.ConsumerSecret);
-            string requestURL = oauth_CSharp.GenerateRequestURL(tsaBarcode.Url, "PUT", parameters);
+            string requestURL = oauth_CSharp.GenerateRequestURL(tsaBarcode.BaseUri, "PUT", parameters);
 
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, requestURL);
             httpRequestMessage.Content = new StringContent(JsonConvert.SerializeObject(tsaBarcode.TsaLabel), Encoding.UTF8, "application/json");
@@ -248,7 +248,7 @@ namespace TotalSmartCoding.Controllers.Generals
 
     public class TsaBarcode
     {
-        public string Url { get; set; }
+        public string BaseUri { get; set; }
         public string ConsumerKey { get; set; }
         public string ConsumerSecret { get; set; }
 

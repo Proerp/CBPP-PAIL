@@ -2650,7 +2650,7 @@ namespace TotalDAL.Repositories
             if (webapis != null && webapis.Count > 0)
             {
                 if (webapis[0].BaseUri != null) Webapis.BaseUri = SecurePassword.Decrypt(webapis[0].BaseUri);
-                if (webapis[0].ConsumerKey != null) Webapis.BaseUri = SecurePassword.Decrypt(webapis[0].ConsumerKey);
+                if (webapis[0].ConsumerKey != null) Webapis.ConsumerKey = SecurePassword.Decrypt(webapis[0].ConsumerKey);
                 if (webapis[0].ConsumerSecret != null) Webapis.ConsumerSecret = SecurePassword.Decrypt(webapis[0].ConsumerSecret);
             }
         }

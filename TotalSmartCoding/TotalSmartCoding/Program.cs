@@ -107,6 +107,8 @@ namespace TotalSmartCoding
                 IBaseRepository baseRepository = CommonNinject.Kernel.Get<IBaseRepository>();
                 if (ApplicationRoles.Required) baseRepository.GetApplicationRoles();
 
+                baseRepository.GetWebapis();
+
                 return baseRepository.GetVersionID((int)GlobalVariables.FillingLine.None) != null ? DialogResult.Yes : DialogResult.No;
             }
             catch (Exception exception)
