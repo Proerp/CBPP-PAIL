@@ -66,11 +66,18 @@ namespace TotalSmartCoding.Controllers.Generals
                             //tsaBarcode.Q_id1 = "C4STR0L" + random.Next(1, 10).ToString("000");
                             tsaBarcode.Q_id1 = cartonAttribute.Label;
 
+
+                            //tsaBarcode.TsaLabel.attributes.label = new List<Label>() { new Label() { value = cartonAttribute.Label } };
+                            
                             tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = cartonAttribute.OfficialCode } };
                             tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = cartonAttribute.BatchCode } };
                             tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = cartonAttribute.FillingLineName } };
                             tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyy-MM-dd") } };
                             tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code.Substring(0, cartonAttribute.Code.Length - 6).Trim() } };
+
+                            //tsaBarcode.TsaLabel.attributes.batch_serial = new List<BatchSerial>() { new BatchSerial() { value = cartonAttribute.Code.Substring(cartonAttribute.Code.Length - 6, 6).Trim() } };
+                            //tsaBarcode.TsaLabel.attributes.valid = new List<Valid>() { new Valid() { value = "1" } };
+
 
                             this.MainStatus =  "Sending: " + tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
                             HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeUpdate(tsaBarcode);
@@ -196,14 +203,36 @@ namespace TotalSmartCoding.Controllers.Generals
         public string value { get; set; }
     }
 
+    public class Label
+    {
+        public string value { get; set; }
+    }
+
+    public class BatchSerial
+    {
+        public string value { get; set; }
+    }
+
+    public class Valid
+    {
+        public string value { get; set; }
+    }
+
     public class Attributes
     {
-        public List<ProductionSerialNumber> production_serial_number { get; set; }
-        public List<ProductionLine> production_line { get; set; }
-        public List<ProductionDate> production_date { get; set; }
+        //public List<Label> label { get; set; }
+
+        public List<SKUCode> SKU_code { get; set; } //WILL BE RENAME: product_id        
         public List<BatchNumber> batch_number { get; set; }
-        public List<SKUCode> SKU_code { get; set; }
+        public List<ProductionLine> production_line { get; set; }
+        public List<ProductionDate> production_date { get; set; }                
+        public List<ProductionSerialNumber> production_serial_number { get; set; } //WILL BE RENAME: domino_code
+
+        //public List<BatchSerial> batch_serial { get; set; }
+        //public List<Valid> valid { get; set; }
     }
+
+
 
     public class TsaLabel
     {
