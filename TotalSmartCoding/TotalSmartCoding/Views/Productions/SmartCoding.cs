@@ -433,10 +433,21 @@ namespace TotalSmartCoding.Views.Productions
 
         private void StartUpload()
         {
-            if (dataServerThread != null && dataServerThread.IsAlive)
+            try
             {
+                if (dataServerThread != null && dataServerThread.IsAlive)
+                    dataServerController.StartUpload();
+                else
+                {
+                    dataServerThread = new Thread(new ThreadStart(dataServerController.ThreadRoutine));
+
+                    dataServerThread.Start();
+                }
                 this.timerEveryUpload = 0;
-                dataServerController.StartUpload();
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
             }
         }
 
