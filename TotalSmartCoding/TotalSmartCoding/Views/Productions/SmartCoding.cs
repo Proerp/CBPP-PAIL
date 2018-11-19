@@ -1042,6 +1042,17 @@ namespace TotalSmartCoding.Views.Productions
             }
         }
 
+        void buttonPalletQueueCount_Click(object sender, System.EventArgs e)
+        {
+            try
+            {
+                this.StartUpload();
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
+        }
 
         #endregion Exception Handler
 

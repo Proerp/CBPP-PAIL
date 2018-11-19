@@ -110,7 +110,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
         private void GetCartonAttributes()
         {
-            string sqlSelect = "            SELECT  Cartons.CartonID, Cartons.EntryDate, Cartons.FillingLineID, FillingLines.Code AS FillingLineCode, FillingLines.Name AS FillingLineName, Cartons.BatchID, Batches.EntryDate AS BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
+            string sqlSelect = "                    Cartons.CartonID, Cartons.EntryDate, Cartons.FillingLineID, FillingLines.Code AS FillingLineCode, FillingLines.Name AS FillingLineName, Cartons.BatchID, Batches.EntryDate AS BatchEntryDate, Batches.Code AS BatchCode, " + "\r\n";
             sqlSelect = sqlSelect + "               Cartons.LocationID, Cartons.CommodityID, Commodities.Code AS CommodityCode, Commodities.OfficialCode, Commodities.Name AS CommodityName, Cartons.PalletID, Cartons.Code, Cartons.Label, Cartons.Quantity, Cartons.LineVolume, Cartons.PackCounts, Cartons.EntryStatusID, Cartons.SubmitStatusID " + "\r\n";
             sqlSelect = sqlSelect + "       FROM    Cartons " + "\r\n";
             sqlSelect = sqlSelect + "               INNER JOIN Batches ON Cartons.BatchID = Batches.BatchID " + "\r\n";
@@ -125,14 +125,14 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
             queryString = queryString + "   IF ((@FillingLineID IS NULL OR @FillingLineID = 0) AND @SubmitStatusIDs IS NULL AND @PalletID IS NOT NULL) " + "\r\n";
             queryString = queryString + "       BEGIN " + "\r\n";
-            queryString = queryString + "           " + sqlSelect + " WHERE PalletID = @PalletID " + "\r\n";
+            queryString = queryString + "           SELECT  " + sqlSelect + " WHERE PalletID = @PalletID " + "\r\n";
             queryString = queryString + "       END " + "\r\n";
             queryString = queryString + "   ELSE " + "\r\n";
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           IF (@PalletID IS NULL) " + "\r\n";
-            queryString = queryString + "               " + sqlSelect + sqlWhere + "\r\n";
+            queryString = queryString + "               SELECT  TOP 200 " + sqlSelect + sqlWhere + "\r\n";
             queryString = queryString + "           ELSE " + "\r\n";
-            queryString = queryString + "               " + sqlSelect + sqlWhere + " AND PalletID = @PalletID " + "\r\n";
+            queryString = queryString + "               SELECT  TOP 200 " + sqlSelect + sqlWhere + " AND PalletID = @PalletID " + "\r\n";
             queryString = queryString + "       END " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("GetCartonAttributes", queryString);
