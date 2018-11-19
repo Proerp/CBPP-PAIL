@@ -161,15 +161,52 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
         private void CartonUpdateSubmitStatus()
         {
-            //BE CAREFULL WHEN SAVE: NEED TO SET @CartonIDs (FOR BOTH WHEN SAVE - Update AND DELETE - Undo
-            string queryString = " @CartonIDs varchar(3999), @SubmitStatusID int, @Remarks nvarchar(100) " + "\r\n"; //SaveRelativeOption: 1: Update, -1:Undo
+            string queryUpdate = "        UPDATE    Cartons SET SubmitStatusID = @SubmitStatusID, Remarks = @Remarks " + "\r\n";
+
+            string queryString = " @CartonIDs varchar(3999), @SubmitStatusID int, @Remarks nvarchar(100) " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
-            queryString = queryString + "       UPDATE      Cartons" + "\r\n";
-            queryString = queryString + "       SET         SubmitStatusID = @SubmitStatusID, Remarks = @Remarks " + "\r\n";
-            queryString = queryString + "       WHERE       CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs)) " + "\r\n";
 
-            queryString = queryString + "       IF @@ROWCOUNT <> ((SELECT (LEN(@CartonIDs) - LEN(REPLACE(@CartonIDs, ',', '')))) + 1) " + "\r\n";
+            queryString = queryString + "       IF (CHARINDEX(',', @CartonIDs) = 0) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n"; //ONE CartonID
+            queryString = queryString + "               " + queryUpdate + "\r\n";
+            queryString = queryString + "               WHERE       CartonID = CAST(@CartonIDs AS int) " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n"; //MULTIPLE CartonIDs
+            queryString = queryString + "               " + queryUpdate + "\r\n";
+            queryString = queryString + "               WHERE       CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs)) " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+
+            queryString = queryString + "       IF @@ROWCOUNT = ((SELECT (LEN(@CartonIDs) - LEN(REPLACE(@CartonIDs, ',', '')))) + 1) " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               IF (CHARINDEX(',', @CartonIDs) = 0) " + "\r\n";
+            queryString = queryString + "                   BEGIN " + "\r\n"; //ONE CartonID => ONE PalletID AND ONE FillingLineID
+            queryString = queryString + "                       DECLARE @PalletID int, @FillingLineID int " + "\r\n";
+            queryString = queryString + "                       SELECT  @PalletID = PalletID, @FillingLineID = FillingLineID FROM Cartons WHERE CartonID = CAST(@CartonIDs AS int) " + "\r\n";
+
+            queryString = queryString + "                       IF (NOT EXISTS(SELECT TOP (1) CartonID FROM Cartons WHERE SubmitStatusID >= 0 AND SubmitStatusID <> " + (int)GlobalVariables.SubmitStatus.Created + " AND PalletID = @PalletID)) " + "\r\n";
+            queryString = queryString + "                           BEGIN " + "\r\n";//CHECK AND UPDATE: ONE PalletID AND ONE FillingLineID
+            queryString = queryString + "                               UPDATE      Pallets SET QuantityPickup = Quantity, LineVolumePickup = LineVolume WHERE PalletID = @PalletID " + "\r\n";
+            queryString = queryString + "                               UPDATE      FillingLines SET PalletChanged = 1 WHERE FillingLineID = @FillingLineID " + "\r\n"; 
+            queryString = queryString + "                           END " + "\r\n";
+            queryString = queryString + "                   END " + "\r\n";
+            queryString = queryString + "               ELSE " + "\r\n";
+            queryString = queryString + "                   BEGIN " + "\r\n"; //MULTIPLE CartonIDs => MULTIPLE PalletIDs AND MULTIPLE FillingLineIDs
+            queryString = queryString + "                       DECLARE @PalletIDs nvarchar(3000), @FillingLineIDs nvarchar(3000) " + "\r\n";
+            queryString = queryString + "                       SELECT  @PalletIDs = STUFF((SELECT ',' + CAST(PalletID AS varchar) FROM (SELECT DISTINCT PalletID FROM Cartons WHERE CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs))) DistinctPalletIDs FOR XML PATH('')) ,1,1,'') " + "\r\n";
+            queryString = queryString + "                       SELECT  @FillingLineIDs = STUFF((SELECT ',' + CAST(FillingLineID AS varchar) FROM (SELECT DISTINCT FillingLineID FROM Cartons WHERE CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs))) DistinctFillingLineIDs FOR XML PATH('')) ,1,1,'') " + "\r\n";
+
+            queryString = queryString + "                       IF (NOT EXISTS(SELECT TOP (1) CartonID FROM Cartons WHERE SubmitStatusID >= 0 AND SubmitStatusID <> " + (int)GlobalVariables.SubmitStatus.Created + " AND PalletID IN (SELECT Id FROM dbo.SplitToIntList (@PalletIDs)))) " + "\r\n";
+            queryString = queryString + "                           BEGIN " + "\r\n"; //CHECK AND UPDATE: MULTIPLE PalletIDs AND MULTIPLE FillingLineIDs
+            queryString = queryString + "                               UPDATE      Pallets SET QuantityPickup = Quantity, LineVolumePickup = LineVolume WHERE PalletID IN (SELECT Id FROM dbo.SplitToIntList (@PalletIDs)) " + "\r\n";
+            queryString = queryString + "                               UPDATE      FillingLines SET PalletChanged = 1 WHERE FillingLineID IN (SELECT Id FROM dbo.SplitToIntList (@FillingLineIDs)) " + "\r\n";
+            queryString = queryString + "                           END " + "\r\n";
+            queryString = queryString + "                   END " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+            queryString = queryString + "       ELSE " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";
             queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'System Error: Some carton does not exist!' ; " + "\r\n";
             queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";

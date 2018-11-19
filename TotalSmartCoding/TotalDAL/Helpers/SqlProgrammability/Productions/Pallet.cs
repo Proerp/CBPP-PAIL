@@ -42,23 +42,33 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "       BEGIN " + "\r\n";
 
             queryString = queryString + "           IF (@SaveRelativeOption = 1) " + "\r\n";
-
             queryString = queryString + "               UPDATE      Cartons" + "\r\n";
             queryString = queryString + "               SET         PalletID = @EntityID, EntryStatusID = " + (int)GlobalVariables.BarcodeStatus.Wrapped + "\r\n"; //WHERE: NOT BELONG TO ANY CARTON, AND NUMBER OF PACK EFFECTED: IS THE SAME CartonID PASS BY VARIBLE: CartonIDs
             queryString = queryString + "               WHERE       PalletID IS NULL AND EntryStatusID = " + (int)GlobalVariables.BarcodeStatus.Readytoset + " AND CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs)) " + "\r\n";
 
             queryString = queryString + "           ELSE " + "\r\n"; //(@SaveRelativeOption = -1) 
-
             queryString = queryString + "               UPDATE      Cartons" + "\r\n";
             queryString = queryString + "               SET         PalletID = NULL, EntryStatusID = " + (int)GlobalVariables.BarcodeStatus.Readytoset + "\r\n"; //WHERE: NOT BELONG TO ANY CARTON, AND NUMBER OF PACK EFFECTED: IS THE SAME CartonID PASS BY VARIBLE: CartonIDs
             queryString = queryString + "               WHERE       PalletID = @EntityID AND EntryStatusID = " + (int)GlobalVariables.BarcodeStatus.Wrapped + " AND CartonID IN (SELECT Id FROM dbo.SplitToIntList (@CartonIDs)) " + "\r\n";
 
-            queryString = queryString + "           " + "\r\n";
+            
             queryString = queryString + "           IF @@ROWCOUNT <> (SELECT CartonCounts FROM Pallets WHERE PalletID = @EntityID)  OR  @@ROWCOUNT <> ((SELECT (LEN(@CartonIDs) - LEN(REPLACE(@CartonIDs, ',', '')))) + 1) " + "\r\n"; //CHECK BOTH CONDITION FOR SURE. BUT: WE CAN OMIT THE SECOND CONDITION 
             queryString = queryString + "               BEGIN " + "\r\n";
             queryString = queryString + "                   DECLARE     @msg NVARCHAR(300) = N'System Error: Some carton does not exist!' ; " + "\r\n";
             queryString = queryString + "                   THROW       61001,  @msg, 1; " + "\r\n";
             queryString = queryString + "               END " + "\r\n";
+            if (GlobalEnums.BPFillingSystem)
+            {
+                queryString = queryString + "       ELSE " + "\r\n";
+                queryString = queryString + "           BEGIN " + "\r\n";
+                queryString = queryString + "               IF (@SaveRelativeOption = 1) " + "\r\n";
+                queryString = queryString + "                   INSERT INTO BPFillingSystem.dbo.DataDetailCarton (PalletID, CartonDate, CartonStatus, CartonBarcode, FillingLineID, Pack00Barcode, Pack01Barcode, Pack02Barcode, Pack03Barcode, Pack04Barcode, Pack05Barcode, Pack06Barcode, Pack07Barcode, Pack08Barcode, Pack09Barcode, Pack10Barcode, Pack11Barcode, Pack12Barcode, Pack13Barcode, Pack14Barcode, Pack15Barcode, Pack16Barcode, Pack17Barcode, Pack18Barcode, Pack19Barcode, Pack20Barcode, Pack21Barcode, Pack22Barcode, Pack23Barcode) " + "\r\n";
+                queryString = queryString + "                   SELECT @EntityID AS PalletID, EntryDate AS CartonDate, 0 AS CartonStatus, Code AS CartonBarcode, FillingLineID, '' AS Pack00Barcode, '' AS Pack01Barcode, '' AS Pack02Barcode, '' AS Pack03Barcode, '' AS Pack04Barcode, '' AS Pack05Barcode, '' AS Pack06Barcode, '' AS Pack07Barcode, '' AS Pack08Barcode, '' AS Pack09Barcode, '' AS Pack10Barcode, '' AS Pack11Barcode, '' AS Pack12Barcode, '' AS Pack13Barcode, '' AS Pack14Barcode, '' AS Pack15Barcode, '' AS Pack16Barcode, '' AS Pack17Barcode, '' AS Pack18Barcode, '' AS Pack19Barcode, '' AS Pack20Barcode, '' AS Pack21Barcode, '' AS Pack22Barcode, '' AS Pack23Barcode) " + "\r\n";
+                queryString = queryString + "               ELSE " + "\r\n";
+                queryString = queryString + "                   DELETE FROM BPFillingSystem.dbo.Cartons WHERE PalletID = @EntityID " + "\r\n";
+                queryString = queryString + "           END " + "\r\n";
+            }
+
             queryString = queryString + "       END " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("PalletSaveRelative", queryString);
