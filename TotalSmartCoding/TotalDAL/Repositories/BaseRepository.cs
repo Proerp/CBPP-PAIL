@@ -2644,6 +2644,22 @@ namespace TotalDAL.Repositories
 
         #region Base Repository
 
+        public void GetWebapis()
+        {
+            IList<Webapi> webapis = this.TotalSmartCodingEntities.GetWebapis(1).ToList();
+            if (webapis != null && webapis.Count > 0)
+            {
+                if (webapis[0].BaseUri != null) Webapis.BaseUri = SecurePassword.Decrypt(webapis[0].BaseUri);
+                if (webapis[0].ConsumerKey != null) Webapis.BaseUri = SecurePassword.Decrypt(webapis[0].ConsumerKey);
+                if (webapis[0].ConsumerSecret != null) Webapis.ConsumerSecret = SecurePassword.Decrypt(webapis[0].ConsumerSecret);
+            }
+        }
+
+        public int UpdateWebapi(string baseUri, string consumerKey, string consumerSecret)
+        {
+            return this.TotalSmartCodingEntities.UpdateWebapi(1, baseUri, consumerKey, consumerSecret);
+        }
+
         public void GetApplicationRoles()
         {
             IList<ApplicationRole> applicationRoles = this.TotalSmartCodingEntities.GetApplicationRoles(1).ToList();

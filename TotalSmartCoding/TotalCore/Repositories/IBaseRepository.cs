@@ -15,6 +15,9 @@ namespace TotalCore.Repositories
         bool IsDirty();
         bool AutoUpdates(bool restoreProcedures);
 
+        void GetWebapis();
+        int UpdateWebapi(string baseUri, string consumerKey, string consumerSecret);
+
         void GetApplicationRoles();
         int UpdateApplicationRole(string name, string password);
 

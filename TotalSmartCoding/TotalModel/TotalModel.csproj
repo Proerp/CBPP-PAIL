@@ -59,6 +59,7 @@
     <Compile Include="Helpers\RegexValidationRule.cs" />
     <Compile Include="Helpers\SimpleValidationRule.cs" />
     <Compile Include="Helpers\ValidationRule.cs" />
+    <Compile Include="Helpers\Webapis.cs" />
     <Compile Include="IAccessControlAttribute.cs" />
     <Compile Include="IBaseDetailEntity.cs" />
     <Compile Include="IBaseEntity.cs" />
