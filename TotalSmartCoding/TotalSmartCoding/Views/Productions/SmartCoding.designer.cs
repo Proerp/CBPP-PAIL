@@ -2412,13 +2412,13 @@
             // 
             // buttonCartonAttributes
             // 
-            this.buttonCartonAttributes.Image = global::TotalSmartCoding.Properties.Resources.Apps_Burn;
+            this.buttonCartonAttributes.Image = global::TotalSmartCoding.Properties.Resources.cloud_upload;
             this.buttonCartonAttributes.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.buttonCartonAttributes.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonCartonAttributes.Name = "buttonCartonAttributes";
             this.buttonCartonAttributes.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.buttonCartonAttributes.Size = new System.Drawing.Size(163, 36);
-            this.buttonCartonAttributes.Text = "Sending ... [000128812]";
+            this.buttonCartonAttributes.Text = "Idling";
             this.buttonCartonAttributes.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.buttonCartonAttributes.Click += new System.EventHandler(this.buttonCartonAttributes_Click);
             // 

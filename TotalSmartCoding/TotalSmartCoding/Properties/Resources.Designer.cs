@@ -1923,9 +1923,29 @@ namespace TotalSmartCoding.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cloud_computing {
+            get {
+                object obj = ResourceManager.GetObject("cloud-computing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cloud_sync {
             get {
                 object obj = ResourceManager.GetObject("Cloud-sync", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cloud_upload {
+            get {
+                object obj = ResourceManager.GetObject("cloud-upload", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2256,6 +2276,16 @@ namespace TotalSmartCoding.Properties {
         internal static System.Drawing.Bitmap Designbolts_Free_Shaded_Social_Email {
             get {
                 object obj = ResourceManager.GetObject("Designbolts-Free-Shaded-Social-Email", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Designbolts_Upload {
+            get {
+                object obj = ResourceManager.GetObject("Designbolts-Upload", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1537,6 +1537,9 @@
     <None Include="Resources\ICsymbol.png" />
     <None Include="Resources\Cloud-sync.ico" />
     <None Include="Resources\Saki-Snowish-Ok.ico" />
+    <None Include="Resources\cloud-upload.png" />
+    <None Include="Resources\cloud-computing.png" />
+    <None Include="Resources\Designbolts-Upload.ico" />
     <Content Include="SmartCodingSolution.ico" />
     <None Include="Resources\Yellow-cross.ico" />
     <None Include="Resources\White-Pallet.ico" />

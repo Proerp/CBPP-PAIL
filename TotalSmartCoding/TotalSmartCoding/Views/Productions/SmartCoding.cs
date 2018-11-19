@@ -640,7 +640,7 @@ namespace TotalSmartCoding.Views.Productions
                 }
                 else if (sender.Equals(this.dataServerController))
                 {
-                    if (e.PropertyName == "MainStatus") { if (this.dataServerController.MainStatus != "") { this.scannerStatusbox.Text = "[" + DateTime.Now.ToString("hh:mm:ss") + "] " + this.dataServerController.MainStatus + "\r\n" + this.scannerStatusbox.Text; this.cutStatusBox(false); } return; }
+                    if (e.PropertyName == "MainStatus") { if (this.dataServerController.MainStatus != "") { this.buttonCartonAttributes.Text = this.dataServerController.MainStatus; } return; }
                 }
 
             }
@@ -1032,8 +1032,14 @@ namespace TotalSmartCoding.Views.Productions
 
         private void buttonCartonAttributes_Click(object sender, EventArgs e)
         {
-            ExceptionHandlers.ShowExceptionMessageBox(this, "exception");
-            
+            try
+            {
+                this.StartUpload();
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
         }
 
 

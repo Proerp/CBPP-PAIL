@@ -56,6 +56,8 @@ namespace TotalSmartCoding.Controllers.Generals
                 {
                     if (this.OnUploading)
                     {
+                        this.MainStatus = "Starting ..."; Thread.Sleep(500);
+
                         IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
 
                         foreach (CartonAttribute cartonAttribute in cartonAttributes)
@@ -70,16 +72,16 @@ namespace TotalSmartCoding.Controllers.Generals
                             tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyy-MM-dd") } };
                             tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code.Substring(0, cartonAttribute.Code.Length - 6).Trim() } };
 
-                            this.MainStatus = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value + ": Sending ...";
+                            this.MainStatus =  "Sending: " + tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
                             HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeUpdate(tsaBarcode);
-                            this.MainStatus = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value + ": " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
+                            this.MainStatus = httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase + ": " + tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
 
                             this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, httpResponseMessage.IsSuccessStatusCode ? GlobalVariables.SubmitStatus.Created : GlobalVariables.SubmitStatus.Failed, "[" + (int)httpResponseMessage.StatusCode + "] " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase);
 
                             if (!this.OnUploading) break;
                         }
                     }
-
+                    this.MainStatus = "Idling";
                     this.StopUpload();
                     Thread.Sleep(100);
                 }
