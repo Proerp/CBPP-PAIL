@@ -71,7 +71,7 @@ namespace TotalSmartCoding.Controllers.Generals
                             tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code.Substring(0, cartonAttribute.Code.Length - 6).Trim() } };
 
                             this.MainStatus = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value + ": Sending ...";
-                            HttpResponseMessage httpResponseMessage = HttpOAuth.TsaSendAsync(tsaBarcode);
+                            HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeUpdate(tsaBarcode);
                             this.MainStatus = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value + ": " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
 
                             this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, httpResponseMessage.IsSuccessStatusCode ? GlobalVariables.SubmitStatus.Created : GlobalVariables.SubmitStatus.Failed, "[" + (int)httpResponseMessage.StatusCode + "] " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase);
@@ -110,14 +110,14 @@ namespace TotalSmartCoding.Controllers.Generals
         static HttpClient client = new HttpClient();
 
 
-        public static HttpResponseMessage TsaSendAsync(TsaBarcode tsaBarcode)
+        public static HttpResponseMessage TsaBarcodeUpdate(TsaBarcode tsaBarcode)
         {
             try
             {
-                //return new HttpResponseMessage() { StatusCode = HttpStatusCode.Created, ReasonPhrase = "Error!" };
+                return new HttpResponseMessage() { StatusCode = HttpStatusCode.Created, ReasonPhrase = "Error!" };
 
 
-                return RunAsync(tsaBarcode).GetAwaiter().GetResult();
+                //return RunAsync(tsaBarcode).GetAwaiter().GetResult();
             }
             catch (Exception e)
             {
