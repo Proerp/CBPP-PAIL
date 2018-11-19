@@ -117,7 +117,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             sqlSelect = sqlSelect + "               INNER JOIN FillingLines ON Cartons.FillingLineID = FillingLines.FillingLineID " + "\r\n";
             sqlSelect = sqlSelect + "               INNER JOIN Commodities ON Cartons.CommodityID = Commodities.CommodityID " + "\r\n";
 
-            string sqlWhere = "             WHERE   Cartons.FillingLineID = @FillingLineID AND Cartons.PalletID IS NULL AND Cartons.SubmitStatusID IN (SELECT Id FROM dbo.SplitToIntList (@SubmitStatusIDs)) " + "\r\n";
+            string sqlWhere = "             WHERE   Cartons.FillingLineID = @FillingLineID AND NOT Cartons.PalletID IS NULL AND Cartons.SubmitStatusID IN (SELECT Id FROM dbo.SplitToIntList (@SubmitStatusIDs)) " + "\r\n";
 
             string queryString = " @FillingLineID int, @SubmitStatusIDs varchar(3999), @PalletID int " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";

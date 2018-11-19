@@ -14,14 +14,16 @@ using TotalCore.Services.Productions;
 using TotalModel.Models;
 using TotalDTO.Productions;
 
-using TotalSmartCoding.Controllers.Productions;
-using TotalSmartCoding.Controllers.APIs.Productions;
 using TotalSmartCoding.Libraries;
 using TotalSmartCoding.Libraries.Helpers;
+
+using TotalSmartCoding.Controllers.Generals;
+using TotalSmartCoding.Controllers.Productions;
+using TotalSmartCoding.Controllers.APIs.Productions;
+
 using TotalSmartCoding.Views.Commons;
 using TotalSmartCoding.Views.Commons.FillingLines;
 using TotalSmartCoding.Views.Mains;
-//using System.Diagnostics;
 
 
 namespace TotalSmartCoding.Views.Productions
@@ -42,6 +44,8 @@ namespace TotalSmartCoding.Views.Productions
 
         private ScannerController scannerController;
 
+        private DataServerController dataServerController;
+
 
 
         private Thread digitThread;
@@ -50,6 +54,8 @@ namespace TotalSmartCoding.Views.Productions
         private Thread palletThread;
 
         private Thread scannerThread;
+
+        private Thread dataServerThread;
 
         private Thread backupDataThread;
 
@@ -82,6 +88,7 @@ namespace TotalSmartCoding.Views.Productions
                 palletController = new PrinterController(batchService, this.fillingData, GlobalVariables.PrinterName.PalletLabel);
 
                 this.scannerController = new ScannerController(batchService, this.fillingData);
+                this.dataServerController = new DataServerController();
 
                 digitController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
                 packController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
@@ -89,7 +96,7 @@ namespace TotalSmartCoding.Views.Productions
                 palletController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
 
                 scannerController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
-
+                dataServerController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
 
                 this.textBoxFillingLineName.TextBox.DataBindings.Add("Text", this.fillingData, "FillingLineName");
                 this.textBoxSettingDate.TextBox.DataBindings.Add("Text", this.fillingData, "SettingDateShortDateFormat");
@@ -179,6 +186,11 @@ namespace TotalSmartCoding.Views.Productions
             try
             {
                 this.scannerController.Initialize();
+
+                if (dataServerThread != null && dataServerThread.IsAlive) dataServerThread.Abort();
+                dataServerThread = new Thread(new ThreadStart(dataServerController.ThreadRoutine));
+
+                dataServerThread.Start();
             }
             catch (Exception exception)
             {
@@ -214,6 +226,8 @@ namespace TotalSmartCoding.Views.Productions
                 if (palletThread != null && palletThread.IsAlive) { e.Cancel = true; return; }
 
                 if (scannerThread != null && scannerThread.IsAlive) { e.Cancel = true; return; }
+
+                if (dataServerThread != null && dataServerThread.IsAlive) { dataServerController.StopUpload(); dataServerController.LoopRoutine = false; e.Cancel = true; return; }
 
                 if (backupDataThread != null && backupDataThread.IsAlive) { e.Cancel = true; return; }
             }
@@ -416,7 +430,14 @@ namespace TotalSmartCoding.Views.Productions
             if (stopPalletLabel) this.palletController.StopPrint();
         }
 
-
+        private void StartUpload()
+        {
+            if (dataServerThread != null && dataServerThread.IsAlive)
+            {
+                this.timerEveryUpload = 0; 
+                dataServerController.StartUpload();
+            }
+        }
 
         private void buttonSendCartontoZebra_Click(object sender, EventArgs e)
         {
@@ -466,6 +487,7 @@ namespace TotalSmartCoding.Views.Productions
             GlobalEnums.OnTestCartonNoreadNow = true;
         }
 
+        private int timerEveryUpload { get; set; }
         private void timerEverySecond_Tick(object sender, EventArgs e)
         {
             try
@@ -478,6 +500,8 @@ namespace TotalSmartCoding.Views.Productions
                     else
                         this.iconNewMonth.Visible = false;
                 }
+
+                if (this.timerEveryUpload >= 180) this.StartUpload(); else this.timerEveryUpload++;
             }
             catch (Exception exception)
             {
@@ -604,6 +628,8 @@ namespace TotalSmartCoding.Views.Productions
                         this.dgvPalletQueue.DataSource = this.scannerController.GetPalletQueue();
                         this.buttonPalletQueueCount.Text = "[" + this.scannerController.PalletQueueCount.ToString("N0") + "]";
                         this.labelLEDPallet.Text = this.scannerController.PalletQueueCount.ToString("N0");
+
+                        this.StartUpload();
                     }
 
                     if (e.PropertyName == "PalletPickupQueue")
@@ -611,6 +637,10 @@ namespace TotalSmartCoding.Views.Productions
                         this.dgvPalletPickupQueue.DataSource = this.scannerController.GetPalletPickupQueue();
                         this.buttonPalletPickupQueueCount.Text = "[" + this.scannerController.PalletPickupQueueCount.ToString("N0") + "]";
                     }
+                }
+                else if (sender.Equals(this.dataServerController))
+                {
+                    if (e.PropertyName == "MainStatus") { if (this.dataServerController.MainStatus != "") { this.scannerStatusbox.Text = "[" + DateTime.Now.ToString("hh:mm:ss") + "] " + this.dataServerController.MainStatus + "\r\n" + this.scannerStatusbox.Text; this.cutStatusBox(false); } return; }
                 }
 
             }
@@ -1033,10 +1063,13 @@ namespace TotalSmartCoding.Views.Productions
                             {
                                 if (scannerThread == null || !scannerThread.IsAlive)
                                 {
-                                    if (backupDataThread == null || !backupDataThread.IsAlive)
+                                    if (dataServerThread == null || !dataServerThread.IsAlive)
                                     {
-                                        backupDataThread = new Thread(new ThreadStart(this.scannerController.BackupData));
-                                        backupDataThread.Start();
+                                        if (backupDataThread == null || !backupDataThread.IsAlive)
+                                        {
+                                            backupDataThread = new Thread(new ThreadStart(this.scannerController.BackupData));
+                                            backupDataThread.Start();
+                                        }
                                     }
                                 }
                             }

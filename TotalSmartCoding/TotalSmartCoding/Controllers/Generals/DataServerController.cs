@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using System.Net;
@@ -12,56 +13,87 @@ using System.Web.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
+using Ninject;
+
 using TotalBase;
-using TotalCore.Services.Productions;
 using TotalModel.Helpers;
 using TotalModel.Models;
+using TotalCore.Services.Productions;
+using TotalSmartCoding.Libraries;
+using TotalSmartCoding.Controllers.Productions;
 
 
 namespace TotalSmartCoding.Controllers.Generals
 {
-    public class DataServerController : NotifyPropertyChangeObject
+    public class DataServerController : CodingController
     {
         public ICartonService cartonService;
 
-        public DataServerController(ICartonService cartonService)
+        public bool OnUploading { get; private set; }
+
+        public void StartUpload() { this.OnUploading = true; }
+        public void StopUpload() { this.OnUploading = false; }
+
+        public DataServerController()
         {
-            this.cartonService = cartonService;
+            this.cartonService = CommonNinject.Kernel.Get<ICartonService>();
         }
 
 
-        public void Upload()
+        public void ThreadRoutine()
         {
+            this.LoopRoutine = true; this.StartUpload();
+
             try
             {
                 TsaBarcode tsaBarcode = new TsaBarcode();
 
+                tsaBarcode.Url = "https://tcnc.eu/3PQ6/api/v3/label/";
                 tsaBarcode.ConsumerKey = "ST27FPpHyqCK942bcfMY8aRB8uS7MpVAaBGj5nZTXefT32557cmb";
                 tsaBarcode.ConsumerSecret = "GvmFcdt7bfQSqRPdTCytcUN2bfmrHZSK";
 
-                IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
-
-                int i = 1;
-                foreach (CartonAttribute cartonAttribute in cartonAttributes)
+                while (this.LoopRoutine)
                 {
+                    if (this.OnUploading)
+                    {
+                        IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
 
-                    tsaBarcode.Q_id1 = "C4STR0L" + (i++).ToString("000"); if (i >= 10) i = 0;
-                    //tsaBarcode.Q_id1 = cartonAttribute.Label.Substring(cartonAttribute.Label.Length - 10, 10);// "C4STR0L001";                    
+                        foreach (CartonAttribute cartonAttribute in cartonAttributes)
+                        {
+                            //Random random = new Random();
+                            //tsaBarcode.Q_id1 = "C4STR0L" + random.Next(1, 10).ToString("000");
+                            tsaBarcode.Q_id1 = cartonAttribute.Label;
 
-                    tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = cartonAttribute.OfficialCode } };
-                    tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = cartonAttribute.BatchCode } };
-                    tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = cartonAttribute.FillingLineName } };
-                    tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyyMMdd") } };
-                    tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code } };
+                            tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = cartonAttribute.OfficialCode } };
+                            tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = cartonAttribute.BatchCode } };
+                            tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = cartonAttribute.FillingLineName } };
+                            tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = cartonAttribute.BatchEntryDate.ToString("yyyy-MM-dd") } };
+                            tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = cartonAttribute.Code.Substring(0, cartonAttribute.Code.Length - 6).Trim() } };
 
-                    HttpResponseMessage httpResponseMessage = HttpOAuth.TsaUpdate(tsaBarcode);
+                            this.MainStatus = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value + ": Sending ...";
+                            HttpResponseMessage httpResponseMessage = HttpOAuth.TsaSendAsync(tsaBarcode);
+                            this.MainStatus = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value + ": " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
 
-                    this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, httpResponseMessage.IsSuccessStatusCode ? GlobalVariables.SubmitStatus.Created : GlobalVariables.SubmitStatus.Failed, "[" + (int)httpResponseMessage.StatusCode + "] " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase);
+                            this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, httpResponseMessage.IsSuccessStatusCode ? GlobalVariables.SubmitStatus.Created : GlobalVariables.SubmitStatus.Failed, "[" + (int)httpResponseMessage.StatusCode + "] " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase);
+
+                            if (!this.OnUploading) break;
+                        }
+                    }
+
+                    this.StopUpload();
+                    Thread.Sleep(100);
                 }
             }
             catch (Exception exception)
             {
-                throw exception;
+                this.LoopRoutine = false;
+                this.MainStatus = exception.Message;
+
+                this.setLED(this.LedGreenOn, this.LedAmberOn, true);
+            }
+            finally
+            {
+
             }
         }
     }
@@ -78,11 +110,11 @@ namespace TotalSmartCoding.Controllers.Generals
         static HttpClient client = new HttpClient();
 
 
-        public static HttpResponseMessage TsaUpdate(TsaBarcode tsaBarcode)
+        public static HttpResponseMessage TsaSendAsync(TsaBarcode tsaBarcode)
         {
             try
             {
-                return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = "Error!" };
+                //return new HttpResponseMessage() { StatusCode = HttpStatusCode.Created, ReasonPhrase = "Error!" };
 
 
                 return RunAsync(tsaBarcode).GetAwaiter().GetResult();
@@ -184,7 +216,7 @@ namespace TotalSmartCoding.Controllers.Generals
 
     public class TsaBarcode
     {
-        public string Url { get { return "https://tcnc.eu/3PQ6/api/v3/label/"; } set { } }
+        public string Url { get; set; }
         public string ConsumerKey { get; set; }
         public string ConsumerSecret { get; set; }
 

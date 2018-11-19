@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 
 using Ninject;
+using AutoMapper;
 
 using TotalBase;
 using TotalBase.Enums;
@@ -19,9 +20,7 @@ using TotalSmartCoding.Libraries;
 using TotalSmartCoding.Libraries.Communications;
 using TotalSmartCoding.ViewModels.Productions;
 using TotalSmartCoding.Controllers.Productions;
-using AutoMapper;
 using TotalSmartCoding.Controllers.APIs.Productions;
-using TotalSmartCoding.Controllers.Generals;
 
 
 namespace TotalSmartCoding.Controllers.Productions
@@ -680,9 +679,6 @@ namespace TotalSmartCoding.Controllers.Productions
 
             this.LoopRoutine = true; this.StopScanner();
 
-            DataServerController a = new DataServerController(CommonNinject.Kernel.Get<ICartonService>());
-            a.Upload();
-
             try
             {
                 if (!this.Connect()) throw new System.InvalidOperationException("Lỗi kết nối đầu đọc mã vạch");
@@ -889,7 +885,7 @@ namespace TotalSmartCoding.Controllers.Productions
             if (GlobalEnums.OnTestScanner) //THE SAME AS waitforCarton
             {
                 Random random = new Random();
-                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet + 2 && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : ("HTTP://CONNECT.CASTROL.COM/ID-C4STR0L" + random.Next(1, 99).ToString("000")); this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
+                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet + 2 && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : ("HTTP://CONNECT.CASTROL.COM/ID-C4STR0L" + random.Next(1, 10).ToString("000")); this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
             }
             else
                 if (this.FillingData.PalletCameraOnly)
