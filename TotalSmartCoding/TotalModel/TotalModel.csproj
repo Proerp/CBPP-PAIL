@@ -534,6 +534,9 @@
     <Compile Include="Models\WarehouseTree.cs">
       <DependentUpon>TotalSmartCoding.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Webapi.cs">
+      <DependentUpon>TotalSmartCoding.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\WholePendingDeliveryAdviceDetail.cs">
       <DependentUpon>TotalSmartCoding.tt</DependentUpon>
     </Compile>

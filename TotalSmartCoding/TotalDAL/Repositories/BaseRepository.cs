@@ -137,6 +137,11 @@ namespace TotalDAL.Repositories
             Helpers.SqlProgrammability.Productions.Pallet pallet = new Helpers.SqlProgrammability.Productions.Pallet(totalSmartCodingEntities);
             pallet.RestoreProcedure();
 
+            //return;
+
+            Helpers.SqlProgrammability.Commons.AccessControl accessControl = new Helpers.SqlProgrammability.Commons.AccessControl(totalSmartCodingEntities);
+            accessControl.RestoreProcedure();
+
             return;
             return;
 
@@ -227,10 +232,7 @@ namespace TotalDAL.Repositories
             Helpers.SqlProgrammability.Commons.SmartLog smartLog = new Helpers.SqlProgrammability.Commons.SmartLog(totalSmartCodingEntities);
             smartLog.RestoreProcedure();
 
-            //return;
 
-            Helpers.SqlProgrammability.Commons.AccessControl accessControl = new Helpers.SqlProgrammability.Commons.AccessControl(totalSmartCodingEntities);
-            accessControl.RestoreProcedure();
 
 
 

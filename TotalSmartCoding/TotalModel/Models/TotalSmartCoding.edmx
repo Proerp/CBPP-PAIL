@@ -1019,6 +1019,16 @@
           <Property Name="IsDefault" Type="bit" Nullable="false" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="Webapis">
+          <Key>
+            <PropertyRef Name="WebapiID" />
+          </Key>
+          <Property Name="WebapiID" Type="int" Nullable="false" />
+          <Property Name="BaseUri" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ConsumerKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ConsumerSecret" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EditedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Batches_Commodities">
           <End Role="Commodities" Type="Self.Commodities" Multiplicity="1" />
           <End Role="Batches" Type="Self.Batches" Multiplicity="*" />
@@ -3029,6 +3039,9 @@
         <Function Name="GetWarehouseTrees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationID" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetWebapis" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="WebapiID" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetWholePendingDeliveryAdviceDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationID" Type="int" Mode="In" />
         </Function>
@@ -3258,6 +3271,12 @@
         <Function Name="UpdateOnEventLogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="OnEventLogs" Type="int" Mode="In" />
         </Function>
+        <Function Name="UpdateWebapi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="WebapiID" Type="int" Mode="In" />
+          <Parameter Name="BaseUri" Type="nvarchar" Mode="In" />
+          <Parameter Name="ConsumerKey" Type="nvarchar" Mode="In" />
+          <Parameter Name="ConsumerSecret" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="UserControlAddSalesperson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SecurityIdentifier" Type="nvarchar" Mode="In" />
           <Parameter Name="EmployeeID" Type="int" Mode="In" />
@@ -3413,6 +3432,7 @@
           <EntitySet Name="WarehouseAdjustments" EntityType="Self.WarehouseAdjustments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WarehouseAdjustmentTypes" EntityType="Self.WarehouseAdjustmentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warehouses" EntityType="Self.Warehouses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Webapis" EntityType="Self.Webapis" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Batches_Commodities" Association="Self.FK_Batches_Commodities">
             <End Role="Commodities" EntitySet="Commodities" />
             <End Role="Batches" EntitySet="Batches" />
@@ -5365,6 +5385,16 @@
             <Parameter Name="CartonIDs" Mode="In" Type="String" />
             <Parameter Name="SubmitStatusID" Mode="In" Type="Int32" />
             <Parameter Name="Remarks" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Webapis" EntityType="TotalSmartCodingModel.Webapi" />
+          <FunctionImport Name="GetWebapis" EntitySet="Webapis" ReturnType="Collection(TotalSmartCodingModel.Webapi)">
+            <Parameter Name="WebapiID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateWebapi">
+            <Parameter Name="WebapiID" Mode="In" Type="Int32" />
+            <Parameter Name="BaseUri" Mode="In" Type="String" />
+            <Parameter Name="ConsumerKey" Mode="In" Type="String" />
+            <Parameter Name="ConsumerSecret" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PendingPickupDetail">
@@ -9251,6 +9281,16 @@
           <Property Type="Int32" Name="SubmitStatusID" Nullable="false" />
           <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="Webapi">
+          <Key>
+            <PropertyRef Name="WebapiID" />
+          </Key>
+          <Property Name="WebapiID" Type="Int32" Nullable="false" />
+          <Property Name="BaseUri" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ConsumerKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ConsumerSecret" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -12263,6 +12303,20 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="CartonUpdateSubmitStatus" FunctionName="TotalSmartCodingModel.Store.CartonUpdateSubmitStatus" />
+          <EntitySetMapping Name="Webapis">
+            <EntityTypeMapping TypeName="TotalSmartCodingModel.Webapi">
+              <MappingFragment StoreEntitySet="Webapis">
+                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
+                <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+                <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
+                <ScalarProperty Name="BaseUri" ColumnName="BaseUri" />
+                <ScalarProperty Name="WebapiID" ColumnName="WebapiID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetWebapis" FunctionName="TotalSmartCodingModel.Store.GetWebapis">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateWebapi" FunctionName="TotalSmartCodingModel.Store.UpdateWebapi" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -36,6 +36,9 @@ namespace TotalDAL.Helpers.SqlProgrammability.Commons
             this.GetApplicationRoles();
             this.UpdateApplicationRole();
 
+            this.GetWebapis();
+            this.UpdateWebapi();
+
             this.GetLegalNotice();
             this.UpdateLegalNotice();
 
@@ -261,6 +264,36 @@ namespace TotalDAL.Helpers.SqlProgrammability.Commons
             queryString = queryString + "               END " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("UpdateApplicationRole", queryString);
+        }
+
+        private void GetWebapis()
+        {
+            string queryString = " @WebapiID Int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       SELECT * FROM Webapis WHERE WebapiID = @WebapiID " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("GetWebapis", queryString);
+        }
+
+        private void UpdateWebapi()
+        {
+            string queryString = " @WebapiID Int, @BaseUri nvarchar(100), @ConsumerKey nvarchar(100), @ConsumerSecret nvarchar(100) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "           IF (SELECT COUNT(WebapiID) FROM Webapis WHERE WebapiID = @WebapiID) <= 0 " + "\r\n";
+            queryString = queryString + "               BEGIN " + "\r\n";
+            queryString = queryString + "                   INSERT INTO     Webapis (WebapiID, BaseUri, ConsumerKey, ConsumerSecret, EditedDate) VALUES (@WebapiID, @BaseUri, @ConsumerKey, @ConsumerSecret, GetDate()); " + "\r\n";
+            queryString = queryString + "               END " + "\r\n";
+
+            queryString = queryString + "           ELSE " + "\r\n";
+            queryString = queryString + "               BEGIN " + "\r\n";
+            queryString = queryString + "                   UPDATE          Webapis SET BaseUri = @BaseUri, ConsumerKey = @ConsumerKey, ConsumerSecret = @ConsumerSecret, EditedDate = GetDate() WHERE WebapiID = @WebapiID; " + "\r\n";
+            queryString = queryString + "               END " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("UpdateWebapi", queryString);
         }
 
         private void GetLegalNotice()

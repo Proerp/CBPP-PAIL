@@ -79,6 +79,7 @@ namespace TotalModel.Models
         public virtual DbSet<UserGroup> UserGroups { get; set; }
         public virtual DbSet<UserGroupDetail> UserGroupDetails { get; set; }
         public virtual DbSet<CommodityType> CommodityTypes { get; set; }
+        public virtual DbSet<Webapi> Webapis { get; set; }
     
         public virtual ObjectResult<Nullable<int>> GetAccessLevel(Nullable<int> userID, Nullable<int> nMVNTaskID, Nullable<int> organizationalUnitID)
         {
@@ -3461,6 +3462,45 @@ namespace TotalModel.Models
                 new ObjectParameter("Remarks", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CartonUpdateSubmitStatus", cartonIDsParameter, submitStatusIDParameter, remarksParameter);
+        }
+    
+        public virtual ObjectResult<Webapi> GetWebapis(Nullable<int> webapiID)
+        {
+            var webapiIDParameter = webapiID.HasValue ?
+                new ObjectParameter("WebapiID", webapiID) :
+                new ObjectParameter("WebapiID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Webapi>("GetWebapis", webapiIDParameter);
+        }
+    
+        public virtual ObjectResult<Webapi> GetWebapis(Nullable<int> webapiID, MergeOption mergeOption)
+        {
+            var webapiIDParameter = webapiID.HasValue ?
+                new ObjectParameter("WebapiID", webapiID) :
+                new ObjectParameter("WebapiID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Webapi>("GetWebapis", mergeOption, webapiIDParameter);
+        }
+    
+        public virtual int UpdateWebapi(Nullable<int> webapiID, string baseUri, string consumerKey, string consumerSecret)
+        {
+            var webapiIDParameter = webapiID.HasValue ?
+                new ObjectParameter("WebapiID", webapiID) :
+                new ObjectParameter("WebapiID", typeof(int));
+    
+            var baseUriParameter = baseUri != null ?
+                new ObjectParameter("BaseUri", baseUri) :
+                new ObjectParameter("BaseUri", typeof(string));
+    
+            var consumerKeyParameter = consumerKey != null ?
+                new ObjectParameter("ConsumerKey", consumerKey) :
+                new ObjectParameter("ConsumerKey", typeof(string));
+    
+            var consumerSecretParameter = consumerSecret != null ?
+                new ObjectParameter("ConsumerSecret", consumerSecret) :
+                new ObjectParameter("ConsumerSecret", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateWebapi", webapiIDParameter, baseUriParameter, consumerKeyParameter, consumerSecretParameter);
         }
     }
 }
