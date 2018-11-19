@@ -887,7 +887,10 @@ namespace TotalSmartCoding.Controllers.Productions
         private bool waitforLabel(ref string stringReceived)
         {
             if (GlobalEnums.OnTestScanner) //THE SAME AS waitforCarton
-                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet + 2 && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : this.FillingData.NextAutoCartonCode; this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
+            {
+                Random random = new Random();
+                if ((DateTime.Now.Millisecond / (int)GlobalEnums.OnRecivedMillisecond) > 0 && this.FillingData.NextAutoCartonCode != "" && this.CartonQueueCount < this.FillingData.CartonPerPallet + 2 && (this.packsetQueue.Count > 0 || !this.FillingData.HasPack)) { stringReceived = GlobalEnums.OnTestCartonNoreadNow ? "NoRead" : ("HTTP://CONNECT.CASTROL.COM/ID-C4STR0L" + random.Next(1, 99).ToString("000")); this.FillingData.NextAutoCartonCode = ""; GlobalEnums.OnTestCartonNoreadNow = false; } else stringReceived = "";
+            }
             else
                 if (this.FillingData.PalletCameraOnly)
                     stringReceived = "AutoLabelOnly";
@@ -946,6 +949,12 @@ namespace TotalSmartCoding.Controllers.Productions
             {
                 string receivedBarcode = stringBarcode.Trim();
                 if (this.FillingData.IgnoreNoreadCarton) receivedBarcode = receivedBarcode.Replace("NoRead", "").Trim(); //IGNORE WHEN NoRead (IF MATCHING BEFORE FILLING: USER MUST RE-PRINT BEFORE READ AGAIN. IF MATCHING AFTER FILL: USER MUST TRY TO READ UNTILL SUCCESS, OTHERWISE: THEY EMPTY THE BOX => THE RE-PRINT BEFORE READ AGAIN)
+
+                if (!codeVslabel)
+                    if (receivedBarcode.IndexOf("HTTP://CONNECT.CASTROL.COM/ID-") == -1)
+                        receivedBarcode = "NoRead";
+                    else
+                        receivedBarcode = receivedBarcode.Replace("HTTP://CONNECT.CASTROL.COM/ID-", "").Trim();
 
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
                 if (receivedBarcode != "")
