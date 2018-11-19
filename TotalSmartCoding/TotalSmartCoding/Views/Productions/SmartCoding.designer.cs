@@ -212,6 +212,8 @@
             this.comboBoxEmptyCarton = new System.Windows.Forms.ToolStripComboBox();
             this.buttonSendToZebra = new System.Windows.Forms.ToolStripButton();
             this.comboBoxSendToZebra = new System.Windows.Forms.ToolStripComboBox();
+            this.buttonCartonAttributes = new System.Windows.Forms.ToolStripButton();
+            this.labelBlankPallet = new System.Windows.Forms.ToolStripLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPackQueue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPacksetQueue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCartonQueue)).BeginInit();
@@ -1259,7 +1261,9 @@
             this.toolStripButton1,
             this.buttonPalletPickupQueueCount,
             this.toolStripButton16,
-            this.labelCommodityNamePallet});
+            this.labelCommodityNamePallet,
+            this.labelBlankPallet,
+            this.buttonCartonAttributes});
             this.toolStrip6.Location = new System.Drawing.Point(0, 0);
             this.toolStrip6.Name = "toolStrip6";
             this.toolStrip6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -2406,6 +2410,24 @@
             this.comboBoxSendToZebra.Size = new System.Drawing.Size(118, 75);
             this.comboBoxSendToZebra.SelectedIndexChanged += new System.EventHandler(this.comboBoxSendToZebra_SelectedIndexChanged);
             // 
+            // buttonCartonAttributes
+            // 
+            this.buttonCartonAttributes.Image = global::TotalSmartCoding.Properties.Resources.Apps_Burn;
+            this.buttonCartonAttributes.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonCartonAttributes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCartonAttributes.Name = "buttonCartonAttributes";
+            this.buttonCartonAttributes.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.buttonCartonAttributes.Size = new System.Drawing.Size(163, 36);
+            this.buttonCartonAttributes.Text = "Sending ... [000128812]";
+            this.buttonCartonAttributes.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.buttonCartonAttributes.Click += new System.EventHandler(this.buttonCartonAttributes_Click);
+            // 
+            // labelBlankPallet
+            // 
+            this.labelBlankPallet.Name = "labelBlankPallet";
+            this.labelBlankPallet.Size = new System.Drawing.Size(82, 36);
+            this.labelBlankPallet.Text = "                         ";
+            // 
             // SmartCoding
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -2683,5 +2705,7 @@
         private System.Windows.Forms.ToolStripLabel labelNthCartontoZebra;
         private System.Windows.Forms.ToolStripTextBox textNthCartontoZebra;
         private System.Windows.Forms.ToolStripButton iconNewMonth;
+        private System.Windows.Forms.ToolStripLabel labelBlankPallet;
+        private System.Windows.Forms.ToolStripButton buttonCartonAttributes;
     }
 }

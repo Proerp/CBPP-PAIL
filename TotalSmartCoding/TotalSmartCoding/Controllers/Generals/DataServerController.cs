@@ -114,7 +114,8 @@ namespace TotalSmartCoding.Controllers.Generals
         {
             try
             {
-                return new HttpResponseMessage() { StatusCode = HttpStatusCode.Created, ReasonPhrase = "Error!" };
+                Thread.Sleep(168);
+                return new HttpResponseMessage() { StatusCode = HttpStatusCode.Created, ReasonPhrase = "OK" };
 
 
                 //return RunAsync(tsaBarcode).GetAwaiter().GetResult();

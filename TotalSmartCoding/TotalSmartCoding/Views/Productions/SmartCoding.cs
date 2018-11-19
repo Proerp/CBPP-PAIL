@@ -1030,6 +1030,13 @@ namespace TotalSmartCoding.Views.Productions
             }
         }
 
+        private void buttonCartonAttributes_Click(object sender, EventArgs e)
+        {
+            ExceptionHandlers.ShowExceptionMessageBox(this, "exception");
+            
+        }
+
+
         #endregion Exception Handler
 
 
