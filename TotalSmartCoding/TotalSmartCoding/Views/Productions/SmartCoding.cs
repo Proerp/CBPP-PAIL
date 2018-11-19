@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Threading;
 
 using Ninject;
@@ -434,7 +435,7 @@ namespace TotalSmartCoding.Views.Productions
         {
             if (dataServerThread != null && dataServerThread.IsAlive)
             {
-                this.timerEveryUpload = 0; 
+                this.timerEveryUpload = 0;
                 dataServerController.StartUpload();
             }
         }
@@ -1042,11 +1043,13 @@ namespace TotalSmartCoding.Views.Productions
             }
         }
 
-        void buttonPalletQueueCount_Click(object sender, System.EventArgs e)
+        private void buttonPalletQueueCount_Click(object sender, System.EventArgs e)
         {
             try
             {
-                this.StartUpload();
+                IList<BarcodeDTO> barcodeList = this.scannerAPIs.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
+                QuickView quickView = new QuickView(barcodeList, (barcodeList.Count == 200 ? "Top 200 " : "") + "[NOT SENT] Cartons");
+                quickView.ShowDialog(); quickView.Dispose();
             }
             catch (Exception exception)
             {

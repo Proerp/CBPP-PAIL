@@ -63,8 +63,28 @@ namespace TotalSmartCoding.Controllers.APIs.Productions
             }
         }
 
+        public IList<BarcodeDTO> GetCartonAttributes(GlobalVariables.FillingLine fillingLineID, string submitStatusIDs, int? palletID)
+        {
+            try
+            {
+                IList<BarcodeDTO> barcodeList = new List<BarcodeDTO>();
+                IList<CartonAttribute> cartonAttributes = this.cartonRepository.GetCartonAttributes(fillingLineID, submitStatusIDs, palletID);
+                if (cartonAttributes.Count > 0)
+                {
+                    cartonAttributes.Each(cartonAttribute =>
+                    {
+                        CartonDTO cartonDTO = Mapper.Map<CartonAttribute, CartonDTO>(cartonAttribute);
+                        barcodeList.Add(cartonDTO);
+                    });
+                }
 
-
+                return barcodeList;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
 
 
 

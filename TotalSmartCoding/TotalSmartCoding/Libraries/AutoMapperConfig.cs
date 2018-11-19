@@ -109,7 +109,7 @@ namespace TotalSmartCoding.Libraries
                 cfg.CreateMap<Carton, CartonViewModel>();
                 cfg.CreateMap<Carton, CartonDTO>();
                 cfg.CreateMap<CartonPrimitiveDTO, Carton>();
-
+                cfg.CreateMap<CartonAttribute, CartonDTO>();
 
                 cfg.CreateMap<Pallet, PalletViewModel>();
                 cfg.CreateMap<Pallet, PalletDTO>();
