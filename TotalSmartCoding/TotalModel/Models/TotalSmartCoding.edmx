@@ -9249,6 +9249,7 @@
           <Property Type="Int32" Name="PackCounts" Nullable="false" />
           <Property Type="Int32" Name="EntryStatusID" Nullable="false" />
           <Property Type="Int32" Name="SubmitStatusID" Nullable="false" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -12257,6 +12258,7 @@
                 <ScalarProperty Name="PackCounts" ColumnName="PackCounts" />
                 <ScalarProperty Name="EntryStatusID" ColumnName="EntryStatusID" />
                 <ScalarProperty Name="SubmitStatusID" ColumnName="SubmitStatusID" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
