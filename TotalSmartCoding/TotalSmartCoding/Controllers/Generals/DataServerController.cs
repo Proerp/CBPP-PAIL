@@ -117,7 +117,7 @@ namespace TotalSmartCoding.Controllers.Generals
                 TsaBarcode tsaBarcode = new TsaBarcode();
 
 
-                this.MainStatus = "Connecting ..."; Thread.Sleep(500);
+                this.MainStatus = "Try to connect ..."; Thread.Sleep(500);
 
 
                 tsaBarcode.Q_id1 = this.Q_id1;
@@ -137,7 +137,7 @@ namespace TotalSmartCoding.Controllers.Generals
                     //this.MainStatus = "valid@" + tsaBarcode.TsaLabel.attributes.valid[0].value;
                 }
                 else
-                    this.MainStatus = "Fail to read data from tesa server." + "\r\n" + "\r\n" + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
+                    this.MainStatus = "Fail to read data from tesa server." + "\r\n" + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
 
             }
             catch (Exception exception)

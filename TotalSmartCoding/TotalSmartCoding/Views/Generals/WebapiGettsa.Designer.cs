@@ -55,6 +55,7 @@
             this.pictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.textexLabel = new CustomControls.TextexBox();
             this.textexValid = new CustomControls.TextexBox();
+            this.labelMainStatus = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
             this.panelBottomRight.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -69,7 +70,7 @@
             this.panelBottom.Controls.Add(this.panelBottomRight);
             this.panelBottom.Controls.Add(this.panelBottomLeft);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Location = new System.Drawing.Point(0, 404);
+            this.panelBottom.Location = new System.Drawing.Point(0, 427);
             this.panelBottom.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(422, 42);
@@ -181,6 +182,7 @@
             this.layoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.layoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.layoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.layoutTop.Controls.Add(this.labelMainStatus, 3, 17);
             this.layoutTop.Controls.Add(this.textexBatch_serial, 3, 12);
             this.layoutTop.Controls.Add(this.label5, 3, 11);
             this.layoutTop.Controls.Add(this.textexBatch_number, 3, 10);
@@ -222,7 +224,7 @@
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
-            this.layoutTop.Size = new System.Drawing.Size(422, 404);
+            this.layoutTop.Size = new System.Drawing.Size(422, 427);
             this.layoutTop.TabIndex = 104;
             // 
             // textexBatch_serial
@@ -421,11 +423,21 @@
             this.textexValid.Size = new System.Drawing.Size(305, 23);
             this.textexValid.TabIndex = 89;
             // 
+            // labelMainStatus
+            // 
+            this.labelMainStatus.AutoSize = true;
+            this.labelMainStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelMainStatus.Location = new System.Drawing.Point(92, 367);
+            this.labelMainStatus.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.labelMainStatus.Name = "labelMainStatus";
+            this.labelMainStatus.Size = new System.Drawing.Size(310, 58);
+            this.labelMainStatus.TabIndex = 102;
+            // 
             // WebapiGettsa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(422, 446);
+            this.ClientSize = new System.Drawing.Size(422, 469);
             this.ControlBox = false;
             this.Controls.Add(this.layoutTop);
             this.Controls.Add(this.panelBottom);
@@ -483,5 +495,6 @@
         private System.Windows.Forms.Label label2;
         private CustomControls.TextexBox textexProduction_date;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelMainStatus;
     }
 }

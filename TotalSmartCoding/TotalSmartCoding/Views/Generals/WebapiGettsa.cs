@@ -84,6 +84,8 @@ namespace TotalSmartCoding.Views.Generals
                             if (attributeName == "production_serial_number") this.textexDomino_code.Text = attributeValue;
                             if (attributeName == "valid") this.textexValid.Text = attributeValue;
                         }
+                        else
+                            this.labelMainStatus.Text = mainStatus;
                     }
                 }
 
