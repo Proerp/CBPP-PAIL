@@ -58,6 +58,8 @@ namespace TotalSmartCoding.Controllers.Generals
                 {
                     if (this.OnUploading)
                     {
+                        HttpOAuth httpOAuth = new HttpOAuth();
+
                         this.MainStatus = "Starting ..."; Thread.Sleep(500);
 
                         IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
@@ -82,7 +84,7 @@ namespace TotalSmartCoding.Controllers.Generals
 
 
                             this.MainStatus = "Sending: " + tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
-                            HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeUpdate(tsaBarcode);
+                            HttpResponseMessage httpResponseMessage = httpOAuth.TsaBarcodeUpdate(tsaBarcode);
                             this.MainStatus = httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase + ": " + tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
 
                             this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, httpResponseMessage.IsSuccessStatusCode ? GlobalVariables.SubmitStatus.Created : GlobalVariables.SubmitStatus.Failed, "[" + (int)httpResponseMessage.StatusCode + "] " + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase);
@@ -115,12 +117,13 @@ namespace TotalSmartCoding.Controllers.Generals
                 TsaBarcode tsaBarcode = new TsaBarcode();
 
 
-                this.MainStatus = "Starting ..."; Thread.Sleep(500);
+                this.MainStatus = "Connecting ..."; Thread.Sleep(500);
 
 
                 tsaBarcode.Q_id1 = this.Q_id1;
 
-                HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeRead(tsaBarcode);
+                HttpOAuth httpOAuth = new HttpOAuth();
+                HttpResponseMessage httpResponseMessage = httpOAuth.TsaBarcodeRead(tsaBarcode);
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
@@ -152,11 +155,11 @@ namespace TotalSmartCoding.Controllers.Generals
 
     #region HttpOAuth
 
-    public static class HttpOAuth
+    public class HttpOAuth
     {
-        static HttpClient client = new HttpClient();
+        private HttpClient client = new HttpClient();
 
-        public static HttpResponseMessage TsaBarcodeRead(TsaBarcode tsaBarcode)
+        public HttpResponseMessage TsaBarcodeRead(TsaBarcode tsaBarcode)
         {
             try
             {
@@ -171,7 +174,7 @@ namespace TotalSmartCoding.Controllers.Generals
             }
         }
 
-        public static HttpResponseMessage TsaBarcodeUpdate(TsaBarcode tsaBarcode)
+        public HttpResponseMessage TsaBarcodeUpdate(TsaBarcode tsaBarcode)
         {
             try
             {
@@ -188,7 +191,7 @@ namespace TotalSmartCoding.Controllers.Generals
         }
 
 
-        private static async Task<HttpResponseMessage> GetAsync(TsaBarcode tsaBarcode)
+        private async Task<HttpResponseMessage> GetAsync(TsaBarcode tsaBarcode)
         {
             InitClient();
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, GetRequestURL("GET", tsaBarcode));
@@ -216,7 +219,7 @@ namespace TotalSmartCoding.Controllers.Generals
         }
 
 
-        private static async Task<HttpResponseMessage> PutAsync(TsaBarcode tsaBarcode)
+        private async Task<HttpResponseMessage> PutAsync(TsaBarcode tsaBarcode)
         {
             InitClient();
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, GetRequestURL("PUT", tsaBarcode));
@@ -236,13 +239,13 @@ namespace TotalSmartCoding.Controllers.Generals
 
 
 
-        private static void InitClient()
+        private void InitClient()
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        private static string GetRequestURL(string HTTP_Method, TsaBarcode tsaBarcode)
+        private string GetRequestURL(string HTTP_Method, TsaBarcode tsaBarcode)
         {
             List<string> parameters = new List<string>() { "q_id1=" + tsaBarcode.Q_id1 };
             OAuth_CSharp oauth_CSharp = new OAuth_CSharp(tsaBarcode.ConsumerKey, tsaBarcode.ConsumerSecret);
@@ -348,89 +351,3 @@ namespace TotalSmartCoding.Controllers.Generals
     #endregion
 
 }
-
-
-
-
-
-
-
-//#region HttpOAuth
-
-//public static class HttpOAuth
-//{
-//    static HttpClient client = new HttpClient();
-
-//    public static HttpResponseMessage TsaBarcodeRead(TsaBarcode tsaBarcode)
-//    {
-//        try
-//        {
-//            Thread.Sleep(168);
-//            return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = "Fail!" };
-
-
-//            //return RunAsync(tsaBarcode).GetAwaiter().GetResult();
-//        }
-//        catch (Exception e)
-//        {
-//            return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = e.Message };
-//        }
-//    }
-
-//    public static HttpResponseMessage TsaBarcodeUpdate(TsaBarcode tsaBarcode)
-//    {
-//        try
-//        {
-//            Thread.Sleep(168);
-//            return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = "Fail!" };
-
-
-//            return RunAsync(tsaBarcode).GetAwaiter().GetResult();
-//        }
-//        catch (Exception e)
-//        {
-//            return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = e.Message };
-//        }
-//    }
-
-//    private static async Task<HttpResponseMessage> RunAsync(TsaBarcode tsaBarcode)
-//    {
-//        try
-//        {
-//            client.DefaultRequestHeaders.Accept.Clear();
-//            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-//            return await PutAsync(tsaBarcode);
-//        }
-//        catch (Exception e)
-//        {
-//            return new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest, ReasonPhrase = e.Message };
-//        }
-//    }
-
-
-//    private static async Task<HttpResponseMessage> PutAsync(TsaBarcode tsaBarcode)
-//    {
-//        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, GetRequestURL("PUT", tsaBarcode));
-//        httpRequestMessage.Content = new StringContent(JsonConvert.SerializeObject(tsaBarcode.TsaLabel), Encoding.UTF8, "application/json");
-
-
-//        HttpResponseMessage httpResponseMessage = await client.SendAsync(httpRequestMessage);
-//        httpResponseMessage.EnsureSuccessStatusCode();
-//        if (httpResponseMessage.IsSuccessStatusCode)
-//        {
-//            var a = await httpResponseMessage.Content.ReadAsStringAsync();
-//            Console.WriteLine("\r\n" + "\r\n" + "\r\n" + "TSA: " + a);
-//        }
-
-//        return httpResponseMessage;
-//    }
-
-//    private static string GetRequestURL(string HTTP_Method, TsaBarcode tsaBarcode)
-//    {
-//        List<string> parameters = new List<string>() { "q_id1=" + tsaBarcode.Q_id1 };
-//        OAuth_CSharp oauth_CSharp = new OAuth_CSharp(tsaBarcode.ConsumerKey, tsaBarcode.ConsumerSecret);
-//        return oauth_CSharp.GenerateRequestURL(tsaBarcode.BaseUri, HTTP_Method, parameters);
-//    }
-//}
-//#endregion
