@@ -1097,7 +1097,7 @@
             this.splitPalletQueue.Panel2.Controls.Add(this.dgvPalletPickupQueue);
             this.splitPalletQueue.Panel2.Controls.Add(this.toolStrip6);
             this.splitPalletQueue.Size = new System.Drawing.Size(1645, 221);
-            this.splitPalletQueue.SplitterDistance = 88;
+            this.splitPalletQueue.SplitterDistance = 98;
             this.splitPalletQueue.SplitterWidth = 1;
             this.splitPalletQueue.TabIndex = 20;
             // 
