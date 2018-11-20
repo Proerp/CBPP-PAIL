@@ -78,10 +78,10 @@ namespace TotalSmartCoding.Views.Generals
                             if (attributeName == "label") this.textexLabel.Text = attributeValue;
                             if (attributeName == "production_date") this.textexProduction_date.Text = attributeValue;
                             if (attributeName == "production_line") this.textexProduction_line.Text = attributeValue;
-                            if (attributeName == "SKU_code") this.textexProduct_id.Text = attributeValue;
+                            if (attributeName == "product_id") this.textexProduct_id.Text = attributeValue;
                             if (attributeName == "batch_number") this.textexBatch_number.Text = attributeValue;
                             if (attributeName == "batch_serial") this.textexBatch_serial.Text = attributeValue;
-                            if (attributeName == "production_serial_number") this.textexDomino_code.Text = attributeValue;
+                            if (attributeName == "domino_code") this.textexDomino_code.Text = attributeValue;
                             if (attributeName == "valid") this.textexValid.Text = attributeValue;
                         }
                         else

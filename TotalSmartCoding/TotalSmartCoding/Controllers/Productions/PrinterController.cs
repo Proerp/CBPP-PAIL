@@ -1079,11 +1079,11 @@ namespace TotalSmartCoding.Controllers.Productions
 
 
                                 if (this.isLaser)
-                                    this.ionetSocket.WritetoStream("LOADPROJECT store: SLASHSYMBOL Empty1L");
+                                    this.ionetSocket.WritetoStream("LOADPROJECT store: SLASHSYMBOL Empty2018");
                                 else
                                     this.ionetSocket.WritetoStream(GlobalVariables.charESC + "/I/1/ /" + GlobalVariables.charEOT); //SET OF: Print Acknowledgement Flags I
 
-                                if ((this.isLaser && this.waitforDomino(ref receivedFeedback, false, "OK", "OK".Length)) || (!this.isLaser && this.waitforDomino(ref receivedFeedback, true))) Thread.Sleep(250); else throw new System.InvalidOperationException("Can not set off printing acknowledge/ Load Empty1L project: " + receivedFeedback);
+                                if ((this.isLaser && this.waitforDomino(ref receivedFeedback, false, "OK", "OK".Length)) || (!this.isLaser && this.waitforDomino(ref receivedFeedback, true))) Thread.Sleep(250); else throw new System.InvalidOperationException("Can not set off printing acknowledge/ Load Empty2018 project: " + receivedFeedback);
 
                                 this.resetMessage = false; //Setup first message: Only one times      
                                 this.MainStatus = "Đang kết nối với máy in.";
@@ -1105,10 +1105,10 @@ namespace TotalSmartCoding.Controllers.Productions
                                     //this.WriteToStream("BEGINTRANS");
                                     //if (this.ReadFromStream(ref receivedFeedback, false, "OK", "OK".Length)) Thread.Sleep(20); else throw new System.InvalidOperationException("NMVN: Can not set message: " + receivedFeedback);
 
-                                    this.ionetSocket.WritetoStream("LOADPROJECT store: SLASHSYMBOL " + (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Smallpack ? "Digit1L" : (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Pail ? "BPPailDigit" : "BPPailDigit")));
+                                    this.ionetSocket.WritetoStream("LOADPROJECT store: SLASHSYMBOL " + (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Smallpack ? "Digit1L" : (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Pail ? "Pail2018" : "Pail2018")));
                                     if (this.waitforDomino(ref receivedFeedback, false, "OK", "OK".Length)) Thread.Sleep(500); else throw new System.InvalidOperationException("NMVN: Can not load message: " + receivedFeedback);
 
-                                    this.ionetSocket.WritetoStream("SETTEXT \"Text01\" \"" + this.laserDigitMessage(false) + "\"");
+                                    this.ionetSocket.WritetoStream("SETVARIABLES \"Text01\" \"" + this.laserDigitMessage(false) + "\""); //AT CHEVRON: USING SETTEXT, INSTAED OF SETVARIABLES
                                     if (this.waitforDomino(ref receivedFeedback, false, "OK", "OK".Length)) Thread.Sleep(20); else throw new System.InvalidOperationException("NMVN: Can not set message code: " + receivedFeedback);
 
                                     this.ionetSocket.WritetoStream("SETCOUNTERVALUE Serialnumber01 " + this.laserDigitMessage(true));
