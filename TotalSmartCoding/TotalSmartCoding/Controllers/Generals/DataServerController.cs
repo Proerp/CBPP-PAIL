@@ -27,6 +27,8 @@ namespace TotalSmartCoding.Controllers.Generals
 {
     public class DataServerController : CodingController
     {
+        private string Q_id1;
+
         public ICartonService cartonService;
 
         public bool OnUploading { get; private set; }
@@ -35,7 +37,11 @@ namespace TotalSmartCoding.Controllers.Generals
         public void StopUpload() { this.OnUploading = false; }
 
         public DataServerController()
+            : this(null)
+        { }
+        public DataServerController(string q_id1)
         {
+            this.Q_id1 = q_id1;
             this.cartonService = CommonNinject.Kernel.Get<ICartonService>();
         }
 
@@ -101,6 +107,42 @@ namespace TotalSmartCoding.Controllers.Generals
 
             }
         }
+
+        public void ThreadGet()
+        {
+            try
+            {
+                TsaBarcode tsaBarcode = new TsaBarcode();
+
+
+                this.MainStatus = "Starting ..."; Thread.Sleep(500);
+
+
+                tsaBarcode.Q_id1 = this.Q_id1;
+
+                HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeRead(tsaBarcode);
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    //this.MainStatus = "label@" + tsaBarcode.TsaLabel.attributes.label[0].value;
+                    this.MainStatus = "production_date@" + tsaBarcode.TsaLabel.attributes.production_date[0].value;
+                    this.MainStatus = "production_line@" + tsaBarcode.TsaLabel.attributes.production_line[0].value;
+                    this.MainStatus = "SKU_code@" + tsaBarcode.TsaLabel.attributes.SKU_code[0].value;
+                    this.MainStatus = "batch_number@" + tsaBarcode.TsaLabel.attributes.batch_number[0].value;
+                    //this.MainStatus = "batch_serial@" + tsaBarcode.TsaLabel.attributes.batch_serial[0].value;
+                    this.MainStatus = "production_serial_number@" + tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
+                    //this.MainStatus = "valid@" + tsaBarcode.TsaLabel.attributes.valid[0].value;
+                }
+                else
+                    this.MainStatus = "Fail to read data from tesa server." + "\r\n" + "\r\n" + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
+
+            }
+            catch (Exception exception)
+            {
+                this.MainStatus = exception.Message;
+            }
+        }
+
     }
 
 
@@ -158,15 +200,16 @@ namespace TotalSmartCoding.Controllers.Generals
             {
                 var responseData = JObject.Parse(await httpResponseMessage.Content.ReadAsStringAsync());
 
-                string SKU_code = responseData["labels"][0]["translations"]["SKU_code"][1]["msg"].ToString();
-                string batch_number = responseData["labels"][0]["translations"]["batch_number"][1]["msg"].ToString();
-                string production_line = responseData["labels"][0]["translations"]["production_line"][1]["msg"].ToString();
-                string production_date = responseData["labels"][0]["translations"]["production_date"][1]["msg"].ToString();
-                string production_serial_number = responseData["labels"][0]["translations"]["production_serial_number"][1]["msg"].ToString();
+                //tsaBarcode.TsaLabel.attributes.label = new List<Label>() { new Label() { value = cartonAttribute.Label } };
 
+                tsaBarcode.TsaLabel.attributes.SKU_code = new List<SKUCode>() { new SKUCode() { value = responseData["labels"][0]["translations"]["SKU_code"][1]["msg"].ToString() } };
+                tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = responseData["labels"][0]["translations"]["batch_number"][1]["msg"].ToString() } };
+                tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = responseData["labels"][0]["translations"]["production_line"][1]["msg"].ToString() } };
+                tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value =  responseData["labels"][0]["translations"]["production_date"][1]["msg"].ToString() } };
+                tsaBarcode.TsaLabel.attributes.production_serial_number = new List<ProductionSerialNumber>() { new ProductionSerialNumber() { value = responseData["labels"][0]["translations"]["production_serial_number"][1]["msg"].ToString() } };
 
-                var a = await httpResponseMessage.Content.ReadAsStringAsync();
-                Console.WriteLine("\r\n" + "\r\n" + "\r\n" + "TSA: " + a);
+                //tsaBarcode.TsaLabel.attributes.batch_serial = new List<BatchSerial>() { new BatchSerial() { value = cartonAttribute.Code.Substring(cartonAttribute.Code.Length - 6, 6).Trim() } };
+                //tsaBarcode.TsaLabel.attributes.valid = new List<Valid>() { new Valid() { value = "1" } };
             }
 
             return httpResponseMessage;
@@ -184,8 +227,8 @@ namespace TotalSmartCoding.Controllers.Generals
             httpResponseMessage.EnsureSuccessStatusCode();
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var a = await httpResponseMessage.Content.ReadAsStringAsync();
-                Console.WriteLine("\r\n" + "\r\n" + "\r\n" + "TSA: " + a);
+                //var a = await httpResponseMessage.Content.ReadAsStringAsync();
+                //Console.WriteLine("\r\n" + "\r\n" + "\r\n" + "TSA: " + a);
             }
 
             return httpResponseMessage;

@@ -1,43 +1,97 @@
 ﻿using System;
+using System.Threading;
 using System.Net.Http;
 using System.Windows.Forms;
 
 using TotalSmartCoding.Libraries;
 using TotalSmartCoding.Controllers.Generals;
+using TotalSmartCoding.Libraries.Helpers;
+using System.ComponentModel;
 
 
 namespace TotalSmartCoding.Views.Generals
 {
     public partial class WebapiGettsa : Form
     {
-        private string Q_id1 { get; set; }
+        private Thread dataServerThread;
+        private DataServerController dataServerController;
+
+        delegate void propertyChangedThread(object sender, PropertyChangedEventArgs e);
+
         public WebapiGettsa(string q_id1)
         {
             InitializeComponent();
 
-            this.Q_id1 = q_id1;
+            this.dataServerController = new DataServerController(q_id1);
+            dataServerController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
         }
 
-        private void Webapi_Load(object sender, EventArgs e)
+
+
+        private void WebapiGettsa_Shown(object sender, EventArgs e)
         {
-            TsaBarcode tsaBarcode = new TsaBarcode();
-            tsaBarcode.Q_id1 = this.Q_id1;
-
-            HttpResponseMessage httpResponseMessage = HttpOAuth.TsaBarcodeRead(tsaBarcode);
-
-            if (httpResponseMessage.IsSuccessStatusCode)
+            try
             {
-                //this.textexLabel.Text = tsaBarcode.TsaLabel.attributes.label[0].value;
-                this.textexProduction_date.Text = tsaBarcode.TsaLabel.attributes.production_date[0].value;
-                this.textexProduction_line.Text = tsaBarcode.TsaLabel.attributes.production_line[0].value;
-                this.textexProduct_id.Text = tsaBarcode.TsaLabel.attributes.SKU_code[0].value;
-                this.textexBatch_number.Text = tsaBarcode.TsaLabel.attributes.batch_number[0].value;
-                //this.textexBatch_serial.Text = tsaBarcode.TsaLabel.attributes.batch_serial[0].value;
-                this.textexDomino_code.Text = tsaBarcode.TsaLabel.attributes.production_serial_number[0].value;
-                //this.textexValid.Text = tsaBarcode.TsaLabel.attributes.valid[0].value;
+                if (dataServerThread != null && dataServerThread.IsAlive) dataServerThread.Abort();
+                dataServerThread = new Thread(new ThreadStart(dataServerController.ThreadGet));
+
+                dataServerThread.Start();
             }
-            else
-                this.labelApplicationRoleName.Text = "Fail to read data from tesa server." + "\r\n" + "\r\n" + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
+        }
+
+        private void WebapiGettsa_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (dataServerThread != null && dataServerThread.IsAlive) { e.Cancel = true; return; }
+        }
+
+        private void controller_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            try
+            {
+                propertyChangedThread propertyChangedDelegate = new propertyChangedThread(propertyChangedHandler);
+                this.Invoke(propertyChangedDelegate, new object[] { sender, e });
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
+        }
+
+        private void propertyChangedHandler(object sender, PropertyChangedEventArgs e)
+        {
+            try
+            {
+                if (sender.Equals(this.dataServerController))
+                {
+                    if (e.PropertyName == "MainStatus")
+                    {
+                        string mainStatus = this.dataServerController.MainStatus.Trim();
+                        if (mainStatus != "" && mainStatus.IndexOf("@") != -1)
+                        {
+                            string attributeName = mainStatus.Substring(0, mainStatus.IndexOf("@"));
+                            string attributeValue = mainStatus.Substring(mainStatus.IndexOf("@") + 1);
+
+                            if (attributeName == "label") this.textexLabel.Text = attributeValue;
+                            if (attributeName == "production_date") this.textexProduction_date.Text = attributeValue;
+                            if (attributeName == "production_line") this.textexProduction_line.Text = attributeValue;
+                            if (attributeName == "SKU_code") this.textexProduct_id.Text = attributeValue;
+                            if (attributeName == "batch_number") this.textexBatch_number.Text = attributeValue;
+                            if (attributeName == "batch_serial") this.textexBatch_serial.Text = attributeValue;
+                            if (attributeName == "production_serial_number") this.textexDomino_code.Text = attributeValue;
+                            if (attributeName == "valid") this.textexValid.Text = attributeValue;
+                        }
+                    }
+                }
+
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
         }
 
         private void button_Click(object sender, EventArgs e)

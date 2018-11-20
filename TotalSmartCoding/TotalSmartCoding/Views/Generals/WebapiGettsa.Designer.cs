@@ -232,6 +232,7 @@
             this.textexDomino_code.Location = new System.Drawing.Point(112, 283);
             this.textexDomino_code.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexDomino_code.Name = "textexDomino_code";
+            this.textexDomino_code.ReadOnly = true;
             this.textexDomino_code.Size = new System.Drawing.Size(328, 23);
             this.textexDomino_code.TabIndex = 91;
             // 
@@ -290,6 +291,7 @@
             this.textexLabel.Location = new System.Drawing.Point(112, 43);
             this.textexLabel.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexLabel.Name = "textexLabel";
+            this.textexLabel.ReadOnly = true;
             this.textexLabel.Size = new System.Drawing.Size(328, 23);
             this.textexLabel.TabIndex = 88;
             // 
@@ -300,6 +302,7 @@
             this.textexValid.Location = new System.Drawing.Point(112, 333);
             this.textexValid.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexValid.Name = "textexValid";
+            this.textexValid.ReadOnly = true;
             this.textexValid.Size = new System.Drawing.Size(328, 23);
             this.textexValid.TabIndex = 89;
             // 
@@ -310,7 +313,7 @@
             this.textexProduction_date.Location = new System.Drawing.Point(112, 83);
             this.textexProduction_date.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexProduction_date.Name = "textexProduction_date";
-            this.textexProduction_date.PasswordChar = '*';
+            this.textexProduction_date.ReadOnly = true;
             this.textexProduction_date.Size = new System.Drawing.Size(328, 23);
             this.textexProduction_date.TabIndex = 93;
             // 
@@ -333,7 +336,7 @@
             this.textexProduction_line.Location = new System.Drawing.Point(112, 123);
             this.textexProduction_line.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexProduction_line.Name = "textexProduction_line";
-            this.textexProduction_line.PasswordChar = '*';
+            this.textexProduction_line.ReadOnly = true;
             this.textexProduction_line.Size = new System.Drawing.Size(328, 23);
             this.textexProduction_line.TabIndex = 95;
             // 
@@ -356,7 +359,7 @@
             this.textexProduct_id.Location = new System.Drawing.Point(112, 163);
             this.textexProduct_id.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexProduct_id.Name = "textexProduct_id";
-            this.textexProduct_id.PasswordChar = '*';
+            this.textexProduct_id.ReadOnly = true;
             this.textexProduct_id.Size = new System.Drawing.Size(328, 23);
             this.textexProduct_id.TabIndex = 97;
             // 
@@ -379,7 +382,7 @@
             this.textexBatch_number.Location = new System.Drawing.Point(112, 203);
             this.textexBatch_number.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexBatch_number.Name = "textexBatch_number";
-            this.textexBatch_number.PasswordChar = '*';
+            this.textexBatch_number.ReadOnly = true;
             this.textexBatch_number.Size = new System.Drawing.Size(328, 23);
             this.textexBatch_number.TabIndex = 99;
             // 
@@ -402,6 +405,7 @@
             this.textexBatch_serial.Location = new System.Drawing.Point(112, 243);
             this.textexBatch_serial.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexBatch_serial.Name = "textexBatch_serial";
+            this.textexBatch_serial.ReadOnly = true;
             this.textexBatch_serial.Size = new System.Drawing.Size(328, 23);
             this.textexBatch_serial.TabIndex = 101;
             // 
@@ -431,7 +435,8 @@
             this.Name = "WebapiGettsa";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Get Tesa Label";
-            this.Load += new System.EventHandler(this.Webapi_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WebapiGettsa_FormClosing);
+            this.Shown += new System.EventHandler(this.WebapiGettsa_Shown);
             this.panelBottom.ResumeLayout(false);
             this.panelBottomRight.ResumeLayout(false);
             this.panelBottomRight.PerformLayout();

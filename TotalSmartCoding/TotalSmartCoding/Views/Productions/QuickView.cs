@@ -10,6 +10,7 @@ using TotalCore.Repositories.Productions;
 using TotalSmartCoding.Libraries.Helpers;
 using TotalSmartCoding.Controllers.APIs.Productions;
 using TotalSmartCoding.Libraries;
+using TotalSmartCoding.Views.Generals;
 
 namespace TotalSmartCoding.Views.Productions
 {
@@ -58,6 +59,26 @@ namespace TotalSmartCoding.Views.Productions
                 {
                     ExceptionHandlers.ShowExceptionMessageBox(this, exception);
                 }
+            }
+        }
+
+        private void pictureTesaLabel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.fastBarcodes.SelectedObject != null)
+                {
+                    BarcodeDTO barcodeDTO = this.fastBarcodes.SelectedObject as BarcodeDTO;
+                    if (barcodeDTO != null)
+                    {
+                        WebapiGettsa webapiGettsa = new WebapiGettsa(barcodeDTO.Label);
+                        webapiGettsa.ShowDialog(); webapiGettsa.Dispose();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
             }
         }
     }

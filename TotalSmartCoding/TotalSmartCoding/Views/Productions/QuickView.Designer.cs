@@ -31,14 +31,14 @@
             this.fastBarcodes = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.textFilter = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.olvLabel = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvRemarks = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.textFilter = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureTesaLabel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.fastBarcodes)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureTesaLabel)).BeginInit();
             this.SuspendLayout();
             // 
             // fastBarcodes
@@ -59,7 +59,7 @@
             this.fastBarcodes.HideSelection = false;
             this.fastBarcodes.HighlightBackgroundColor = System.Drawing.SystemColors.Highlight;
             this.fastBarcodes.Location = new System.Drawing.Point(73, 23);
-            this.fastBarcodes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.fastBarcodes.Margin = new System.Windows.Forms.Padding(2);
             this.fastBarcodes.Name = "fastBarcodes";
             this.fastBarcodes.OwnerDraw = true;
             this.fastBarcodes.ShowGroups = false;
@@ -88,38 +88,6 @@
             this.olvCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.olvCode.Width = 260;
             // 
-            // textFilter
-            // 
-            this.textFilter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textFilter.Location = new System.Drawing.Point(73, 0);
-            this.textFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textFilter.Name = "textFilter";
-            this.textFilter.Size = new System.Drawing.Size(601, 23);
-            this.textFilter.TabIndex = 72;
-            this.textFilter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textFilter.TextChanged += new System.EventHandler(this.textFilter_TextChanged);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(73, 681);
-            this.panel1.TabIndex = 73;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::TotalSmartCoding.Properties.Resources.Barcode2D;
-            this.pictureBox1.Location = new System.Drawing.Point(16, 22);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 39);
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
-            // 
             // olvLabel
             // 
             this.olvLabel.AspectName = "Label";
@@ -135,6 +103,39 @@
             this.olvRemarks.Text = "Remarks";
             this.olvRemarks.Width = 108;
             // 
+            // textFilter
+            // 
+            this.textFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textFilter.Location = new System.Drawing.Point(73, 0);
+            this.textFilter.Margin = new System.Windows.Forms.Padding(2);
+            this.textFilter.Name = "textFilter";
+            this.textFilter.Size = new System.Drawing.Size(601, 23);
+            this.textFilter.TabIndex = 72;
+            this.textFilter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textFilter.TextChanged += new System.EventHandler(this.textFilter_TextChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.pictureTesaLabel);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(73, 681);
+            this.panel1.TabIndex = 73;
+            // 
+            // pictureTesaLabel
+            // 
+            this.pictureTesaLabel.Image = global::TotalSmartCoding.Properties.Resources.Barcode2D;
+            this.pictureTesaLabel.Location = new System.Drawing.Point(16, 22);
+            this.pictureTesaLabel.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureTesaLabel.Name = "pictureTesaLabel";
+            this.pictureTesaLabel.Size = new System.Drawing.Size(36, 39);
+            this.pictureTesaLabel.TabIndex = 7;
+            this.pictureTesaLabel.TabStop = false;
+            this.pictureTesaLabel.Click += new System.EventHandler(this.pictureTesaLabel_Click);
+            // 
             // QuickView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,7 +145,7 @@
             this.Controls.Add(this.textFilter);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "QuickView";
@@ -152,7 +153,7 @@
             this.Text = "Quick View";
             ((System.ComponentModel.ISupportInitialize)(this.fastBarcodes)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureTesaLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,7 +165,7 @@
         private BrightIdeasSoftware.OLVColumn olvCode;
         private System.Windows.Forms.TextBox textFilter;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureTesaLabel;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvLabel;
         private BrightIdeasSoftware.OLVColumn olvRemarks;
