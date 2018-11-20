@@ -53,10 +53,10 @@ namespace TotalBase
         {
             None = 0,
             Smallpack = 1,
-            Pail = 2,
+            Pail = 5,
             Drum = 3,
             Medium4L = 4,
-            Import = 5,
+            Import = 8,
 
 
             Pickup = 68,

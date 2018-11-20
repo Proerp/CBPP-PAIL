@@ -14,7 +14,7 @@
         public static bool NoPallet = true;
 
         //REMOVE THIS BEFORE PUBLISH
-        public static bool NMVNOnly = true;
+        public static bool NMVNOnly = false;
         public static bool ShowStringReceived = false;
         //REMOVE THIS BEFORE PUBLISH
 
@@ -100,10 +100,10 @@
 
             SmartCoding = 888888,
             SmartCodingSmallpack = 888889,
-            SmartCodingPail = 888890,
+            SmartCodingPail = 888893,
             SmartCodingDrum = 888891,
             SmartCodingMedium4L = 888892,
-            SmartCodingImport = 888893,
+            SmartCodingImport = 888896,
             
 
             Customers = 8001,
