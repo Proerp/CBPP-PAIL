@@ -1059,7 +1059,7 @@ namespace TotalSmartCoding.Views.Productions
             try
             {
                 IList<BarcodeDTO> barcodeList = this.scannerAPIs.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
-                QuickView quickView = new QuickView(barcodeList, (barcodeList.Count == 200 ? "Top 200 " : barcodeList.Count.ToString()) + "[NOT SENT] Cartons");
+                QuickView quickView = new QuickView(barcodeList, (barcodeList.Count == 200 ? "Top 200" : barcodeList.Count.ToString()) + " Cartons [NOT SENT]");
                 quickView.ShowDialog(); quickView.Dispose();
             }
             catch (Exception exception)
