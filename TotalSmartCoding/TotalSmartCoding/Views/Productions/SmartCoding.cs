@@ -652,7 +652,18 @@ namespace TotalSmartCoding.Views.Productions
                 }
                 else if (sender.Equals(this.dataServerController))
                 {
-                    if (e.PropertyName == "MainStatus") { if (this.dataServerController.MainStatus != "") { this.buttonCartonAttributes.Text = this.dataServerController.MainStatus; } return; }
+                    if (e.PropertyName == "MainStatus")
+                    {
+                        if (this.dataServerController.MainStatus != "")
+                        {
+                            this.buttonCartonAttributes.Text = this.dataServerController.MainStatus;
+                            if (this.dataServerController.MainStatus == "Idling" && (scannerThread == null || !scannerThread.IsAlive))
+                            {
+                                this.scannerController.InitializePallet();
+                            }
+                        }
+                        return;
+                    }
                 }
 
             }
