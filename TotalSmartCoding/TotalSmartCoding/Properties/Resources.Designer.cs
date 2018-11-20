@@ -1933,6 +1933,16 @@ namespace TotalSmartCoding.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cloud_Download_Blue {
+            get {
+                object obj = ResourceManager.GetObject("cloud-Download-Blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cloud_size24 {
             get {
                 object obj = ResourceManager.GetObject("cloud-size24", resourceCulture);

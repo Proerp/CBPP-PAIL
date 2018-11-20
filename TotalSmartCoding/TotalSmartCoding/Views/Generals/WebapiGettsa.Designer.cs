@@ -38,6 +38,16 @@
             this.buttonApplicationRoleIgnored = new System.Windows.Forms.ToolStripButton();
             this.buttonApplicationRoleRequired = new System.Windows.Forms.ToolStripButton();
             this.layoutTop = new System.Windows.Forms.TableLayoutPanel();
+            this.textexBatch_serial = new CustomControls.TextexBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textexBatch_number = new CustomControls.TextexBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textexProduct_id = new CustomControls.TextexBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textexProduction_line = new CustomControls.TextexBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textexProduction_date = new CustomControls.TextexBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.textexDomino_code = new CustomControls.TextexBox();
             this.labelConsumerKey = new System.Windows.Forms.Label();
             this.labelApplicationRoleName = new System.Windows.Forms.Label();
@@ -45,16 +55,6 @@
             this.pictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.textexLabel = new CustomControls.TextexBox();
             this.textexValid = new CustomControls.TextexBox();
-            this.textexProduction_date = new CustomControls.TextexBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textexProduction_line = new CustomControls.TextexBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textexProduct_id = new CustomControls.TextexBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textexBatch_number = new CustomControls.TextexBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textexBatch_serial = new CustomControls.TextexBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
             this.panelBottomRight.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -72,7 +72,7 @@
             this.panelBottom.Location = new System.Drawing.Point(0, 404);
             this.panelBottom.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(461, 42);
+            this.panelBottom.Size = new System.Drawing.Size(422, 42);
             this.panelBottom.TabIndex = 75;
             // 
             // panelBottomRight
@@ -82,7 +82,7 @@
             this.panelBottomRight.Location = new System.Drawing.Point(143, 0);
             this.panelBottomRight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelBottomRight.Name = "panelBottomRight";
-            this.panelBottomRight.Size = new System.Drawing.Size(318, 42);
+            this.panelBottomRight.Size = new System.Drawing.Size(279, 42);
             this.panelBottomRight.TabIndex = 0;
             // 
             // toolStrip1
@@ -96,7 +96,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.toolStrip1.Size = new System.Drawing.Size(318, 42);
+            this.toolStrip1.Size = new System.Drawing.Size(279, 42);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -222,28 +222,143 @@
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
-            this.layoutTop.Size = new System.Drawing.Size(461, 404);
+            this.layoutTop.Size = new System.Drawing.Size(422, 404);
             this.layoutTop.TabIndex = 104;
+            // 
+            // textexBatch_serial
+            // 
+            this.textexBatch_serial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textexBatch_serial.Editable = false;
+            this.textexBatch_serial.Location = new System.Drawing.Point(96, 243);
+            this.textexBatch_serial.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
+            this.textexBatch_serial.Name = "textexBatch_serial";
+            this.textexBatch_serial.ReadOnly = true;
+            this.textexBatch_serial.Size = new System.Drawing.Size(305, 23);
+            this.textexBatch_serial.TabIndex = 101;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(92, 227);
+            this.label5.Margin = new System.Windows.Forms.Padding(0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(310, 15);
+            this.label5.TabIndex = 100;
+            this.label5.Text = "Serial Number";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textexBatch_number
+            // 
+            this.textexBatch_number.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textexBatch_number.Editable = false;
+            this.textexBatch_number.Location = new System.Drawing.Point(96, 203);
+            this.textexBatch_number.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
+            this.textexBatch_number.Name = "textexBatch_number";
+            this.textexBatch_number.ReadOnly = true;
+            this.textexBatch_number.Size = new System.Drawing.Size(305, 23);
+            this.textexBatch_number.TabIndex = 99;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Location = new System.Drawing.Point(92, 187);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(310, 15);
+            this.label4.TabIndex = 98;
+            this.label4.Text = "Batch Number";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textexProduct_id
+            // 
+            this.textexProduct_id.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textexProduct_id.Editable = false;
+            this.textexProduct_id.Location = new System.Drawing.Point(96, 163);
+            this.textexProduct_id.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
+            this.textexProduct_id.Name = "textexProduct_id";
+            this.textexProduct_id.ReadOnly = true;
+            this.textexProduct_id.Size = new System.Drawing.Size(305, 23);
+            this.textexProduct_id.TabIndex = 97;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Location = new System.Drawing.Point(92, 147);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(310, 15);
+            this.label3.TabIndex = 96;
+            this.label3.Text = "SKU Code";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textexProduction_line
+            // 
+            this.textexProduction_line.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textexProduction_line.Editable = false;
+            this.textexProduction_line.Location = new System.Drawing.Point(96, 123);
+            this.textexProduction_line.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
+            this.textexProduction_line.Name = "textexProduction_line";
+            this.textexProduction_line.ReadOnly = true;
+            this.textexProduction_line.Size = new System.Drawing.Size(305, 23);
+            this.textexProduction_line.TabIndex = 95;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Location = new System.Drawing.Point(92, 107);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(310, 15);
+            this.label2.TabIndex = 94;
+            this.label2.Text = "Production Line";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textexProduction_date
+            // 
+            this.textexProduction_date.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textexProduction_date.Editable = false;
+            this.textexProduction_date.Location = new System.Drawing.Point(96, 83);
+            this.textexProduction_date.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
+            this.textexProduction_date.Name = "textexProduction_date";
+            this.textexProduction_date.ReadOnly = true;
+            this.textexProduction_date.Size = new System.Drawing.Size(305, 23);
+            this.textexProduction_date.TabIndex = 93;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(92, 67);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(310, 15);
+            this.label1.TabIndex = 92;
+            this.label1.Text = "Production Date";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textexDomino_code
             // 
             this.textexDomino_code.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textexDomino_code.Editable = false;
-            this.textexDomino_code.Location = new System.Drawing.Point(112, 283);
+            this.textexDomino_code.Location = new System.Drawing.Point(96, 283);
             this.textexDomino_code.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexDomino_code.Name = "textexDomino_code";
             this.textexDomino_code.ReadOnly = true;
-            this.textexDomino_code.Size = new System.Drawing.Size(328, 23);
+            this.textexDomino_code.Size = new System.Drawing.Size(305, 23);
             this.textexDomino_code.TabIndex = 91;
             // 
             // labelConsumerKey
             // 
             this.labelConsumerKey.AutoSize = true;
             this.labelConsumerKey.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelConsumerKey.Location = new System.Drawing.Point(108, 267);
+            this.labelConsumerKey.Location = new System.Drawing.Point(92, 267);
             this.labelConsumerKey.Margin = new System.Windows.Forms.Padding(0);
             this.labelConsumerKey.Name = "labelConsumerKey";
-            this.labelConsumerKey.Size = new System.Drawing.Size(333, 15);
+            this.labelConsumerKey.Size = new System.Drawing.Size(310, 15);
             this.labelConsumerKey.TabIndex = 90;
             this.labelConsumerKey.Text = "Domino Barcode";
             this.labelConsumerKey.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -252,10 +367,10 @@
             // 
             this.labelApplicationRoleName.AutoSize = true;
             this.labelApplicationRoleName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelApplicationRoleName.Location = new System.Drawing.Point(108, 27);
+            this.labelApplicationRoleName.Location = new System.Drawing.Point(92, 27);
             this.labelApplicationRoleName.Margin = new System.Windows.Forms.Padding(0);
             this.labelApplicationRoleName.Name = "labelApplicationRoleName";
-            this.labelApplicationRoleName.Size = new System.Drawing.Size(333, 15);
+            this.labelApplicationRoleName.Size = new System.Drawing.Size(310, 15);
             this.labelApplicationRoleName.TabIndex = 78;
             this.labelApplicationRoleName.Text = "Tesa Label";
             this.labelApplicationRoleName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -264,22 +379,22 @@
             // 
             this.labelConsumerSecret.AutoSize = true;
             this.labelConsumerSecret.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelConsumerSecret.Location = new System.Drawing.Point(108, 317);
+            this.labelConsumerSecret.Location = new System.Drawing.Point(92, 317);
             this.labelConsumerSecret.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.labelConsumerSecret.Name = "labelConsumerSecret";
-            this.labelConsumerSecret.Size = new System.Drawing.Size(333, 15);
+            this.labelConsumerSecret.Size = new System.Drawing.Size(310, 15);
             this.labelConsumerSecret.TabIndex = 83;
             this.labelConsumerSecret.Text = "Label Status";
             this.labelConsumerSecret.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pictureBoxIcon
             // 
-            this.pictureBoxIcon.Image = global::TotalSmartCoding.Properties.Resources.if_key_48;
+            this.pictureBoxIcon.Image = global::TotalSmartCoding.Properties.Resources.Barcode_green_32;
             this.pictureBoxIcon.Location = new System.Drawing.Point(35, 27);
             this.pictureBoxIcon.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxIcon.Name = "pictureBoxIcon";
             this.layoutTop.SetRowSpan(this.pictureBoxIcon, 16);
-            this.pictureBoxIcon.Size = new System.Drawing.Size(48, 48);
+            this.pictureBoxIcon.Size = new System.Drawing.Size(32, 32);
             this.pictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBoxIcon.TabIndex = 11;
             this.pictureBoxIcon.TabStop = false;
@@ -288,144 +403,29 @@
             // 
             this.textexLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textexLabel.Editable = false;
-            this.textexLabel.Location = new System.Drawing.Point(112, 43);
+            this.textexLabel.Location = new System.Drawing.Point(96, 43);
             this.textexLabel.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexLabel.Name = "textexLabel";
             this.textexLabel.ReadOnly = true;
-            this.textexLabel.Size = new System.Drawing.Size(328, 23);
+            this.textexLabel.Size = new System.Drawing.Size(305, 23);
             this.textexLabel.TabIndex = 88;
             // 
             // textexValid
             // 
             this.textexValid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textexValid.Editable = false;
-            this.textexValid.Location = new System.Drawing.Point(112, 333);
+            this.textexValid.Location = new System.Drawing.Point(96, 333);
             this.textexValid.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
             this.textexValid.Name = "textexValid";
             this.textexValid.ReadOnly = true;
-            this.textexValid.Size = new System.Drawing.Size(328, 23);
+            this.textexValid.Size = new System.Drawing.Size(305, 23);
             this.textexValid.TabIndex = 89;
-            // 
-            // textexProduction_date
-            // 
-            this.textexProduction_date.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textexProduction_date.Editable = false;
-            this.textexProduction_date.Location = new System.Drawing.Point(112, 83);
-            this.textexProduction_date.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
-            this.textexProduction_date.Name = "textexProduction_date";
-            this.textexProduction_date.ReadOnly = true;
-            this.textexProduction_date.Size = new System.Drawing.Size(328, 23);
-            this.textexProduction_date.TabIndex = 93;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(108, 67);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(333, 15);
-            this.label1.TabIndex = 92;
-            this.label1.Text = "Production Date";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // textexProduction_line
-            // 
-            this.textexProduction_line.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textexProduction_line.Editable = false;
-            this.textexProduction_line.Location = new System.Drawing.Point(112, 123);
-            this.textexProduction_line.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
-            this.textexProduction_line.Name = "textexProduction_line";
-            this.textexProduction_line.ReadOnly = true;
-            this.textexProduction_line.Size = new System.Drawing.Size(328, 23);
-            this.textexProduction_line.TabIndex = 95;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(108, 107);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(333, 15);
-            this.label2.TabIndex = 94;
-            this.label2.Text = "Production Line";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // textexProduct_id
-            // 
-            this.textexProduct_id.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textexProduct_id.Editable = false;
-            this.textexProduct_id.Location = new System.Drawing.Point(112, 163);
-            this.textexProduct_id.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
-            this.textexProduct_id.Name = "textexProduct_id";
-            this.textexProduct_id.ReadOnly = true;
-            this.textexProduct_id.Size = new System.Drawing.Size(328, 23);
-            this.textexProduct_id.TabIndex = 97;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(108, 147);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(333, 15);
-            this.label3.TabIndex = 96;
-            this.label3.Text = "SKU Code";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // textexBatch_number
-            // 
-            this.textexBatch_number.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textexBatch_number.Editable = false;
-            this.textexBatch_number.Location = new System.Drawing.Point(112, 203);
-            this.textexBatch_number.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
-            this.textexBatch_number.Name = "textexBatch_number";
-            this.textexBatch_number.ReadOnly = true;
-            this.textexBatch_number.Size = new System.Drawing.Size(328, 23);
-            this.textexBatch_number.TabIndex = 99;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(108, 187);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(333, 15);
-            this.label4.TabIndex = 98;
-            this.label4.Text = "Batch Number";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // textexBatch_serial
-            // 
-            this.textexBatch_serial.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textexBatch_serial.Editable = false;
-            this.textexBatch_serial.Location = new System.Drawing.Point(112, 243);
-            this.textexBatch_serial.Margin = new System.Windows.Forms.Padding(4, 1, 1, 1);
-            this.textexBatch_serial.Name = "textexBatch_serial";
-            this.textexBatch_serial.ReadOnly = true;
-            this.textexBatch_serial.Size = new System.Drawing.Size(328, 23);
-            this.textexBatch_serial.TabIndex = 101;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(108, 227);
-            this.label5.Margin = new System.Windows.Forms.Padding(0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(333, 15);
-            this.label5.TabIndex = 100;
-            this.label5.Text = "Serial Number";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // WebapiGettsa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 446);
+            this.ClientSize = new System.Drawing.Size(422, 446);
             this.ControlBox = false;
             this.Controls.Add(this.layoutTop);
             this.Controls.Add(this.panelBottom);

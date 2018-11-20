@@ -127,11 +127,12 @@
             // 
             // pictureTesaLabel
             // 
-            this.pictureTesaLabel.Image = global::TotalSmartCoding.Properties.Resources.Barcode2D;
+            this.pictureTesaLabel.Image = global::TotalSmartCoding.Properties.Resources.cloud_Download_Blue;
             this.pictureTesaLabel.Location = new System.Drawing.Point(16, 22);
             this.pictureTesaLabel.Margin = new System.Windows.Forms.Padding(2);
             this.pictureTesaLabel.Name = "pictureTesaLabel";
-            this.pictureTesaLabel.Size = new System.Drawing.Size(36, 39);
+            this.pictureTesaLabel.Size = new System.Drawing.Size(32, 32);
+            this.pictureTesaLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureTesaLabel.TabIndex = 7;
             this.pictureTesaLabel.TabStop = false;
             this.pictureTesaLabel.Click += new System.EventHandler(this.pictureTesaLabel_Click);
@@ -153,6 +154,7 @@
             this.Text = "Quick View";
             ((System.ComponentModel.ISupportInitialize)(this.fastBarcodes)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureTesaLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
