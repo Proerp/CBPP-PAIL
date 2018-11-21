@@ -130,7 +130,7 @@ namespace TotalSmartCoding.Views.Productions
                 if (fillingData.HasCartonLabel) { this.buttonRemoveCartonPending.Visible = false; } //DON'T ALLOW TO RETURN CARTON BACK. MUST TO CARTON SCAN AGAIN.
                 if (!this.fillingData.CartonViaPalletZebra) { this.buttonSendCartontoZebra.Visible = false; this.textNthCartontoZebra.Visible = false; this.labelNthCartontoZebra.Visible = false; this.separatorSendCartontoZebra.Visible = false; }
 
-
+                this.textNextPalletNo.Visible = false; this.labelNextPalletNo.Visible = false; 
             }
             catch (Exception exception)
             {
