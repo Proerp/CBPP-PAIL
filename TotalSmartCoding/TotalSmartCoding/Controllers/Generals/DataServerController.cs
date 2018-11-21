@@ -207,7 +207,7 @@ namespace TotalSmartCoding.Controllers.Generals
                 tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value =  responseData["labels"][0]["translations"]["production_date"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.domino_code = new List<DominoCode>() { new DominoCode() { value = responseData["labels"][0]["translations"]["domino_code"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.batch_serial = new List<BatchSerial>() { new BatchSerial() { value = responseData["labels"][0]["translations"]["batch_serial"][1]["msg"].ToString() } };
-                tsaBarcode.TsaLabel.attributes.valid = new List<Valid>() { new Valid() { value = responseData["labels"][0]["translations"]["domino_code"][1]["valid"].ToString() } };
+                tsaBarcode.TsaLabel.attributes.valid = new List<Valid>() { new Valid() { value = responseData["labels"][0]["translations"]["valid"][1]["msg"].ToString() } };
             }
 
             return httpResponseMessage;
