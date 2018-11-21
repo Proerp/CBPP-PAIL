@@ -108,8 +108,10 @@ namespace TotalSmartCoding.Views.Productions
                 this.textNextDigitNo.TextBox.DataBindings.Add("Text", this.fillingData, "NextDigitNo");
                 this.textNextPackNo.TextBox.DataBindings.Add("Text", this.fillingData, "NextPackNo");
                 this.textNextCartonNo.TextBox.DataBindings.Add("Text", this.fillingData, "NextCartonNo");
-                this.textNextPalletNo.TextBox.DataBindings.Add("Text", this.fillingData, "NextPalletNo");
+                this.textBatchCartonNo.TextBox.DataBindings.Add("Text", this.fillingData, "BatchCartonNo");
                 this.textFinalCartonNo.TextBox.DataBindings.Add("Text", this.fillingData, "FinalCartonNo");
+                this.textNextPalletNo.TextBox.DataBindings.Add("Text", this.fillingData, "NextPalletNo");
+                
 
                 this.textNthCartontoZebra.TextBox.DataBindings.Add("Text", this.fillingData, "NthCartontoZebra", true, DataSourceUpdateMode.OnPropertyChanged);
 
@@ -580,7 +582,8 @@ namespace TotalSmartCoding.Views.Productions
                     if (e.PropertyName == "LedStatus") { this.scannerLEDGreen.Enabled = this.scannerController.LedGreenOn; this.scannerLEDAmber.Enabled = this.scannerController.LedAmberOn; this.scannerLEDRed.Enabled = this.scannerController.LedRedOn; if (this.scannerController.LedRedOn) { GlobalEnums.IOAlarm = true; this.StopPrint(); } return; }
 
                     if (e.PropertyName == "LedMCU") { this.toolStripMCUQuanlity.Enabled = this.scannerController.LedMCUQualityOn; this.toolStripMCUMatching.Enabled = this.scannerController.LedMCUMatchingOn; this.toolStripMCUCarton.Enabled = this.scannerController.LedMCUCartonOn; return; }
-
+                    
+                    if (e.PropertyName == "BatchCartonNo") { this.fillingData.BatchCartonNo = this.scannerController.BatchCartonNo; return; }
 
 
                     if (e.PropertyName == "PackQueue")

@@ -147,6 +147,19 @@ namespace TotalSmartCoding.Controllers.Productions
             }
         }
 
+        public string BatchCartonNo
+        {
+            get { return this.privateFillingData.BatchCartonNo; }
+            private set
+            {
+                if (this.privateFillingData.BatchCartonNo != value)
+                {
+                    this.privateFillingData.BatchCartonNo = value;
+                    this.NotifyPropertyChanged("BatchCartonNo");
+                }
+            }
+        }
+
         public string NextPalletNo
         {
             get { return this.privateFillingData.NextPalletNo; }

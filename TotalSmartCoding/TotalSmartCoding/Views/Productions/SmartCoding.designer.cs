@@ -204,6 +204,7 @@
             this.textNextPackNo = new System.Windows.Forms.ToolStripTextBox();
             this.labelNextCartonNo = new System.Windows.Forms.ToolStripLabel();
             this.textNextCartonNo = new System.Windows.Forms.ToolStripTextBox();
+            this.textBatchCartonNo = new System.Windows.Forms.ToolStripTextBox();
             this.labelFinalCartonNo = new System.Windows.Forms.ToolStripLabel();
             this.textFinalCartonNo = new System.Windows.Forms.ToolStripTextBox();
             this.labelNextPalletNo = new System.Windows.Forms.ToolStripLabel();
@@ -2129,6 +2130,7 @@
             this.textNextPackNo,
             this.labelNextCartonNo,
             this.textNextCartonNo,
+            this.textBatchCartonNo,
             this.labelFinalCartonNo,
             this.textFinalCartonNo,
             this.labelNextPalletNo,
@@ -2251,7 +2253,7 @@
             this.textBoxCommodityAPICode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxCommodityAPICode.Name = "textBoxCommodityAPICode";
             this.textBoxCommodityAPICode.ReadOnly = true;
-            this.textBoxCommodityAPICode.Size = new System.Drawing.Size(80, 75);
+            this.textBoxCommodityAPICode.Size = new System.Drawing.Size(72, 75);
             this.textBoxCommodityAPICode.Text = "API000";
             this.textBoxCommodityAPICode.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxCommodityAPICode.ToolTipText = "API Code";
@@ -2267,7 +2269,7 @@
             this.textBoxBatchCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBatchCode.Name = "textBoxBatchCode";
             this.textBoxBatchCode.ReadOnly = true;
-            this.textBoxBatchCode.Size = new System.Drawing.Size(98, 75);
+            this.textBoxBatchCode.Size = new System.Drawing.Size(90, 75);
             this.textBoxBatchCode.Text = "08889990";
             this.textBoxBatchCode.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2317,7 +2319,7 @@
             this.textNextDigitNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textNextDigitNo.Name = "textNextDigitNo";
             this.textNextDigitNo.ReadOnly = true;
-            this.textNextDigitNo.Size = new System.Drawing.Size(76, 75);
+            this.textNextDigitNo.Size = new System.Drawing.Size(68, 75);
             this.textNextDigitNo.Text = "909808";
             this.textNextDigitNo.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2332,7 +2334,7 @@
             this.textNextPackNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textNextPackNo.Name = "textNextPackNo";
             this.textNextPackNo.ReadOnly = true;
-            this.textNextPackNo.Size = new System.Drawing.Size(76, 75);
+            this.textNextPackNo.Size = new System.Drawing.Size(68, 75);
             this.textNextPackNo.Text = "909808";
             this.textNextPackNo.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2347,9 +2349,18 @@
             this.textNextCartonNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textNextCartonNo.Name = "textNextCartonNo";
             this.textNextCartonNo.ReadOnly = true;
-            this.textNextCartonNo.Size = new System.Drawing.Size(76, 75);
+            this.textNextCartonNo.Size = new System.Drawing.Size(68, 75);
             this.textNextCartonNo.Text = "909808";
             this.textNextCartonNo.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBatchCartonNo
+            // 
+            this.textBatchCartonNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBatchCartonNo.Name = "textBatchCartonNo";
+            this.textBatchCartonNo.ReadOnly = true;
+            this.textBatchCartonNo.Size = new System.Drawing.Size(68, 75);
+            this.textBatchCartonNo.Text = "888888";
+            this.textBatchCartonNo.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelFinalCartonNo
             // 
@@ -2362,7 +2373,7 @@
             this.textFinalCartonNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textFinalCartonNo.Name = "textFinalCartonNo";
             this.textFinalCartonNo.ReadOnly = true;
-            this.textFinalCartonNo.Size = new System.Drawing.Size(76, 75);
+            this.textFinalCartonNo.Size = new System.Drawing.Size(68, 75);
             this.textFinalCartonNo.Text = "888888";
             this.textFinalCartonNo.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2377,7 +2388,7 @@
             this.textNextPalletNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textNextPalletNo.Name = "textNextPalletNo";
             this.textNextPalletNo.ReadOnly = true;
-            this.textNextPalletNo.Size = new System.Drawing.Size(76, 75);
+            this.textNextPalletNo.Size = new System.Drawing.Size(68, 75);
             this.textNextPalletNo.Text = "888888";
             this.textNextPalletNo.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2699,6 +2710,7 @@
         private System.Windows.Forms.ToolStripLabel labelCommodityNamePack;
         private System.Windows.Forms.ToolStripLabel labelCommodityNameCarton;
         private System.Windows.Forms.ToolStripLabel labelCommodityNamePallet;
+        private System.Windows.Forms.ToolStripTextBox textBatchCartonNo;
         private System.Windows.Forms.ToolStripLabel labelFinalCartonNo;
         private System.Windows.Forms.ToolStripTextBox textFinalCartonNo;
         private System.Windows.Forms.ToolStripButton buttonFillingLines;
