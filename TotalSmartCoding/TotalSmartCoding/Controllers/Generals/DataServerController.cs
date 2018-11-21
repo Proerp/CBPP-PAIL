@@ -60,9 +60,9 @@ namespace TotalSmartCoding.Controllers.Generals
                     {
                         HttpOAuth httpOAuth = new HttpOAuth();
 
-                        this.MainStatus = "Starting ..."; Thread.Sleep(500);
+                        this.MainStatus = "Starting ..."; Thread.Sleep(200);
 
-                        IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
+                        IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed + "," + (int)GlobalVariables.SubmitStatus.Exported, null);
 
                         foreach (CartonAttribute cartonAttribute in cartonAttributes)
                         {
@@ -115,7 +115,7 @@ namespace TotalSmartCoding.Controllers.Generals
                 TsaBarcode tsaBarcode = new TsaBarcode();
 
 
-                this.MainStatus = "Try to connect ..."; Thread.Sleep(500);
+                this.MainStatus = "Try to connect ...";
 
 
                 tsaBarcode.Q_id1 = this.Q_id1;
@@ -137,10 +137,48 @@ namespace TotalSmartCoding.Controllers.Generals
                 else
                     this.MainStatus = "Fail to read data from tesa server." + "\r\n" + httpResponseMessage.StatusCode.ToString() + " " + httpResponseMessage.ReasonPhrase;
 
+                this.MainStatus = "";
             }
             catch (Exception exception)
             {
                 this.MainStatus = exception.Message;
+            }
+        }
+
+        public int ExportText(string fileName)
+        {
+            int fileNo = 0;
+
+            do
+            {
+                IList<CartonAttribute> cartonAttributes = this.cartonService.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
+                if (cartonAttributes.Count > 0)
+                {
+                    fileName = fileName + "-" + (fileNo++).ToString() + "-" + cartonAttributes.Count.ToString("00000") + ".txt";
+                    this.saveToText(cartonAttributes, fileName);
+                }
+                else
+                    break;
+            }
+            while (true);
+
+            return fileNo;
+        }
+
+        private void saveToText(IList<CartonAttribute> cartonAttributes, string fileName)
+        {
+            if (cartonAttributes.Count > 0)
+            {
+                using (System.IO.StreamWriter textFile = new System.IO.StreamWriter(fileName, true))
+                {
+                    textFile.WriteLine("Label;production_date;production_line;product_id;batch_number;batch_serial;domino_code;valid");
+                    foreach (CartonAttribute cartonAttribute in cartonAttributes)
+                    {
+                        textFile.WriteLine(cartonAttribute.Label + ";" + cartonAttribute.BatchEntryDate.ToString("yyyy-MM-dd") + ";" + cartonAttribute.FillingLineName + ";" + cartonAttribute.OfficialCode + ";" + cartonAttribute.BatchCode + ";" + cartonAttribute.Code.Substring(cartonAttribute.Code.Length - 6, 6).Trim() + ";" + cartonAttribute.Code.Substring(0, cartonAttribute.Code.Length - 6).Trim() + ";1");
+
+                        this.cartonService.UpdateSubmitStatus("" + cartonAttribute.CartonID, GlobalVariables.SubmitStatus.Exported, "File: " + fileName);
+                    }
+                }
             }
         }
 
@@ -204,7 +242,7 @@ namespace TotalSmartCoding.Controllers.Generals
                 tsaBarcode.TsaLabel.attributes.product_id = new List<ProductId>() { new ProductId() { value = responseData["labels"][0]["translations"]["product_id"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.batch_number = new List<BatchNumber>() { new BatchNumber() { value = responseData["labels"][0]["translations"]["batch_number"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.production_line = new List<ProductionLine>() { new ProductionLine() { value = responseData["labels"][0]["translations"]["production_line"][1]["msg"].ToString() } };
-                tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value =  responseData["labels"][0]["translations"]["production_date"][1]["msg"].ToString() } };
+                tsaBarcode.TsaLabel.attributes.production_date = new List<ProductionDate>() { new ProductionDate() { value = responseData["labels"][0]["translations"]["production_date"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.domino_code = new List<DominoCode>() { new DominoCode() { value = responseData["labels"][0]["translations"]["domino_code"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.batch_serial = new List<BatchSerial>() { new BatchSerial() { value = responseData["labels"][0]["translations"]["batch_serial"][1]["msg"].ToString() } };
                 tsaBarcode.TsaLabel.attributes.valid = new List<Valid>() { new Valid() { value = responseData["labels"][0]["translations"]["valid"][1]["msg"].ToString() } };
@@ -289,7 +327,7 @@ namespace TotalSmartCoding.Controllers.Generals
 
     public class Attributes
     {
-        public List<ProductId> product_id { get; set; }      
+        public List<ProductId> product_id { get; set; }
         public List<BatchNumber> batch_number { get; set; }
         public List<ProductionLine> production_line { get; set; }
         public List<ProductionDate> production_date { get; set; }

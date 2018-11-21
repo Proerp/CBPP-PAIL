@@ -118,7 +118,7 @@ namespace TotalSmartCoding.Libraries.Communications
         {
             try
             {
-                if (this.serialPort.IsOpen)
+                if (this.serialPort != null && this.serialPort.IsOpen)
                 {
                     this.serialPort.DtrEnable = false;
                     this.serialPort.Close();

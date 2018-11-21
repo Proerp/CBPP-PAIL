@@ -2177,7 +2177,7 @@
             this.textBoxFillingLineName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxFillingLineName.Name = "textBoxFillingLineName";
             this.textBoxFillingLineName.ReadOnly = true;
-            this.textBoxFillingLineName.Size = new System.Drawing.Size(139, 75);
+            this.textBoxFillingLineName.Size = new System.Drawing.Size(88, 75);
             this.textBoxFillingLineName.Text = "OCME";
             this.textBoxFillingLineName.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2232,7 +2232,7 @@
             this.textBoxCommodityCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxCommodityCode.Name = "textBoxCommodityCode";
             this.textBoxCommodityCode.ReadOnly = true;
-            this.textBoxCommodityCode.Size = new System.Drawing.Size(98, 75);
+            this.textBoxCommodityCode.Size = new System.Drawing.Size(50, 75);
             this.textBoxCommodityCode.Text = "88888888";
             this.textBoxCommodityCode.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 

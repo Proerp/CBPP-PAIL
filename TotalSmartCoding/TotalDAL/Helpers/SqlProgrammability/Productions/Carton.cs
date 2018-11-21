@@ -130,9 +130,9 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "   ELSE " + "\r\n";
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           IF (@PalletID IS NULL) " + "\r\n";
-            queryString = queryString + "               SELECT  TOP 200 " + sqlSelect + sqlWhere + "\r\n";
+            queryString = queryString + "               SELECT  TOP 500 " + sqlSelect + sqlWhere + "\r\n";
             queryString = queryString + "           ELSE " + "\r\n";
-            queryString = queryString + "               SELECT  TOP 200 " + sqlSelect + sqlWhere + " AND PalletID = @PalletID " + "\r\n";
+            queryString = queryString + "               SELECT  TOP 500 " + sqlSelect + sqlWhere + " AND PalletID = @PalletID " + "\r\n";
             queryString = queryString + "       END " + "\r\n";
 
             this.totalSmartCodingEntities.CreateStoredProcedure("GetCartonAttributes", queryString);

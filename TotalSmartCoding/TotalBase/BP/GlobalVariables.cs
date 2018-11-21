@@ -113,6 +113,7 @@ namespace TotalBase
         {
             Freshnew = 0,
             Created = 201,
+            Exported = 1,
             Failed = 100,
             Deleted = -1
         }

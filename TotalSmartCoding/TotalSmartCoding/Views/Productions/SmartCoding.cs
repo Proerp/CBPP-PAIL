@@ -102,7 +102,7 @@ namespace TotalSmartCoding.Views.Productions
                 this.textBoxFillingLineName.TextBox.DataBindings.Add("Text", this.fillingData, "FillingLineName");
                 this.textBoxSettingDate.TextBox.DataBindings.Add("Text", this.fillingData, "SettingDateShortDateFormat");
                 this.textBoxCommodityCode.TextBox.DataBindings.Add("Text", this.fillingData, "CommodityCode");
-                this.textBoxCommodityAPICode.TextBox.DataBindings.Add("Text", this.fillingData, "CommodityAPICode");
+                this.textBoxCommodityAPICode.TextBox.DataBindings.Add("Text", this.fillingData, "CommodityOfficialCode"); //CommodityAPICode
                 this.textBoxCommodityOfficialCode.TextBox.DataBindings.Add("Text", this.fillingData, "CommodityOfficialCode");
                 this.textBoxBatchCode.TextBox.DataBindings.Add("Text", this.fillingData, "BatchCode");
                 this.textNextDigitNo.TextBox.DataBindings.Add("Text", this.fillingData, "NextDigitNo");
@@ -129,8 +129,6 @@ namespace TotalSmartCoding.Views.Productions
                 if (!fillingData.HasCarton && GlobalEnums.DrumWithDigit) { this.labelNextPalletNo.Visible = false; this.textNextPalletNo.Visible = false; } else { this.labelNextDigitNo.Visible = false; this.textNextDigitNo.Visible = false; }
                 if (fillingData.HasCartonLabel) { this.buttonRemoveCartonPending.Visible = false; } //DON'T ALLOW TO RETURN CARTON BACK. MUST TO CARTON SCAN AGAIN.
                 if (!this.fillingData.CartonViaPalletZebra) { this.buttonSendCartontoZebra.Visible = false; this.textNthCartontoZebra.Visible = false; this.labelNthCartontoZebra.Visible = false; this.separatorSendCartontoZebra.Visible = false; }
-
-                this.textNextPalletNo.Visible = false; this.labelNextPalletNo.Visible = false; 
             }
             catch (Exception exception)
             {
@@ -1069,8 +1067,8 @@ namespace TotalSmartCoding.Views.Productions
         {
             try
             {
-                IList<BarcodeDTO> barcodeList = this.scannerAPIs.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
-                QuickView quickView = new QuickView(barcodeList, (barcodeList.Count == 200 ? "Top 200" : barcodeList.Count.ToString()) + " Cartons [NOT SENT]");
+                IList<BarcodeDTO> barcodeList = this.scannerAPIs.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed + "," + (int)GlobalVariables.SubmitStatus.Exported, null);
+                QuickView quickView = new QuickView(barcodeList, (barcodeList.Count == 500 ? "Top 500" : barcodeList.Count.ToString()) + " Cartons [NOT SENT]");
                 quickView.ShowDialog(); quickView.Dispose();
             }
             catch (Exception exception)
@@ -1083,26 +1081,16 @@ namespace TotalSmartCoding.Views.Productions
         {
             try
             {
-                string fileDate = (DateTime.Now).ToString("yyyyMMdd-HHmm"); int fileID = 0;
+                string fileDate = (DateTime.Now).ToString("yyyyMMdd-HHmm");
 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Text Document (.txt)|*.txt";
                 saveFileDialog.FileName = fileDate + ".txt";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK && saveFileDialog.FileName != "")
                 {
-                    do
-                    {
-                        IList<BarcodeDTO> barcodeList = this.scannerAPIs.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
-                        if (barcodeList.Count > 0)
-                        {
-                            string fileName = fileDate + "-" + (fileID++).ToString() + "-" + barcodeList.Count.ToString("0000") + ".txt";
-                        }
-                        else
-                            break;
-                    }
-                    while (true);
-
-                    CustomMsgBox.Show(this, "Xuất dữ liệu hoàn tất!" + "\r\n" + "\r\n" + "Tổng cộng " + fileID.ToString() + " file đã được xuất ra txt.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DataServerController dataServerController = new DataServerController();
+                    int fileNo = dataServerController.ExportText(saveFileDialog.FileName.Replace(".txt", ""));
+                    CustomMsgBox.Show(this, "Xuất dữ liệu hoàn tất!" + "\r\n" + "\r\n" + "Tổng cộng " + fileNo.ToString() + " file đã được xuất ra txt.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception exception)
