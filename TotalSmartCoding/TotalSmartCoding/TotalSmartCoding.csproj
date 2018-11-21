@@ -1561,6 +1561,7 @@
     <None Include="Resources\cloud-size24.png" />
     <None Include="Resources\cloud-size24-circle.png" />
     <None Include="Resources\cloud-Download-Blue.png" />
+    <None Include="Resources\text32.png" />
     <Content Include="SmartCodingSolution.ico" />
     <None Include="Resources\Yellow-cross.ico" />
     <None Include="Resources\White-Pallet.ico" />

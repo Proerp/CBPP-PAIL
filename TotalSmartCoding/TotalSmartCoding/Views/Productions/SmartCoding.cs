@@ -1079,6 +1079,38 @@ namespace TotalSmartCoding.Views.Productions
             }
         }
 
+        private void buttonExportCartons_Click(object sender, System.EventArgs e)
+        {
+            try
+            {
+                string fileDate = (DateTime.Now).ToString("yyyyMMdd-HHmm"); int fileID = 0;
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Text Document (.txt)|*.txt";
+                saveFileDialog.FileName = fileDate + ".txt";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK && saveFileDialog.FileName != "")
+                {
+                    do
+                    {
+                        IList<BarcodeDTO> barcodeList = this.scannerAPIs.GetCartonAttributes(GlobalVariables.FillingLineID, (int)GlobalVariables.SubmitStatus.Freshnew + "," + (int)GlobalVariables.SubmitStatus.Failed, null);
+                        if (barcodeList.Count > 0)
+                        {
+                            string fileName = fileDate + "-" + (fileID++).ToString() + "-" + barcodeList.Count.ToString("0000") + ".txt";
+                        }
+                        else
+                            break;
+                    }
+                    while (true);
+
+                    CustomMsgBox.Show(this, "Xuất dữ liệu hoàn tất!" + "\r\n" + "\r\n" + "Tổng cộng " + fileID.ToString() + " file đã được xuất ra txt.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
+        }
+
         #endregion Exception Handler
 
 
