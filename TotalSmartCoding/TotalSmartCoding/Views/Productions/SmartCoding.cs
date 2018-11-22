@@ -126,7 +126,7 @@ namespace TotalSmartCoding.Views.Productions
                 this.buttonSendToZebra.Visible = this.fillingData.FillingLineID == GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit;
 
 
-                if (!fillingData.HasPack) { this.labelNextPackNo.Visible = false; this.textNextPackNo.Visible = false; this.dgvCartonPendingQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 200 : 280; this.dgvCartonQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 200 : 280; this.dgvCartonsetQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 200 : 280; this.labelLEDPack.Visible = false; this.labelLEDCartonIgnore.Visible = false; this.separatorLEDPack.Visible = false; this.separatorLEDCartonIgnore.Visible = false; } //this.labelCommodityNameCarton.Visible = !this.fillingData.CartonViaPalletZebra; 
+                if (!fillingData.HasPack) { this.labelNextPackNo.Visible = false; this.textNextPackNo.Visible = false; this.dgvCartonPendingQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 188 : 280; this.dgvCartonQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 188 : 280; this.dgvCartonsetQueue.RowTemplate.Height = fillingData.HasCartonLabel ? 188 : 280; this.labelLEDPack.Visible = false; this.labelLEDCartonIgnore.Visible = false; this.separatorLEDPack.Visible = false; this.separatorLEDCartonIgnore.Visible = false; } //this.labelCommodityNameCarton.Visible = !this.fillingData.CartonViaPalletZebra; 
                 if (!fillingData.HasCarton && this.fillingData.FillingLineID != GlobalVariables.FillingLine.Import) { this.labelNextCartonNo.Visible = false; this.textNextCartonNo.Visible = false; this.dgvPalletQueue.RowTemplate.Height = 280; this.dgvPalletPickupQueue.RowTemplate.Height = 280; this.labelLEDCarton.Visible = false; this.labelLEDCartonPending.Visible = false; this.separatorLEDCarton.Visible = false; this.separatorLEDCartonPending.Visible = false; this.labelCommodityNamePallet.Visible = true; }
                 if (!fillingData.HasCarton && GlobalEnums.DrumWithDigit) { this.labelNextPalletNo.Visible = false; this.textNextPalletNo.Visible = false; } else { this.labelNextDigitNo.Visible = false; this.textNextDigitNo.Visible = false; }
                 if (fillingData.HasCartonLabel) { this.buttonRemoveCartonPending.Visible = false; } //DON'T ALLOW TO RETURN CARTON BACK. MUST TO CARTON SCAN AGAIN.
@@ -609,7 +609,7 @@ namespace TotalSmartCoding.Views.Productions
                     {
                         this.dgvCartonPendingQueue.DataSource = this.scannerController.GetCartonPendingQueue();
 
-                        if (this.dgvCartonPendingQueue.Rows.Count >= 2) { this.dgvCartonPendingQueue.Rows[0].Height = 80; }
+                        if (this.dgvCartonPendingQueue.Rows.Count >= 2) { this.dgvCartonPendingQueue.Rows[0].Height = 92; }
                         if (this.dgvCartonPendingQueue.Rows.Count > 1) this.dgvCartonPendingQueue.CurrentCell = this.dgvCartonPendingQueue.Rows[0].Cells[0];
 
                         this.buttonCartonPendingQueueCount.Text = "[" + this.scannerController.CartonPendingQueueCount.ToString("N0") + "]";
@@ -620,7 +620,7 @@ namespace TotalSmartCoding.Views.Productions
                     {
                         this.dgvCartonQueue.DataSource = this.scannerController.GetCartonQueue();
 
-                        if (this.dgvCartonQueue.Rows.Count >= 2) { this.dgvCartonQueue.Rows[0].Height = 80; }
+                        if (this.dgvCartonQueue.Rows.Count >= 2) { this.dgvCartonQueue.Rows[0].Height = 92; }
                         if (this.dgvCartonQueue.Rows.Count > 1) this.dgvCartonQueue.CurrentCell = this.dgvCartonQueue.Rows[0].Cells[0];
 
                         this.buttonCartonQueueCount.Text = "[" + this.scannerController.CartonQueueCount.ToString("N0") + "]";
@@ -631,7 +631,7 @@ namespace TotalSmartCoding.Views.Productions
                     {
                         this.dgvCartonsetQueue.DataSource = this.scannerController.GetCartonsetQueue();
 
-                        if (this.dgvCartonsetQueue.Rows.Count >= 2) { this.dgvCartonsetQueue.Rows[0].Height = 80; }
+                        if (this.dgvCartonsetQueue.Rows.Count >= 2) { this.dgvCartonsetQueue.Rows[0].Height = 92; }
 
                         this.buttonCartonsetQueueCount.Text = "[" + this.scannerController.CartonsetQueueCount.ToString("N0") + "]";
                     }
