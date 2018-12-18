@@ -71,6 +71,7 @@
             this.fastBarcodes.View = System.Windows.Forms.View.Details;
             this.fastBarcodes.VirtualMode = true;
             this.fastBarcodes.FormatRow += new System.EventHandler<BrightIdeasSoftware.FormatRowEventArgs>(this.fastBarcodes_FormatRow);
+            this.fastBarcodes.DoubleClick += new System.EventHandler(this.pictureTesaLabel_Click);
             this.fastBarcodes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.fastBarcodes_MouseDown);
             // 
             // olvColumn1

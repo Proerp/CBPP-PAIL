@@ -14,6 +14,7 @@ using System.Drawing;
 using BrightIdeasSoftware;
 using TotalSmartCoding.Views.Productions;
 using TotalSmartCoding.ViewModels.Helpers;
+using TotalSmartCoding.Views.Generals;
 
 namespace TotalSmartCoding.Views.Mains
 {
@@ -134,20 +135,26 @@ namespace TotalSmartCoding.Views.Mains
         {
             try
             {
-                return; //AT BP: WE DISABLE THIS FEATURE
-
                 FastObjectListView fastBarcodes = sender as FastObjectListView;
                 if (fastBarcodes.SelectedObject != null)
                 {
                     BarcodeDTO barcodeDTO = fastBarcodes.SelectedObject as BarcodeDTO;
                     if (barcodeDTO != null)
                     {
-                        PrintViewModel printViewModel = new PrintViewModel();
-                        printViewModel.ReportPath = "SearchBarcode";
-                        printViewModel.ReportParameters.Add(new Microsoft.Reporting.WinForms.ReportParameter("Barcode", barcodeDTO.Code));
+                        if (true)
+                        {
+                            WebapiGettsa webapiGettsa = new WebapiGettsa(barcodeDTO.Label);
+                            webapiGettsa.ShowDialog(); webapiGettsa.Dispose();
+                        }
+                        else
+                        {
+                            PrintViewModel printViewModel = new PrintViewModel();
+                            printViewModel.ReportPath = "SearchBarcode";
+                            printViewModel.ReportParameters.Add(new Microsoft.Reporting.WinForms.ReportParameter("Barcode", barcodeDTO.Code));
 
-                        SsrsViewer ssrsViewer = new SsrsViewer(printViewModel);
-                        ssrsViewer.Show();
+                            SsrsViewer ssrsViewer = new SsrsViewer(printViewModel);
+                            ssrsViewer.Show();
+                        }
                     }
                 }
             }
