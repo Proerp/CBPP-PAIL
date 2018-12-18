@@ -134,6 +134,8 @@ namespace TotalSmartCoding.Views.Mains
         {
             try
             {
+                return; //AT BP: WE DISABLE THIS FEATURE
+
                 FastObjectListView fastBarcodes = sender as FastObjectListView;
                 if (fastBarcodes.SelectedObject != null)
                 {

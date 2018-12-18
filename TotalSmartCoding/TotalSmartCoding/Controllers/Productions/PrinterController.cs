@@ -1121,7 +1121,7 @@ namespace TotalSmartCoding.Controllers.Productions
                                     this.ionetSocket.WritetoStream("LOADPROJECT store: SLASHSYMBOL " + (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Smallpack ? "Digit1L" : (this.FillingData.FillingLineID == GlobalVariables.FillingLine.Pail ? "Pail2018" : "Pail2018")));
                                     if (this.waitforDomino(ref receivedFeedback, false, "OK", "OK".Length)) Thread.Sleep(500); else throw new System.InvalidOperationException("NMVN: Can not load message: " + receivedFeedback);
 
-                                    this.ionetSocket.WritetoStream("SETVARIABLES \"Text01\" \"" + this.laserDigitMessage(false) + "\""); //AT CHEVRON: USING SETTEXT, INSTAED OF SETVARIABLES
+                                    this.ionetSocket.WritetoStream("SETVARIABLES \"MonthCodeAndLine\" \"" + this.laserDigitMessage(false) + "\""); //AT CHEVRON: USING SETTEXT, INSTAED OF SETVARIABLES
                                     if (this.waitforDomino(ref receivedFeedback, false, "OK", "OK".Length)) Thread.Sleep(20); else throw new System.InvalidOperationException("NMVN: Can not set message code: " + receivedFeedback);
 
                                     this.ionetSocket.WritetoStream("SETCOUNTERVALUE Serialnumber01 " + this.laserDigitMessage(true));
