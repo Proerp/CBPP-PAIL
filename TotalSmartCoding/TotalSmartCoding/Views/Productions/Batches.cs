@@ -83,7 +83,7 @@ namespace TotalSmartCoding.Views.Productions
             {
                 this.comboDiscontinued.SelectedIndex = 0;
 
-                this.checkAutoBarcode.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail;
+                this.checkAutoBarcode.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail && GlobalEnums.NMVNOnly; //IF WE WANT AUTO AutoBarcode: JUST REMOVE: && GlobalEnums.NMVNOnly
                 this.checkAutoCarton.Visible = GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import;
                 if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Pail || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Medium4L || GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Import || (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum && !GlobalEnums.DrumWithDigit)) { this.labelNextPackNo.Visible = false; this.textexNextPackNo.Visible = false; this.labelBatchPackNo.Visible = false; this.textexBatchPackNo.Visible = false; this.olvNextPackNo.IsVisible = false; ; this.olvBatchPackNo.IsVisible = false; }
                 if (GlobalVariables.ConfigID == (int)GlobalVariables.FillingLine.Drum) { this.labelNextCartonNo.Visible = false; this.textexNextCartonNo.Visible = false; }
