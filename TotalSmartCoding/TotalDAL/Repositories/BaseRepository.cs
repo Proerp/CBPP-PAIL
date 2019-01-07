@@ -126,8 +126,12 @@ namespace TotalDAL.Repositories
 
         private void CreateStoredProcedure()
         {
-
             //return;
+
+            Helpers.SqlProgrammability.Productions.Batch batch = new Helpers.SqlProgrammability.Productions.Batch(totalSmartCodingEntities);
+            batch.RestoreProcedure();
+
+            return;
 
             Helpers.SqlProgrammability.Productions.Carton carton = new Helpers.SqlProgrammability.Productions.Carton(totalSmartCodingEntities);
             carton.RestoreProcedure();
@@ -244,10 +248,7 @@ namespace TotalDAL.Repositories
             userGroup.RestoreProcedure();
 
 
-            //return;
 
-            Helpers.SqlProgrammability.Productions.Batch batch = new Helpers.SqlProgrammability.Productions.Batch(totalSmartCodingEntities);
-            batch.RestoreProcedure();
 
             
             

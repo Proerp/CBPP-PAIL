@@ -127,7 +127,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
         private void GetBatchMaxNo()
         {
-            string querySELECT = "              SELECT      MAX(NextPackNo) AS NextPackNo, MAX(BatchPackNo) AS BatchPackNo, MAX(NextCartonNo) AS NextCartonNo, MAX(BatchCartonNo) AS BatchCartonNo, MAX(NextPalletNo) AS NextPalletNo, MAX(BatchPalletNo) AS BatchPalletNo " + "\r\n";
+            string querySELECT = "              SELECT      RIGHT(MAX(NextPackNo + 1000001), 6) AS NextPackNo, RIGHT(MAX(BatchPackNo + 1000001), 6) AS BatchPackNo, RIGHT(MAX(NextCartonNo + 1000001), 6) AS NextCartonNo, RIGHT(MAX(BatchCartonNo + 1000001), 6) AS BatchCartonNo, RIGHT(MAX(NextPalletNo + 1000001), 6) AS NextPalletNo, RIGHT(MAX(BatchPalletNo + 1000001), 6) AS BatchPalletNo " + "\r\n";
             querySELECT = querySELECT + "       FROM        Batches " + "\r\n";
             querySELECT = querySELECT + "       WHERE       FillingLineID = @FillingLineID AND CommodityID = @CommodityID ";
 

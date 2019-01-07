@@ -306,13 +306,10 @@ namespace TotalSmartCoding.Views.Productions
 
         private void timerEverySecond_Tick(object sender, EventArgs e)
         {
-            if (this.smartCoding.fillingData != null)
-            {
-                if (this.smartCoding.fillingData.EntryMonthID != CommonExpressions.GetEntryMonthID())
-                    this.iconNewMonth.Visible = !this.iconNewMonth.Visible;
-                else
-                    this.iconNewMonth.Visible = false;
-            }
+            if (this.batchViewModel.EntryMonthID != CommonExpressions.GetEntryMonthID())
+                this.iconNewMonth.Visible = !this.iconNewMonth.Visible;
+            else
+                this.iconNewMonth.Visible = false;
         }
 
 

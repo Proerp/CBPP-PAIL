@@ -40,26 +40,26 @@
             this.panelBottom = new System.Windows.Forms.Panel();
             this.panelBottomRight = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.buttonExit = new System.Windows.Forms.ToolStripButton();
+            this.buttonLogin = new System.Windows.Forms.ToolStripButton();
             this.panelBottomLeft = new System.Windows.Forms.Panel();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.buttonLoginRestore = new System.Windows.Forms.ToolStripButton();
+            this.buttonConnectServer = new System.Windows.Forms.ToolStripButton();
+            this.buttonWebapi = new System.Windows.Forms.ToolStripButton();
+            this.buttonDownload = new System.Windows.Forms.ToolStripButton();
             this.separatorResetApplicationRole = new System.Windows.Forms.ToolStripSeparator();
+            this.buttonApplicationRoleIgnored = new System.Windows.Forms.ToolStripButton();
+            this.buttonApplicationRoleRequired = new System.Windows.Forms.ToolStripButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.layoutTop = new System.Windows.Forms.TableLayoutPanel();
             this.labelSecurityIdentifier = new System.Windows.Forms.Label();
             this.labelUserID = new System.Windows.Forms.Label();
             this.labelFillingLineID = new System.Windows.Forms.Label();
+            this.pictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.comboSecurityIdentifier = new System.Windows.Forms.ComboBox();
             this.labelComportName = new System.Windows.Forms.Label();
             this.checkGlobalDrumWithDigit = new System.Windows.Forms.CheckBox();
-            this.pictureBoxIcon = new System.Windows.Forms.PictureBox();
-            this.buttonExit = new System.Windows.Forms.ToolStripButton();
-            this.buttonLogin = new System.Windows.Forms.ToolStripButton();
-            this.buttonLoginRestore = new System.Windows.Forms.ToolStripButton();
-            this.buttonConnectServer = new System.Windows.Forms.ToolStripButton();
-            this.buttonWebapi = new System.Windows.Forms.ToolStripButton();
-            this.buttonDownload = new System.Windows.Forms.ToolStripButton();
-            this.buttonApplicationRoleIgnored = new System.Windows.Forms.ToolStripButton();
-            this.buttonApplicationRoleRequired = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.panelBottomRight.SuspendLayout();
@@ -211,6 +211,28 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // buttonExit
+            // 
+            this.buttonExit.Image = global::TotalSmartCoding.Properties.Resources.signout_icon_24;
+            this.buttonExit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.buttonExit.Size = new System.Drawing.Size(53, 42);
+            this.buttonExit.Text = "Exit";
+            this.buttonExit.Click += new System.EventHandler(this.buttonLoginExit_Click);
+            // 
+            // buttonLogin
+            // 
+            this.buttonLogin.Image = global::TotalSmartCoding.Properties.Resources.Login;
+            this.buttonLogin.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonLogin.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonLogin.Name = "buttonLogin";
+            this.buttonLogin.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.buttonLogin.Size = new System.Drawing.Size(73, 42);
+            this.buttonLogin.Text = "Login";
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLoginExit_Click);
+            // 
             // panelBottomLeft
             // 
             this.panelBottomLeft.Controls.Add(this.toolStrip2);
@@ -241,10 +263,76 @@
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
+            // buttonLoginRestore
+            // 
+            this.buttonLoginRestore.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonLoginRestore.Image = global::TotalSmartCoding.Properties.Resources.Settings;
+            this.buttonLoginRestore.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonLoginRestore.Name = "buttonLoginRestore";
+            this.buttonLoginRestore.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.buttonLoginRestore.Size = new System.Drawing.Size(24, 42);
+            this.buttonLoginRestore.Text = "Manual restore stored procedures and update new version";
+            this.buttonLoginRestore.Visible = false;
+            this.buttonLoginRestore.Click += new System.EventHandler(this.buttonLoginExit_Click);
+            // 
+            // buttonConnectServer
+            // 
+            this.buttonConnectServer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonConnectServer.Image = global::TotalSmartCoding.Properties.Resources.if_key_20;
+            this.buttonConnectServer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonConnectServer.Name = "buttonConnectServer";
+            this.buttonConnectServer.Size = new System.Drawing.Size(24, 42);
+            this.buttonConnectServer.Text = "Specify an application role";
+            this.buttonConnectServer.Click += new System.EventHandler(this.buttonApplicationRole_Click);
+            // 
+            // buttonWebapi
+            // 
+            this.buttonWebapi.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonWebapi.Image = global::TotalSmartCoding.Properties.Resources.cloud_size24_circle;
+            this.buttonWebapi.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonWebapi.Name = "buttonWebapi";
+            this.buttonWebapi.Size = new System.Drawing.Size(24, 42);
+            this.buttonWebapi.Text = "Specify TSA credential";
+            this.buttonWebapi.Click += new System.EventHandler(this.buttonWebapi_Click);
+            // 
+            // buttonDownload
+            // 
+            this.buttonDownload.Image = global::TotalSmartCoding.Properties.Resources.Download;
+            this.buttonDownload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonDownload.Name = "buttonDownload";
+            this.buttonDownload.Size = new System.Drawing.Size(34, 42);
+            this.buttonDownload.Text = " ";
+            this.buttonDownload.ToolTipText = "Download latest version";
+            this.buttonDownload.Visible = false;
+            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
+            // 
             // separatorResetApplicationRole
             // 
             this.separatorResetApplicationRole.Name = "separatorResetApplicationRole";
             this.separatorResetApplicationRole.Size = new System.Drawing.Size(6, 45);
+            // 
+            // buttonApplicationRoleIgnored
+            // 
+            this.buttonApplicationRoleIgnored.Image = global::TotalSmartCoding.Properties.Resources.Ignore_x_20;
+            this.buttonApplicationRoleIgnored.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonApplicationRoleIgnored.Name = "buttonApplicationRoleIgnored";
+            this.buttonApplicationRoleIgnored.Size = new System.Drawing.Size(37, 42);
+            this.buttonApplicationRoleIgnored.Text = "  ";
+            this.buttonApplicationRoleIgnored.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.buttonApplicationRoleIgnored.ToolTipText = "Ignore application role";
+            this.buttonApplicationRoleIgnored.Visible = false;
+            this.buttonApplicationRoleIgnored.Click += new System.EventHandler(this.buttonApplicationRole_Click);
+            // 
+            // buttonApplicationRoleRequired
+            // 
+            this.buttonApplicationRoleRequired.Image = global::TotalSmartCoding.Properties.Resources.Continue_x_20;
+            this.buttonApplicationRoleRequired.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonApplicationRoleRequired.Name = "buttonApplicationRoleRequired";
+            this.buttonApplicationRoleRequired.Size = new System.Drawing.Size(37, 24);
+            this.buttonApplicationRoleRequired.Text = "  ";
+            this.buttonApplicationRoleRequired.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.buttonApplicationRoleRequired.ToolTipText = "Use application role";
+            this.buttonApplicationRoleRequired.Click += new System.EventHandler(this.buttonApplicationRole_Click);
             // 
             // panel2
             // 
@@ -337,6 +425,19 @@
             this.labelFillingLineID.Text = "Filling Line";
             this.labelFillingLineID.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // pictureBoxIcon
+            // 
+            this.pictureBoxIcon.Image = global::TotalSmartCoding.Properties.Resources.Identity_icon_48;
+            this.pictureBoxIcon.Location = new System.Drawing.Point(26, 18);
+            this.pictureBoxIcon.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxIcon.Name = "pictureBoxIcon";
+            this.layoutTop.SetRowSpan(this.pictureBoxIcon, 6);
+            this.pictureBoxIcon.Size = new System.Drawing.Size(48, 48);
+            this.pictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxIcon.TabIndex = 11;
+            this.pictureBoxIcon.TabStop = false;
+            this.pictureBoxIcon.DoubleClick += new System.EventHandler(this.pictureBoxIcon_DoubleClick);
+            // 
             // comboSecurityIdentifier
             // 
             this.comboSecurityIdentifier.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -378,107 +479,6 @@
             this.checkGlobalDrumWithDigit.Text = "With Domino Ax 350 Printer";
             this.checkGlobalDrumWithDigit.UseVisualStyleBackColor = true;
             this.checkGlobalDrumWithDigit.Visible = false;
-            // 
-            // pictureBoxIcon
-            // 
-            this.pictureBoxIcon.Image = global::TotalSmartCoding.Properties.Resources.Identity_icon_48;
-            this.pictureBoxIcon.Location = new System.Drawing.Point(26, 18);
-            this.pictureBoxIcon.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBoxIcon.Name = "pictureBoxIcon";
-            this.layoutTop.SetRowSpan(this.pictureBoxIcon, 6);
-            this.pictureBoxIcon.Size = new System.Drawing.Size(48, 48);
-            this.pictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBoxIcon.TabIndex = 11;
-            this.pictureBoxIcon.TabStop = false;
-            this.pictureBoxIcon.DoubleClick += new System.EventHandler(this.pictureBoxIcon_DoubleClick);
-            // 
-            // buttonExit
-            // 
-            this.buttonExit.Image = global::TotalSmartCoding.Properties.Resources.signout_icon_24;
-            this.buttonExit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonExit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.buttonExit.Size = new System.Drawing.Size(53, 42);
-            this.buttonExit.Text = "Exit";
-            this.buttonExit.Click += new System.EventHandler(this.buttonLoginExit_Click);
-            // 
-            // buttonLogin
-            // 
-            this.buttonLogin.Image = global::TotalSmartCoding.Properties.Resources.Login;
-            this.buttonLogin.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonLogin.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.buttonLogin.Size = new System.Drawing.Size(73, 42);
-            this.buttonLogin.Text = "Login";
-            this.buttonLogin.Click += new System.EventHandler(this.buttonLoginExit_Click);
-            // 
-            // buttonLoginRestore
-            // 
-            this.buttonLoginRestore.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonLoginRestore.Image = global::TotalSmartCoding.Properties.Resources.Settings;
-            this.buttonLoginRestore.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonLoginRestore.Name = "buttonLoginRestore";
-            this.buttonLoginRestore.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.buttonLoginRestore.Size = new System.Drawing.Size(24, 42);
-            this.buttonLoginRestore.Text = "Manual restore stored procedures and update new version";
-            this.buttonLoginRestore.Visible = false;
-            this.buttonLoginRestore.Click += new System.EventHandler(this.buttonLoginExit_Click);
-            // 
-            // buttonConnectServer
-            // 
-            this.buttonConnectServer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonConnectServer.Image = global::TotalSmartCoding.Properties.Resources.if_key_20;
-            this.buttonConnectServer.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonConnectServer.Name = "buttonConnectServer";
-            this.buttonConnectServer.Size = new System.Drawing.Size(24, 42);
-            this.buttonConnectServer.Text = "Specify an application role";
-            this.buttonConnectServer.Click += new System.EventHandler(this.buttonApplicationRole_Click);
-            // 
-            // buttonWebapi
-            // 
-            this.buttonWebapi.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.buttonWebapi.Image = global::TotalSmartCoding.Properties.Resources.cloud_size24_circle;
-            this.buttonWebapi.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonWebapi.Name = "buttonWebapi";
-            this.buttonWebapi.Size = new System.Drawing.Size(24, 42);
-            this.buttonWebapi.Text = "toolStripButton1";
-            this.buttonWebapi.Click += new System.EventHandler(this.buttonWebapi_Click);
-            // 
-            // buttonDownload
-            // 
-            this.buttonDownload.Image = global::TotalSmartCoding.Properties.Resources.Download;
-            this.buttonDownload.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonDownload.Name = "buttonDownload";
-            this.buttonDownload.Size = new System.Drawing.Size(34, 42);
-            this.buttonDownload.Text = " ";
-            this.buttonDownload.ToolTipText = "Download latest version";
-            this.buttonDownload.Visible = false;
-            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
-            // 
-            // buttonApplicationRoleIgnored
-            // 
-            this.buttonApplicationRoleIgnored.Image = global::TotalSmartCoding.Properties.Resources.Ignore_x_20;
-            this.buttonApplicationRoleIgnored.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonApplicationRoleIgnored.Name = "buttonApplicationRoleIgnored";
-            this.buttonApplicationRoleIgnored.Size = new System.Drawing.Size(37, 42);
-            this.buttonApplicationRoleIgnored.Text = "  ";
-            this.buttonApplicationRoleIgnored.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.buttonApplicationRoleIgnored.ToolTipText = "Ignore application role";
-            this.buttonApplicationRoleIgnored.Visible = false;
-            this.buttonApplicationRoleIgnored.Click += new System.EventHandler(this.buttonApplicationRole_Click);
-            // 
-            // buttonApplicationRoleRequired
-            // 
-            this.buttonApplicationRoleRequired.Image = global::TotalSmartCoding.Properties.Resources.Continue_x_20;
-            this.buttonApplicationRoleRequired.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonApplicationRoleRequired.Name = "buttonApplicationRoleRequired";
-            this.buttonApplicationRoleRequired.Size = new System.Drawing.Size(37, 24);
-            this.buttonApplicationRoleRequired.Text = "  ";
-            this.buttonApplicationRoleRequired.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.buttonApplicationRoleRequired.ToolTipText = "Use application role";
-            this.buttonApplicationRoleRequired.Click += new System.EventHandler(this.buttonApplicationRole_Click);
             // 
             // Logon
             // 

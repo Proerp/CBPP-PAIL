@@ -934,6 +934,8 @@ namespace TotalSmartCoding.Controllers.Productions
         /// </summary>
         /// <param name="stringReceived"></param>
         /// <returns></returns>
+        private string cartonCodePrevious;
+        private string cartonLabelPrevious;
 
         private bool ReceiveCarton(string stringReceived) { return this.ReceiveCarton(stringReceived, true); }
         private bool ReceiveCarton(string stringReceived, bool codeVslabel)
@@ -955,6 +957,24 @@ namespace TotalSmartCoding.Controllers.Productions
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
                 if (receivedBarcode != "")
                 {
+                    #region CHECK DUPLICATE BARCODE (JUST ONLY HERE)
+                    if (receivedBarcode != "NoRead")
+                    {
+                        if ((codeVslabel && cartonCodePrevious == receivedBarcode) || (!codeVslabel && cartonLabelPrevious == receivedBarcode))
+                        {
+                            this.ionetSocketCarton.WritetoStream("||>SET OUTPUT.ACTION 1 0\r\n"); //SET IO TO ACTIVE ALARM
+                            Thread.Sleep(5000);
+                            throw new Exception("Hai mã vạch liên tiếp trùng nhau: " + receivedBarcode);
+                        }
+                        else
+                        {
+                            if (codeVslabel) cartonCodePrevious = receivedBarcode;
+                            if (!codeVslabel) cartonLabelPrevious = receivedBarcode;
+                        }
+                    }
+                    #endregion CHECK DUPLICATE BARCODE
+
+
                     if (this.matchPacktoCarton((codeVslabel ? receivedBarcode + (GlobalEnums.CBPP ? " " + this.getBatchNo(GlobalVariables.BarcodeName.Carton) : "") : ""), (codeVslabel ? "" : receivedBarcode)))
                         barcodeReceived = true;
                     else
