@@ -957,14 +957,14 @@ namespace TotalSmartCoding.Controllers.Productions
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
                 if (receivedBarcode != "")
                 {
-                    #region CHECK DUPLICATE BARCODE (JUST ONLY HERE)
+                    
+                    #region CHECK DUPLICATE BARCODE (JUST ONLY HERE) //07-JAN-2019
                     if (receivedBarcode != "NoRead")
                     {
                         if ((codeVslabel && cartonCodePrevious == receivedBarcode) || (!codeVslabel && cartonLabelPrevious == receivedBarcode))
                         {
                             this.ionetSocketCarton.WritetoStream("||>SET OUTPUT.ACTION 1 0\r\n"); //SET IO TO ACTIVE ALARM
-                            Thread.Sleep(5000);
-                            throw new Exception("Hai mã vạch liên tiếp trùng nhau: " + receivedBarcode);
+                            this.MainStatus = ""; this.MainStatus = "Hai mã vạch liên tiếp trùng nhau: " + receivedBarcode;
                         }
                         else
                         {
