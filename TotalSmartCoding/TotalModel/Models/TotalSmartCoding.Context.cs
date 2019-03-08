@@ -3502,5 +3502,22 @@ namespace TotalModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateWebapi", webapiIDParameter, baseUriParameter, consumerKeyParameter, consumerSecretParameter);
         }
+    
+        public virtual ObjectResult<BatchSumup> GetBatchSumups(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string entryStatusIDs)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var entryStatusIDsParameter = entryStatusIDs != null ?
+                new ObjectParameter("EntryStatusIDs", entryStatusIDs) :
+                new ObjectParameter("EntryStatusIDs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchSumup>("GetBatchSumups", fromDateParameter, toDateParameter, entryStatusIDsParameter);
+        }
     }
 }

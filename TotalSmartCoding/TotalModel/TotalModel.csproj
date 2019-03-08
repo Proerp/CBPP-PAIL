@@ -83,6 +83,9 @@
     <Compile Include="Models\BatchMaxNo.cs">
       <DependentUpon>TotalSmartCoding.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BatchSumup.cs">
+      <DependentUpon>TotalSmartCoding.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BinLocation.cs">
       <DependentUpon>TotalSmartCoding.tt</DependentUpon>
     </Compile>
