@@ -1155,7 +1155,7 @@ namespace TotalSmartCoding.Controllers.Productions
 
 
                             #region Read counter: printerName == DigitInkjet || printerName == PackInkjet || printerName == CartonInkjet
-                            if (this.printerName == GlobalVariables.PrinterName.DigitInkjet || this.printerName == GlobalVariables.PrinterName.PackInkjet || this.printerName == GlobalVariables.PrinterName.CartonInkjet)
+                            if (true && (this.printerName == GlobalVariables.PrinterName.DigitInkjet || this.printerName == GlobalVariables.PrinterName.PackInkjet || this.printerName == GlobalVariables.PrinterName.CartonInkjet))
                             {
                                 if (this.isLaser)
                                 {
