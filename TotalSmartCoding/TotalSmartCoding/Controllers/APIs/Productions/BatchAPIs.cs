@@ -54,5 +54,10 @@ namespace TotalSmartCoding.Controllers.APIs.Productions
         {
             return this.batchAPIRepository.GetBatchAvailables(locationID, deliveryAdviceID, transferOrderID, commodityID, withNullRow);
         }
+
+        public List<BatchSumup> GetBatchSumups(DateTime fromDate, DateTime toDate, string entryStatusIDs)
+        {
+            return this.batchAPIRepository.GetBatchSumups(fromDate, toDate, entryStatusIDs);
+        }
     }
 }

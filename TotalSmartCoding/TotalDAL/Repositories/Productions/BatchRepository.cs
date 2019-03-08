@@ -66,6 +66,11 @@ namespace TotalDAL.Repositories.Productions
             if (withNullRow) batchAvailables.Add(new BatchAvailable() { QuantityAvailable = 0, LineVolumeAvailable = 0 });
             return batchAvailables;
         }
+
+        public List<BatchSumup> GetBatchSumups(DateTime fromDate, DateTime toDate, string entryStatusIDs)
+        {
+            return base.TotalSmartCodingEntities.GetBatchSumups(fromDate, toDate, entryStatusIDs).ToList();
+        }
     }
 
 

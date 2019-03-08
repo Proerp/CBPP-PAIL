@@ -9311,6 +9311,7 @@
           <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
           <Property Type="DateTime" Name="EntryDate" Nullable="true" />
           <Property Type="Int32" Name="UniqueCartonCounts" Nullable="false" />
+          <Property Type="String" Name="CommodityOfficialCode" Nullable="false" MaxLength="50" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -12350,6 +12351,7 @@
                 <ScalarProperty Name="CommodityName" ColumnName="CommodityName" />
                 <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
                 <ScalarProperty Name="UniqueCartonCounts" ColumnName="UniqueCartonCounts" />
+                <ScalarProperty Name="CommodityOfficialCode" ColumnName="CommodityOfficialCode" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

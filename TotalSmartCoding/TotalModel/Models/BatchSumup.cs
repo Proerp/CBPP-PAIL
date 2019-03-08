@@ -22,5 +22,6 @@ namespace TotalModel.Models
         public string CommodityName { get; set; }
         public Nullable<System.DateTime> EntryDate { get; set; }
         public int UniqueCartonCounts { get; set; }
+        public string CommodityOfficialCode { get; set; }
     }
 }

@@ -1106,6 +1106,20 @@ namespace TotalSmartCoding.Views.Productions
             }
         }
 
+
+        private void buttonBatchSumups_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BatchSumups batchSumups = new BatchSumups();
+                batchSumups.ShowDialog(); batchSumups.Dispose();
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandlers.ShowExceptionMessageBox(this, exception);
+            }
+        }
+
         #endregion Exception Handler
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using TotalBase;
 using TotalModel.Models;
@@ -17,5 +18,7 @@ namespace TotalCore.Repositories.Productions
         List<BatchMaxNo> GetBatchMaxNo(int? fillingLineID, int? commodityID, int? entryMonthID);
 
         List<BatchAvailable> GetBatchAvailables(int? locationID, int? deliveryAdviceID, int? transferOrderID, int? commodityID, bool withNullRow);
+
+        List<BatchSumup> GetBatchSumups(DateTime fromDate, DateTime toDate, string entryStatusIDs);
     }
 }

@@ -1282,7 +1282,8 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(52, 52);
-            this.toolStripButton1.Text = "toolStripButton3";
+            this.toolStripButton1.Text = "View sum-up";
+            this.toolStripButton1.Click += new System.EventHandler(this.buttonBatchSumups_Click);
             // 
             // buttonPalletPickupQueueCount
             // 
