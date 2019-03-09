@@ -1277,7 +1277,7 @@
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::TotalSmartCoding.Properties.Resources.Carlosjj_Google_Jfk_Maps;
+            this.toolStripButton1.Image = global::TotalSmartCoding.Properties.Resources.Actions_edit_find;
             this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
