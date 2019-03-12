@@ -129,6 +129,12 @@ namespace TotalSmartCoding.Controllers.Productions
         {
             try
             {
+                this.packQueue.Clear();
+                this.packsetQueue.Clear();
+                this.cartonQueue.Clear();
+                this.cartonsetQueue.Clear();
+                this.cartonPendingQueue.Clear();
+
                 IList<Pack> packs = this.packController.packService.GetPacks(this.FillingData.FillingLineID, (int)GlobalVariables.BarcodeStatus.Freshnew + "," + (int)GlobalVariables.BarcodeStatus.Readytoset, null);
                 if (packs.Count > 0)
                 {
@@ -156,7 +162,10 @@ namespace TotalSmartCoding.Controllers.Productions
                             if (cartonDTO.EntryStatusID == (int)GlobalVariables.BarcodeStatus.Readytoset)
                                 this.cartonsetQueue.Enqueue(cartonDTO, false);
                             else //BarcodeStatus.Pending, BarcodeStatus.Noread
-                                this.cartonPendingQueue.Enqueue(cartonDTO, false);
+                            {
+                                if (cartonDTO.BatchID == this.FillingData.BatchID) //11MAR2019: KHÔNG CHO XÓA PENDING ==> CHỈ LOAD PENDING CỦA BATCH HIỆN HÀNH
+                                    this.cartonPendingQueue.Enqueue(cartonDTO, false);
+                            }
                     });
 
                     this.cartonsetQueue = this.cartonsetQueue;
@@ -270,7 +279,7 @@ namespace TotalSmartCoding.Controllers.Productions
             }
         }
 
-        public bool AllQueueEmpty { get { return (this.packQueue == null && this.packsetQueue == null && this.cartonPendingQueue == null && this.cartonQueue == null && this.cartonsetQueue == null) || (this.PackQueueCount == 0 && this.packsetQueue.Count == 0 && this.CartonPendingQueueCount == 0 && this.CartonQueueCount == 0 && this.cartonsetQueue.Count == 0); } } // && this.PalletQueueCount == 0 : HIEN TAI: KHONG CO CACH NAO UNWRAP PALLET TO CARTON => SO NO NEED TO CHECK ALL PalletQueueCount
+        public bool AllQueueEmpty { get { return (this.packQueue == null && this.packsetQueue == null && this.cartonPendingQueue == null && this.cartonQueue == null && this.cartonsetQueue == null) || (this.PackQueueCount == 0 && this.packsetQueue.Count == 0 && this.CartonQueueCount == 0 && this.cartonsetQueue.Count == 0); } }// 11/MAR/2019: && this.CartonPendingQueueCount == 0: KHÔNG CHO XÓA CARTON NOREAD                // && this.PalletQueueCount == 0 : HIEN TAI: KHONG CO CACH NAO UNWRAP PALLET TO CARTON => SO NO NEED TO CHECK ALL PalletQueueCount
 
 
 
@@ -957,7 +966,7 @@ namespace TotalSmartCoding.Controllers.Productions
                 //NOTES: this.FillingData.HasPack && lastCartonCode == receivedBarcode: KHI HasPack: TRÙNG CARTON  || HOẶC LÀ "NoRead": THI CẦN PHẢI ĐƯA SANG 1 QUEUE KHÁC. XỬ LÝ CUỐI CA
                 if (receivedBarcode != "")
                 {
-                    
+
                     #region CHECK DUPLICATE BARCODE (JUST ONLY HERE) //07-JAN-2019
                     if (receivedBarcode != "NoRead")
                     {

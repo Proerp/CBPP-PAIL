@@ -31,7 +31,9 @@
             this.fastBatchSumups = new BrightIdeasSoftware.FastObjectListView();
             this.olvPalletSelected = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvEntryDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvBatchCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCommodityCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvCommodityOfficialCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCommodityName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvCartonCounts = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvUniqueCartonCounts = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -40,13 +42,11 @@
             this.panelBottomLeft = new System.Windows.Forms.Panel();
             this.layoutTop = new System.Windows.Forms.TableLayoutPanel();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.buttonRefresh = new System.Windows.Forms.ToolStripButton();
             this.textexFilters = new System.Windows.Forms.ToolStripTextBox();
             this.buttonClearFilters = new System.Windows.Forms.ToolStripButton();
             this.dateTimexUpperFillterDate = new CustomControls.DateTimexPicker();
             this.dateTimexLowerFillterDate = new CustomControls.DateTimexPicker();
-            this.olvBatchCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvCommodityOfficialCode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.fastBatchSumups)).BeginInit();
             this.panelMaster.SuspendLayout();
             this.panelBottom.SuspendLayout();
@@ -113,10 +113,24 @@
             this.olvEntryDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.olvEntryDate.Width = 88;
             // 
+            // olvBatchCode
+            // 
+            this.olvBatchCode.AspectName = "BatchCode";
+            this.olvBatchCode.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchCode.Text = "Batch";
+            this.olvBatchCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvBatchCode.Width = 96;
+            // 
             // olvCommodityCode
             // 
             this.olvCommodityCode.AspectName = "CommodityCode";
             this.olvCommodityCode.Text = "Item";
+            // 
+            // olvCommodityOfficialCode
+            // 
+            this.olvCommodityOfficialCode.AspectName = "CommodityOfficialCode";
+            this.olvCommodityOfficialCode.Text = "Code";
+            this.olvCommodityOfficialCode.Width = 96;
             // 
             // olvCommodityName
             // 
@@ -190,13 +204,13 @@
             this.layoutTop.Controls.Add(this.dateTimexLowerFillterDate, 3, 0);
             this.layoutTop.Dock = System.Windows.Forms.DockStyle.Right;
             this.layoutTop.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.layoutTop.Location = new System.Drawing.Point(337, 0);
+            this.layoutTop.Location = new System.Drawing.Point(306, 0);
             this.layoutTop.Margin = new System.Windows.Forms.Padding(0);
             this.layoutTop.Name = "layoutTop";
             this.layoutTop.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.layoutTop.RowCount = 1;
             this.layoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.layoutTop.Size = new System.Drawing.Size(587, 45);
+            this.layoutTop.Size = new System.Drawing.Size(618, 45);
             this.layoutTop.TabIndex = 94;
             // 
             // toolStrip2
@@ -205,25 +219,26 @@
             this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
+            this.buttonRefresh,
             this.textexFilters,
             this.buttonClearFilters});
             this.toolStrip2.Location = new System.Drawing.Point(240, 0);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.toolStrip2.Size = new System.Drawing.Size(347, 39);
+            this.toolStrip2.Size = new System.Drawing.Size(378, 39);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
-            // toolStripButton1
+            // buttonRefresh
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::TotalSmartCoding.Properties.Resources.Zoom_seach;
-            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButton1.Text = "Filters";
+            this.buttonRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonRefresh.Image = global::TotalSmartCoding.Properties.Resources.refresh;
+            this.buttonRefresh.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(36, 36);
+            this.buttonRefresh.Text = "Cập nhật số liệu mới nhất";
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // textexFilters
             // 
@@ -275,20 +290,6 @@
             this.dateTimexLowerFillterDate.Size = new System.Drawing.Size(118, 24);
             this.dateTimexLowerFillterDate.TabIndex = 90;
             // 
-            // olvBatchCode
-            // 
-            this.olvBatchCode.AspectName = "BatchCode";
-            this.olvBatchCode.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvBatchCode.Text = "Batch";
-            this.olvBatchCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvBatchCode.Width = 96;
-            // 
-            // olvCommodityOfficialCode
-            // 
-            this.olvCommodityOfficialCode.AspectName = "CommodityOfficialCode";
-            this.olvCommodityOfficialCode.Text = "Code";
-            this.olvCommodityOfficialCode.Width = 96;
-            // 
             // BatchSumups
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -327,7 +328,7 @@
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.Panel panelBottomLeft;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton buttonRefresh;
         private System.Windows.Forms.ToolStripTextBox textexFilters;
         private System.Windows.Forms.ToolStripButton buttonClearFilters;
         private BrightIdeasSoftware.OLVColumn olvCartonCounts;

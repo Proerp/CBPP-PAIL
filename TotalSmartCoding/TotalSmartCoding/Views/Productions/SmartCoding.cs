@@ -99,6 +99,8 @@ namespace TotalSmartCoding.Views.Productions
                 scannerController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
                 dataServerController.PropertyChanged += new PropertyChangedEventHandler(controller_PropertyChanged);
 
+                this.fillingData.PropertyChanged += fillingData_PropertyChanged;
+
                 this.textBoxFillingLineName.TextBox.DataBindings.Add("Text", this.fillingData, "FillingLineName");
                 this.textBoxSettingDate.TextBox.DataBindings.Add("Text", this.fillingData, "SettingDateShortDateFormat");
                 this.textBoxCommodityCode.TextBox.DataBindings.Add("Text", this.fillingData, "CommodityCode");
@@ -136,6 +138,12 @@ namespace TotalSmartCoding.Views.Productions
             {
                 ExceptionHandlers.ShowExceptionMessageBox(this, exception);
             }
+        }
+
+        private void fillingData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "BatchID" && this.fillingData != null && this.fillingData.BatchID > 0 )
+                this.scannerController.Initialize();
         }
 
         public void Initialize()
@@ -177,6 +185,11 @@ namespace TotalSmartCoding.Views.Productions
             {
                 this.buttonRemoveCarton.Enabled = !GlobalEnums.DisableRemove;
                 this.buttonRemoveCartonset.Enabled = !GlobalEnums.DisableRemove;
+
+                this.buttonDeleteCartonPending.Enabled = !GlobalEnums.DisableRemove;
+                this.buttonDeleteAllCartonPending.Enabled = !GlobalEnums.DisableRemove;
+
+                this.splitPendingQueue.SplitterDistance = 1020;
             }
             catch (Exception exception)
             {

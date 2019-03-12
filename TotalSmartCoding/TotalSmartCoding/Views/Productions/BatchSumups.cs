@@ -98,5 +98,10 @@ namespace TotalSmartCoding.Views.Productions
         {
             this.textexFilters.Text = "";
         }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            this.BatchSumups_Load(this, new EventArgs()); 
+        }
     }
 }
