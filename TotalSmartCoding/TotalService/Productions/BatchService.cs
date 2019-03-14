@@ -30,6 +30,20 @@ namespace TotalService.Productions
             }
         }
 
+        public bool ExtraUpdate(int batchID, string sentPackNo, string sentCartonNo, string sentPalletNo)
+        {
+            try
+            {
+                this.batchRepository.ExtraUpdate(batchID, sentPackNo, sentCartonNo, sentPalletNo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                this.ServiceTag = ex.Message;
+                return false;
+            }
+        }
+
         public bool ExtendedUpdate(int batchID, string batchPackNo, string batchCartonNo, string batchPalletNo)
         {
             try

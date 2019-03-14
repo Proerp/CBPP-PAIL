@@ -9,6 +9,7 @@ namespace TotalCore.Repositories.Productions
     public interface IBatchRepository : IGenericRepository<Batch>
     {
         void CommonUpdate(int batchID, string nextPackNo, string nextCartonNo, string nextPalletNo);
+        void ExtraUpdate(int batchID, string sentPackNo, string sentCartonNo, string sentPalletNo);
         void ExtendedUpdate(int batchID, string batchPackNo, string batchCartonNo, string batchPalletNo);
     }
 

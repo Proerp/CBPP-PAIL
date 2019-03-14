@@ -31,6 +31,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
 
             this.GetBatchMaxNo();
             this.BatchCommonUpdate();
+            this.BatchExtraUpdate();
             this.BatchExtendedUpdate();
         }
 
@@ -45,7 +46,7 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             queryString = queryString + "    BEGIN " + "\r\n";
 
             queryString = queryString + "       SELECT      Batches.BatchID, CAST(Batches.EntryDate AS DATE) AS EntryDate, Batches.EntryMonthID, Batches.Reference, Batches.Code AS BatchCode, Batches.FillingLineID, Batches.CommodityID, Commodities.Code AS CommodityCode, Commodities.OfficialCode AS CommodityOfficialCode, Commodities.Name AS CommodityName, Commodities.APICode AS CommodityAPICode, Commodities.Volume, Commodities.PackageVolume, Commodities.PackPerCarton, Commodities.CartonPerPallet, Commodities.Shelflife, " + "\r\n";
-            queryString = queryString + "                   Batches.NextPackNo, Batches.NextCartonNo, Batches.NextPalletNo, Batches.BatchPackNo, Batches.BatchCartonNo, Batches.BatchPalletNo, Batches.FinalCartonNo, Batches.AutoBarcode, Batches.AutoCarton, Batches.Description, Batches.Remarks, Batches.CreatedDate, Batches.EditedDate, Batches.IsDefault, Batches.InActive " + "\r\n";
+            queryString = queryString + "                   IIF(Batches.NextPackNo > Batches.SentPackNo, Batches.NextPackNo, Batches.SentPackNo) AS NextPackNo, IIF(Batches.NextCartonNo > Batches.SentCartonNo, Batches.NextCartonNo, Batches.SentCartonNo) AS NextCartonNo, IIF(Batches.NextPalletNo > Batches.SentPalletNo, Batches.NextPalletNo, Batches.SentPalletNo) AS NextPalletNo, Batches.SentPackNo, Batches.SentCartonNo, Batches.SentPalletNo, Batches.BatchPackNo, Batches.BatchCartonNo, Batches.BatchPalletNo, Batches.FinalCartonNo, Batches.AutoBarcode, Batches.AutoCarton, Batches.Description, Batches.Remarks, Batches.CreatedDate, Batches.EditedDate, Batches.IsDefault, Batches.InActive " + "\r\n";
             queryString = queryString + "       FROM        Batches INNER JOIN " + "\r\n";
             queryString = queryString + "                   Commodities ON Batches.FillingLineID = @FillingLineID AND (@ActiveOption = " + (int)GlobalEnums.ActiveOption.Both + " OR Batches.InActive = @ActiveOption) AND ((Batches.EntryDate >= @FromDate AND Batches.EntryDate <= @ToDate) OR Batches.IsDefault = 1) AND Batches.CommodityID = Commodities.CommodityID " + "\r\n";
 
@@ -195,6 +196,18 @@ namespace TotalDAL.Helpers.SqlProgrammability.Productions
             this.totalSmartCodingEntities.CreateStoredProcedure("BatchExtendedUpdate", queryString);
         }
 
+
+        private void BatchExtraUpdate()
+        {
+            string queryString = " @BatchID int, @SentPackNo nvarchar(10), @SentCartonNo nvarchar(10), @SentPalletNo nvarchar(10) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "       UPDATE      Batches" + "\r\n";
+            queryString = queryString + "       SET         SentPackNo = CASE WHEN @SentPackNo != '' THEN @SentPackNo ELSE SentPackNo END, SentCartonNo = CASE WHEN @SentCartonNo != '' THEN @SentCartonNo ELSE SentCartonNo END, SentPalletNo = CASE WHEN @SentPalletNo != '' THEN @SentPalletNo ELSE SentPalletNo END " + "\r\n";
+            queryString = queryString + "       WHERE       BatchID = @BatchID " + "\r\n";
+
+            this.totalSmartCodingEntities.CreateStoredProcedure("BatchExtraUpdate", queryString);
+        }
 
     }
 }

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using TotalBase.Enums;
 
 namespace TotalBase
-{    
+{
     public class CommonExpressions
     {
         public static string PropertyName<T>(Expression<Func<T, object>> expression)
@@ -48,8 +48,14 @@ namespace TotalBase
 
         public static string IncrementSerialNo(string serialNo) //serialNo is a string with 6 digits
         {//Format 7 digit, then cut 6 right digit: This will reset a 0 when reach the limit of 6 digits
-            return (int.Parse(serialNo) + 1).ToString("0000000").Substring(1); 
+            return CommonExpressions.IncrementSerialNo(serialNo, 1);
         }
+
+        public static string IncrementSerialNo(string serialNo, int  fixedScale) //serialNo is a string with 6 digits
+        {//Format 7 digit, then cut 6 right digit: This will reset a 0 when reach the limit of 6 digits
+            return (int.Parse(serialNo) + fixedScale).ToString("0000000").Substring(1);
+        }
+
     }
 
     public class OptionBool

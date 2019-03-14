@@ -344,31 +344,43 @@ namespace TotalSmartCoding.Views.Productions
         {
             try
             {
-                GlobalEnums.IOAlarm = false; this.cutStatusBox(true);
-
-                if (backupDataThread == null || !backupDataThread.IsAlive)
+                BatchIndex batchIndex = (new BatchAPIs(CommonNinject.Kernel.Get<IBatchAPIRepository>())).GetActiveBatchIndex();
+                if (batchIndex != null)
                 {
-                    if (digitThread != null && digitThread.IsAlive) digitThread.Abort();
-                    digitThread = new Thread(new ThreadStart(digitController.ThreadRoutine));
+                    if (this.fillingData.IsChange(batchIndex))
+                    {
+                        Mapper.Map<BatchIndex, FillingData>(batchIndex, this.fillingData);
+                        throw new Exception("Số liệu in phun của lô này đã thay đổi." + "\r\n" + "\r\n" + "Vui lòng kiểm tra và xác nhận số liệu trước khi tiếp tục.");
+                    }
+                    else
+                    {
+                        GlobalEnums.IOAlarm = false; this.cutStatusBox(true);
 
-                    if (packThread != null && packThread.IsAlive) packThread.Abort();
-                    packThread = new Thread(new ThreadStart(packController.ThreadRoutine));
+                        if (backupDataThread == null || !backupDataThread.IsAlive)
+                        {
+                            if (digitThread != null && digitThread.IsAlive) digitThread.Abort();
+                            digitThread = new Thread(new ThreadStart(digitController.ThreadRoutine));
 
-                    if (cartonThread != null && cartonThread.IsAlive) cartonThread.Abort();
-                    cartonThread = new Thread(new ThreadStart(cartonController.ThreadRoutine));
+                            if (packThread != null && packThread.IsAlive) packThread.Abort();
+                            packThread = new Thread(new ThreadStart(packController.ThreadRoutine));
 
-                    if (palletThread != null && palletThread.IsAlive) palletThread.Abort();
-                    palletThread = new Thread(new ThreadStart(palletController.ThreadRoutine));
+                            if (cartonThread != null && cartonThread.IsAlive) cartonThread.Abort();
+                            cartonThread = new Thread(new ThreadStart(cartonController.ThreadRoutine));
 
-                    if (scannerThread != null && scannerThread.IsAlive) scannerThread.Abort();
-                    scannerThread = new Thread(new ThreadStart(scannerController.ThreadRoutine));
+                            if (palletThread != null && palletThread.IsAlive) palletThread.Abort();
+                            palletThread = new Thread(new ThreadStart(palletController.ThreadRoutine));
+
+                            if (scannerThread != null && scannerThread.IsAlive) scannerThread.Abort();
+                            scannerThread = new Thread(new ThreadStart(scannerController.ThreadRoutine));
 
 
-                    digitThread.Start();
-                    packThread.Start();
-                    cartonThread.Start();
-                    palletThread.Start();
-                    scannerThread.Start();
+                            digitThread.Start();
+                            packThread.Start();
+                            cartonThread.Start();
+                            palletThread.Start();
+                            scannerThread.Start();
+                        }
+                    }
                 }
             }
             catch (Exception exception)
@@ -566,6 +578,7 @@ namespace TotalSmartCoding.Views.Productions
                     if (e.PropertyName == "LedStatus") { this.digitLEDGreen.Enabled = this.digitController.LedGreenOn; this.digitLEDAmber.Enabled = this.digitController.LedAmberOn; this.digitLEDRed.Enabled = this.digitController.LedRedOn; if (this.digitController.LedRedOn) { GlobalEnums.IOAlarm = true; this.StopPrint(true, true, this.fillingData.FillingLineID == GlobalVariables.FillingLine.Pail, false); } return; }
 
                     if (e.PropertyName == "NextDigitNo") { this.fillingData.NextDigitNo = this.digitController.NextDigitNo; return; }
+                    if (e.PropertyName == "SentDigitNo") { this.fillingData.SentDigitNo = this.digitController.SentDigitNo; return; }
                 }
                 else if (sender.Equals(this.packController))
                 {
@@ -573,6 +586,7 @@ namespace TotalSmartCoding.Views.Productions
                     if (e.PropertyName == "LedStatus") { this.packLEDGreen.Enabled = this.packController.LedGreenOn; this.packLEDAmber.Enabled = this.packController.LedAmberOn; this.packLEDRed.Enabled = this.packController.LedRedOn; if (this.packController.LedRedOn) { GlobalEnums.IOAlarm = true; this.StopPrint(true, true, this.fillingData.FillingLineID == GlobalVariables.FillingLine.Pail, false); } return; }
 
                     if (e.PropertyName == "NextPackNo") { this.fillingData.NextPackNo = this.packController.NextPackNo; return; }
+                    if (e.PropertyName == "SentPackNo") { this.fillingData.SentPackNo = this.packController.SentPackNo; return; }
                 }
                 else if (sender.Equals(this.cartonController))
                 {
@@ -580,6 +594,7 @@ namespace TotalSmartCoding.Views.Productions
                     if (e.PropertyName == "LedStatus") { this.cartonLEDGreen.Enabled = this.cartonController.LedGreenOn; this.cartonLEDAmber.Enabled = this.cartonController.LedAmberOn; this.cartonLEDRed.Enabled = this.cartonController.LedRedOn; if (this.cartonController.LedRedOn) { GlobalEnums.IOAlarm = true; this.StopPrint(this.fillingData.FillingLineID == GlobalVariables.FillingLine.Pail, this.fillingData.FillingLineID == GlobalVariables.FillingLine.Pail, this.fillingData.FillingLineID == GlobalVariables.FillingLine.Pail, false); } return; }
 
                     if (e.PropertyName == "NextCartonNo") { this.fillingData.NextCartonNo = this.cartonController.NextCartonNo; return; }
+                    if (e.PropertyName == "SentCartonNo") { this.fillingData.SentCartonNo = this.cartonController.SentCartonNo; return; }
                 }
 
                 else if (sender.Equals(this.palletController))
@@ -589,6 +604,9 @@ namespace TotalSmartCoding.Views.Productions
 
                     if (e.PropertyName == "NextCartonNo" && this.fillingData.CartonViaPalletZebra) { this.fillingData.NextCartonNo = this.palletController.NextCartonNo; return; }
                     if (e.PropertyName == "NextPalletNo") { this.fillingData.NextPalletNo = this.palletController.NextPalletNo; return; }
+
+                    if (e.PropertyName == "SentCartonNo" && this.fillingData.CartonViaPalletZebra) { this.fillingData.SentCartonNo = this.palletController.SentCartonNo; return; }
+                    if (e.PropertyName == "SentPalletNo") { this.fillingData.SentPalletNo = this.palletController.SentPalletNo; return; }
                 }
 
                 else if (sender.Equals(this.scannerController))

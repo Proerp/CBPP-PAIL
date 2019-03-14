@@ -64,6 +64,14 @@ namespace TotalDTO.Productions
             set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.nextPackNo, o => o.NextPackNo, value); }
         }
 
+        private string sentPackNo;
+        [DefaultValue("000001")]
+        public string SentPackNo
+        {
+            get { return this.sentPackNo; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.sentPackNo, o => o.SentPackNo, value); }
+        }
+
         private string batchPackNo;
         [DefaultValue("000001")]
         public string BatchPackNo
@@ -80,6 +88,14 @@ namespace TotalDTO.Productions
             set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.nextCartonNo, o => o.NextCartonNo, value); }
         }
 
+        private string sentCartonNo;
+        [DefaultValue("000001")]
+        public string SentCartonNo
+        {
+            get { return this.sentCartonNo; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.sentCartonNo, o => o.SentCartonNo, value); }
+        }
+
         private string batchCartonNo;
         [DefaultValue("000001")]
         public string BatchCartonNo
@@ -94,6 +110,14 @@ namespace TotalDTO.Productions
         {
             get { return this.nextPalletNo; }
             set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.nextPalletNo, o => o.NextPalletNo, value); }
+        }
+
+        private string sentPalletNo;
+        [DefaultValue("000001")]
+        public string SentPalletNo
+        {
+            get { return this.sentPalletNo; }
+            set { ApplyPropertyChange<BatchPrimitiveDTO, string>(ref this.sentPalletNo, o => o.SentPalletNo, value); }
         }
 
         private string batchPalletNo;
@@ -165,6 +189,10 @@ namespace TotalDTO.Productions
             validationRules.Add(new SimpleValidationRule("NextPackNo", "Số thứ tự chai quy định là 6 chữ số.", delegate { return this.NextPackNo.Length == 6 && int.TryParse(this.NextPackNo, out value); }));
             validationRules.Add(new SimpleValidationRule("NextCartonNo", "Số thứ tự carton quy định là 6 chữ số.", delegate { return this.NextCartonNo.Length == 6 && int.TryParse(this.NextCartonNo, out value); }));
             validationRules.Add(new SimpleValidationRule("NextPalletNo", "Số thứ tự pallet quy định là 6 chữ số.", delegate { return this.NextPalletNo.Length == 6 && int.TryParse(this.NextPalletNo, out value); }));
+
+            validationRules.Add(new SimpleValidationRule("SentPackNo", "Số thứ tự chai quy định là 6 chữ số.", delegate { return this.SentPackNo.Length == 6 && int.TryParse(this.SentPackNo, out value); }));
+            validationRules.Add(new SimpleValidationRule("SentCartonNo", "Số thứ tự carton quy định là 6 chữ số.", delegate { return this.SentCartonNo.Length == 6 && int.TryParse(this.SentCartonNo, out value); }));
+            validationRules.Add(new SimpleValidationRule("SentPalletNo", "Số thứ tự pallet quy định là 6 chữ số.", delegate { return this.SentPalletNo.Length == 6 && int.TryParse(this.SentPalletNo, out value); }));
 
             validationRules.Add(new SimpleValidationRule("BatchPackNo", "Số thứ tự chai quy định là 6 chữ số.", delegate { return this.BatchPackNo.Length == 6 && int.TryParse(this.BatchPackNo, out value); }));
             validationRules.Add(new SimpleValidationRule("BatchCartonNo", "Số thứ tự carton quy định là 6 chữ số.", delegate { return this.BatchCartonNo.Length == 6 && int.TryParse(this.BatchCartonNo, out value); }));

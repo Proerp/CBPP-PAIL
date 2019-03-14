@@ -2,6 +2,8 @@
 {
     public static class GlobalEnums
     {
+        public static bool Buffered = true;
+
         public static bool DisableRemove = true;
 
         //REMOVE THIS IF THERE IS NO OLD SYSTEM (BPFillingSystem)

@@ -7,6 +7,7 @@ using TotalModel.Helpers;
 
 using TotalBase;
 using TotalBase.Enums;
+using TotalModel.Models;
 
 namespace TotalDTO.Productions
 {
@@ -48,10 +49,17 @@ namespace TotalDTO.Productions
         private string nextPackNo;
         private string nextCartonNo;
         private string nextPalletNo;
+
         private string batchDigitNo;
         private string batchPackNo;
         private string batchCartonNo;
         private string batchPalletNo;
+
+        private string sentDigitNo;
+        private string sentPackNo;
+        private string sentCartonNo;
+        private string sentPalletNo;
+
         private string finalCartonNo;
 
         private string remarks;
@@ -262,6 +270,27 @@ namespace TotalDTO.Productions
             }
         }
 
+        public string SentDigitNo
+        {
+            get { return this.sentDigitNo; }
+
+            set
+            {
+                if (value != this.sentDigitNo)
+                {
+                    int intValue = 0;
+                    if (int.TryParse(value, out intValue) && value.Length == 6)
+                    {
+                        ApplyPropertyChange<FillingData, string>(ref this.sentDigitNo, o => o.SentDigitNo, value);
+                    }
+                    else
+                    {
+                        throw new System.InvalidOperationException("Lỗi sai định dạng số đếm");
+                    }
+                }
+            }
+        }
+
         public string NextPackNo
         {
             get { return this.nextPackNo; }
@@ -303,6 +332,31 @@ namespace TotalDTO.Productions
                 }
             }
         }
+
+
+        public string SentPackNo
+        {
+            get { return this.sentPackNo; }
+
+            set
+            {
+                if (value != this.sentPackNo)
+                {
+                    int intValue = 0;
+                    if (int.TryParse(value, out intValue) && value.Length == 6)
+                    {
+                        ApplyPropertyChange<FillingData, string>(ref this.sentPackNo, o => o.SentPackNo, value);
+                    }
+                    else
+                    {
+                        throw new System.InvalidOperationException("Lỗi sai định dạng số đếm");
+                    }
+                }
+            }
+        }
+
+
+
 
         public string NextCartonNo
         {
@@ -346,6 +400,28 @@ namespace TotalDTO.Productions
             }
         }
 
+        public string SentCartonNo
+        {
+            get { return this.sentCartonNo; }
+
+            set
+            {
+                if (value != this.sentCartonNo)
+                {
+                    int intValue = 0;
+                    if (int.TryParse(value, out intValue) && value.Length == 6)
+                    {
+                        ApplyPropertyChange<FillingData, string>(ref this.sentCartonNo, o => o.SentCartonNo, value);
+                    }
+                    else
+                    {
+                        throw new System.InvalidOperationException("Lỗi sai định dạng số đếm");
+                    }
+                }
+            }
+        }
+
+
         public string NextPalletNo
         {
             get { return this.nextPalletNo; }
@@ -387,6 +463,29 @@ namespace TotalDTO.Productions
                 }
             }
         }
+
+
+        public string SentPalletNo
+        {
+            get { return this.sentPalletNo; }
+
+            set
+            {
+                if (value != this.sentPalletNo)
+                {
+                    int intValue = 0;
+                    if (int.TryParse(value, out intValue) && value.Length == 6)
+                    {
+                        ApplyPropertyChange<FillingData, string>(ref this.sentPalletNo, o => o.SentPalletNo, value);
+                    }
+                    else
+                    {
+                        throw new System.InvalidOperationException("Lỗi sai định dạng số đếm");
+                    }
+                }
+            }
+        }
+
 
         public string FinalCartonNo
         {
@@ -468,7 +567,13 @@ namespace TotalDTO.Productions
 
 
 
-
+        public bool IsChange(BatchIndex batchIndex)
+        {
+            return this.BatchID != batchIndex.BatchID || this.BatchCode != batchIndex.BatchCode || this.EntryMonthID != batchIndex.EntryMonthID || this.CommodityID != batchIndex.CommodityID || this.AutoCarton != batchIndex.AutoCarton 
+                || this.NextPackNo != batchIndex.NextPackNo || this.NextCartonNo != batchIndex.NextCartonNo || this.NextPalletNo != batchIndex.NextPalletNo                
+                || this.SentPackNo != batchIndex.SentPackNo || this.SentCartonNo != batchIndex.SentCartonNo || this.SentPalletNo != batchIndex.SentPalletNo;
+            //|| this.BatchPackNo != batchIndex.BatchPackNo || this.BatchCartonNo != batchIndex.BatchCartonNo || this.BatchPalletNo != batchIndex.BatchPalletNo
+        }
 
 
 
