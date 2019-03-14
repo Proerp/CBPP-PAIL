@@ -18,14 +18,14 @@
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="EntryMonthID" Type="int" Nullable="false" />
           <Property Name="NextPackNo" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="SentPackNo" Type="nvarchar" MaxLength="10" />
-          <Property Name="BatchPackNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="SentPackNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchPackNo" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="NextCartonNo" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="SentCartonNo" Type="nvarchar" MaxLength="10" />
-          <Property Name="BatchCartonNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="SentCartonNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchCartonNo" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="NextPalletNo" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="SentPalletNo" Type="nvarchar" MaxLength="10" />
-          <Property Name="BatchPalletNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="SentPalletNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchPalletNo" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -5551,13 +5551,13 @@
           <Property Type="String" Name="FinalCartonNo" Nullable="false" MaxLength="10" />
           <Property Type="Decimal" Name="PackageVolume" Nullable="false" Precision="18" Scale="3" />
           <Property Type="Boolean" Name="AutoCarton" Nullable="false" />
-          <Property Type="String" Name="BatchPackNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchCartonNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchPalletNo" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="BatchPackNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="BatchCartonNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="BatchPalletNo" Nullable="false" MaxLength="10" />
           <Property Type="Int32" Name="EntryMonthID" Nullable="false" />
-          <Property Type="String" Name="SentPackNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="SentCartonNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="SentPalletNo" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="SentPackNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="SentCartonNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="SentPalletNo" Nullable="false" MaxLength="10" />
         </ComplexType>
         <ComplexType Name="CommodityIndex">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
@@ -8967,12 +8967,12 @@
           <NavigationProperty Name="DeliveryAdviceDetails" Relationship="TotalSmartCodingModel.FK_DeliveryAdviceDetails_Batches" FromRole="Batch" ToRole="DeliveryAdviceDetail" />
           <Property Name="AutoCarton" Type="Boolean" Nullable="false" />
           <Property Name="EntryMonthID" Type="Int32" Nullable="false" />
-          <Property Name="BatchPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="BatchCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="BatchPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SentPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SentCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SentPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BatchPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BatchCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BatchPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SentPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SentCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SentPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <Association Name="FK_Batches_Commodities">
           <End Type="TotalSmartCodingModel.Commodity" Role="Commodity" Multiplicity="1" />
@@ -9281,12 +9281,12 @@
           </ReferentialConstraint>
         </Association>
         <ComplexType Name="BatchMaxNo">
-          <Property Type="String" Name="NextPackNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchPackNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="NextCartonNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchCartonNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="NextPalletNo" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="BatchPalletNo" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="NextPackNo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="BatchPackNo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="NextCartonNo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="BatchCartonNo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="NextPalletNo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="BatchPalletNo" Nullable="true" MaxLength="6" />
         </ComplexType>
         <ComplexType Name="CartonAttribute">
           <Property Type="Int32" Name="CartonID" Nullable="false" />
