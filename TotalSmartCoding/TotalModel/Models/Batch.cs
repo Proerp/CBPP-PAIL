@@ -44,6 +44,9 @@ namespace TotalModel.Models
         public string BatchPackNo { get; set; }
         public string BatchCartonNo { get; set; }
         public string BatchPalletNo { get; set; }
+        public string SentPackNo { get; set; }
+        public string SentCartonNo { get; set; }
+        public string SentPalletNo { get; set; }
     
         public virtual Commodity Commodity { get; set; }
         public virtual FillingLine FillingLine { get; set; }

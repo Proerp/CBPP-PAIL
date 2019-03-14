@@ -18,10 +18,13 @@
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="EntryMonthID" Type="int" Nullable="false" />
           <Property Name="NextPackNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SentPackNo" Type="nvarchar" MaxLength="10" />
           <Property Name="BatchPackNo" Type="nvarchar" MaxLength="10" />
           <Property Name="NextCartonNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SentCartonNo" Type="nvarchar" MaxLength="10" />
           <Property Name="BatchCartonNo" Type="nvarchar" MaxLength="10" />
           <Property Name="NextPalletNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SentPalletNo" Type="nvarchar" MaxLength="10" />
           <Property Name="BatchPalletNo" Type="nvarchar" MaxLength="10" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
@@ -2410,6 +2413,12 @@
           <Parameter Name="BatchPackNo" Type="nvarchar" Mode="In" />
           <Parameter Name="BatchCartonNo" Type="nvarchar" Mode="In" />
           <Parameter Name="BatchPalletNo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="BatchExtraUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BatchID" Type="int" Mode="In" />
+          <Parameter Name="SentPackNo" Type="nvarchar" Mode="In" />
+          <Parameter Name="SentCartonNo" Type="nvarchar" Mode="In" />
+          <Parameter Name="SentPalletNo" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="BatchPostSaveValidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
@@ -5406,6 +5415,12 @@
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="EntryStatusIDs" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="BatchExtraUpdate">
+            <Parameter Name="BatchID" Mode="In" Type="Int32" />
+            <Parameter Name="SentPackNo" Mode="In" Type="String" />
+            <Parameter Name="SentCartonNo" Mode="In" Type="String" />
+            <Parameter Name="SentPalletNo" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PendingPickupDetail">
           <Property Type="Int32" Name="PickupID" Nullable="false" />
@@ -5540,6 +5555,9 @@
           <Property Type="String" Name="BatchCartonNo" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="BatchPalletNo" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="EntryMonthID" Nullable="false" />
+          <Property Type="String" Name="SentPackNo" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="SentCartonNo" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="SentPalletNo" Nullable="true" MaxLength="10" />
         </ComplexType>
         <ComplexType Name="CommodityIndex">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
@@ -8952,6 +8970,9 @@
           <Property Name="BatchPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="BatchCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="BatchPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SentPackNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SentCartonNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SentPalletNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Batches_Commodities">
           <End Type="TotalSmartCodingModel.Commodity" Role="Commodity" Multiplicity="1" />
@@ -9486,6 +9507,9 @@
                 <ScalarProperty Name="BatchCartonNo" ColumnName="BatchCartonNo" />
                 <ScalarProperty Name="BatchPalletNo" ColumnName="BatchPalletNo" />
                 <ScalarProperty Name="EntryMonthID" ColumnName="EntryMonthID" />
+                <ScalarProperty Name="SentPackNo" ColumnName="SentPackNo" />
+                <ScalarProperty Name="SentCartonNo" ColumnName="SentCartonNo" />
+                <ScalarProperty Name="SentPalletNo" ColumnName="SentPalletNo" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -11943,6 +11967,9 @@
           <EntitySetMapping Name="Batches">
             <EntityTypeMapping TypeName="TotalSmartCodingModel.Batch">
               <MappingFragment StoreEntitySet="Batches">
+                <ScalarProperty Name="SentPalletNo" ColumnName="SentPalletNo" />
+                <ScalarProperty Name="SentCartonNo" ColumnName="SentCartonNo" />
+                <ScalarProperty Name="SentPackNo" ColumnName="SentPackNo" />
                 <ScalarProperty Name="BatchPalletNo" ColumnName="BatchPalletNo" />
                 <ScalarProperty Name="BatchCartonNo" ColumnName="BatchCartonNo" />
                 <ScalarProperty Name="BatchPackNo" ColumnName="BatchPackNo" />
@@ -12355,6 +12382,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="BatchExtraUpdate" FunctionName="TotalSmartCodingModel.Store.BatchExtraUpdate" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

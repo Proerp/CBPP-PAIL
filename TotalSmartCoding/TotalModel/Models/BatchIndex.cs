@@ -44,5 +44,8 @@ namespace TotalModel.Models
         public string BatchCartonNo { get; set; }
         public string BatchPalletNo { get; set; }
         public int EntryMonthID { get; set; }
+        public string SentPackNo { get; set; }
+        public string SentCartonNo { get; set; }
+        public string SentPalletNo { get; set; }
     }
 }

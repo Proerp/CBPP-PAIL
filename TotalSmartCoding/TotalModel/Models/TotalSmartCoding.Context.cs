@@ -3519,5 +3519,26 @@ namespace TotalModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BatchSumup>("GetBatchSumups", fromDateParameter, toDateParameter, entryStatusIDsParameter);
         }
+    
+        public virtual int BatchExtraUpdate(Nullable<int> batchID, string sentPackNo, string sentCartonNo, string sentPalletNo)
+        {
+            var batchIDParameter = batchID.HasValue ?
+                new ObjectParameter("BatchID", batchID) :
+                new ObjectParameter("BatchID", typeof(int));
+    
+            var sentPackNoParameter = sentPackNo != null ?
+                new ObjectParameter("SentPackNo", sentPackNo) :
+                new ObjectParameter("SentPackNo", typeof(string));
+    
+            var sentCartonNoParameter = sentCartonNo != null ?
+                new ObjectParameter("SentCartonNo", sentCartonNo) :
+                new ObjectParameter("SentCartonNo", typeof(string));
+    
+            var sentPalletNoParameter = sentPalletNo != null ?
+                new ObjectParameter("SentPalletNo", sentPalletNo) :
+                new ObjectParameter("SentPalletNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("BatchExtraUpdate", batchIDParameter, sentPackNoParameter, sentCartonNoParameter, sentPalletNoParameter);
+        }
     }
 }
