@@ -158,6 +158,7 @@
     <Compile Include="Controllers\Inventories\GoodsIssueController.cs" />
     <Compile Include="Controllers\Inventories\PickupController.cs" />
     <Compile Include="Controllers\Inventories\WarehouseAdjustmentController.cs" />
+    <Compile Include="Controllers\Productions\PrinterControllerNEW.cs" />
     <Compile Include="Controllers\Sales\DeliveryAdviceController.cs" />
     <Compile Include="Controllers\Sales\ForecastController.cs" />
     <Compile Include="Controllers\Sales\SalesOrderController.cs" />
